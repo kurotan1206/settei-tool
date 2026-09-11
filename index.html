@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png">
-<meta name="snv-version" content="d347bebcb6">
+<meta name="snv-version" content="1033b5e488">
 </head>
 <body>
 <meta name="snv-mode" content="pwa">
@@ -661,7 +661,9 @@ function renderHome(){
     var ms = MACHINES.filter(function(m){ return m.type===g.type && (!q || (m.name+m.short).indexOf(q)>=0); }).sort(function(a,b){ return (unitCounts[b.id]||0)-(unitCounts[a.id]||0); });
     if(!ms.length) return '';
     return '<div class="card"><h2>'+esc(g.t)+'<span class="n">'+ms.length+'機種</span></h2><div class="mgrid">'+ms.map(function(m){ var r = unitRanges[m.id]; var nimg = m.hints.reduce(function(a,g){ return a + g.items.filter(function(it){return it.img;}).length; },0);
-      var tstyle = (m.theme&&m.theme.wall) ? ' style="--accent:'+esc(m.theme.accent)+';--accent-soft:'+esc(m.theme.accent)+'33;--wall:url(&quot;'+m.theme.wall+'&quot;);--card-pos:'+esc(m.theme.card_pos||'right center')+'"' : '';
+      var lightMode = document.documentElement.getAttribute('data-theme')==='light' || (!document.documentElement.getAttribute('data-theme') && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches);
+      var cacc = (m.theme && (lightMode && m.theme.accent_lt ? m.theme.accent_lt : m.theme.accent)) || '';
+      var tstyle = (m.theme&&m.theme.wall) ? ' style="--accent:'+esc(cacc)+';--accent-soft:'+esc(cacc)+'33;--wall:url(&quot;'+m.theme.wall+'&quot;);--card-pos:'+esc(m.theme.card_pos||'right center')+'"' : '';
       return '<button class="mcard'+(m.id===S.machineId?' on':'')+((m.theme&&m.theme.wall)?' themed':'')+'" data-pick="'+m.id+'"'+tstyle+'><span class="name">'+esc(m.short)+'</span><span class="full">'+esc(m.name)+'</span>'+
         '<span class="tags">'+(m.prior?'<span class="badge'+(m.prior.p_high>=0.35?' hot':m.prior.p_high>=0.2?' warm':'')+'" title="店の実績から推定した設定4以上の割合">4↑ '+pct(m.prior.p_high)+'</span>':'')+(m.settings.length!==6?'<span class="badge">設定'+m.settings.join('・')+'</span>':'')+(nimg?'<span class="badge acc">画像 '+nimg+'</span>':'')+(m.flags&&m.flags.reference_only?'<span class="badge warm">参考値</span>':'')+'</span>'+
         '<span class="foot"><span class="num">'+(unitCounts[m.id]||0)+'台</span>'+(r?'<span class="u num">'+esc(r.min)+'–'+esc(r.max)+'</span>':'')+'</span></button>'; }).join('')+'</div></div>';
@@ -727,7 +729,9 @@ function applyTheme(){
   var m = byId[S.machineId], th = (S.view==='judge' && m && m.theme) ? m.theme : null;
   var root = document.documentElement.style, app = document.getElementById('app');
   if(th){
-    root.setProperty('--accent', th.accent); root.setProperty('--accent-ink', th.accent_ink||'#FFFFFF'); root.setProperty('--accent-soft', hexA(th.accent,'33'));
+    var lightMode = document.documentElement.getAttribute('data-theme')==='light' || (!document.documentElement.getAttribute('data-theme') && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches);
+    var acc = (lightMode && th.accent_lt) ? th.accent_lt : th.accent;
+    root.setProperty('--accent', acc); root.setProperty('--accent-ink', (lightMode && th.accent_lt) ? '#FFFFFF' : (th.accent_ink||'#FFFFFF')); root.setProperty('--accent-soft', hexA(acc,'33'));
     app.classList.add('themed');
     if(th.wall){ document.body.classList.add('wall'); root.setProperty('--wall', 'url("'+th.wall+'")'); root.setProperty('--wall-bgpos', th.bg_pos||'center top'); }
     else { document.body.classList.remove('wall'); root.removeProperty('--wall'); }
