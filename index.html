@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0B0F14">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="設定判別">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<meta name="snv-version" content="a2ed58ef04">
+</head>
+<body>
+<meta name="snv-mode" content="pwa">
+<title>設定判別ツール</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=BIZ+UDPGothic:wght@400;700&family=DotGothic16&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#0B0F14; --panel:#121820; --panel-2:#182029; --panel-3:#1F2933; --ink:#E8EEF4; --ink-2:#A6B2BF; --ink-3:#6F7C8A;
+  --line:#26313D; --line-2:#1C2530;
+  --accent:#A392F5; --accent-ink:#0B0F14; --accent-soft:#251F45;
+  --hot:#D94848; --warm:#C98500; --cool:#3987E5; --none:#3B4652;
+  --hot-text:#F09088; --warm-text:#F0B93A; --cool-text:#8BB8F2;
+  --hot-soft:#3A1F1E; --warm-soft:#33290F; --cool-soft:#172A44;
+  --device:#0A0D11; --device-2:#11161C; --device-line:#232B35; --led:#FFB13B; --led-dim:#6E5225; --led-label:#8E99A6;
+  --shadow:0 1px 2px rgba(0,0,0,.5), 0 8px 24px rgba(0,0,0,.35);
+  --plus:#D94848; --minus:#3987E5; --good:#3DBE7A;
+}
+@media (prefers-color-scheme:light){
+  :root:not([data-theme="dark"]){
+    color-scheme:light;
+    --bg:#E9EDF1; --panel:#FFFFFF; --panel-2:#F3F5F8; --panel-3:#E9EDF2; --ink:#121A24; --ink-2:#4F5C6B; --ink-3:#7C8794;
+    --line:#D3DAE2; --line-2:#E5E9EE;
+    --accent:#5A3FC0; --accent-ink:#FFFFFF; --accent-soft:#EEEAFB;
+    --hot:#D93B2B; --warm:#DFA21B; --cool:#3A7BD5; --none:#B9C2CC;
+    --hot-text:#B42A1C; --warm-text:#8A6200; --cool-text:#245FB0;
+    --hot-soft:#FBE9E6; --warm-soft:#FCF3DC; --cool-soft:#E6EFFA;
+    --shadow:0 1px 2px rgba(18,26,36,.06), 0 6px 18px rgba(18,26,36,.06);
+    --plus:#D93B2B; --minus:#3A7BD5; --good:#1E8A4C;
+  }
+}
+:root[data-theme="light"]{
+  color-scheme:light;
+  --bg:#E9EDF1; --panel:#FFFFFF; --panel-2:#F3F5F8; --panel-3:#E9EDF2; --ink:#121A24; --ink-2:#4F5C6B; --ink-3:#7C8794;
+  --line:#D3DAE2; --line-2:#E5E9EE;
+  --accent:#5A3FC0; --accent-ink:#FFFFFF; --accent-soft:#EEEAFB;
+  --hot:#D93B2B; --warm:#DFA21B; --cool:#3A7BD5; --none:#B9C2CC;
+  --hot-text:#B42A1C; --warm-text:#8A6200; --cool-text:#245FB0;
+  --hot-soft:#FBE9E6; --warm-soft:#FCF3DC; --cool-soft:#E6EFFA;
+  --shadow:0 1px 2px rgba(18,26,36,.06), 0 6px 18px rgba(18,26,36,.06);
+  --plus:#D93B2B; --minus:#3A7BD5; --good:#1E8A4C;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"BIZ UDPGothic","Hiragino Sans","Yu Gothic UI","Yu Gothic","Meiryo",system-ui,sans-serif;
+  font-size:14px;line-height:1.55;}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.app{max-width:540px;margin:0 auto;padding:0 10px calc(78px + env(safe-area-inset-bottom));min-height:100vh}
+.disp{font-family:"Dela Gothic One","Hiragino Sans","Noto Sans JP",sans-serif;font-weight:400;letter-spacing:.01em;text-wrap:balance}
+.num{font-family:"IBM Plex Mono","BIZ UDPGothic",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.led{font-family:"DotGothic16",ui-monospace,"Courier New",monospace}
+.lbl{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+
+/* ---- top status strip ---- */
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 2px 6px;border-bottom:1px solid var(--line-2);margin-bottom:6px}
+.top .brand{display:flex;align-items:baseline;gap:8px;min-width:0}
+.top .brand .t{font-size:17px;white-space:nowrap}
+.top .brand .s{font-size:10px;color:var(--ink-3);letter-spacing:.1em;white-space:nowrap}
+.top .meta{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.stat{display:inline-flex;align-items:baseline;gap:4px;font-size:10.5px;color:var(--ink-3);background:var(--panel);border:1px solid var(--line-2);border-radius:4px;padding:2px 6px;white-space:nowrap}
+.stat b{color:var(--ink-2);font-weight:400}
+@media (max-width:440px){.top .brand .s{display:none}}
+
+/* ---- panels ---- */
+.card{background:var(--panel);border:1px solid var(--line-2);border-radius:8px;padding:12px;margin:10px 0}
+.card h2{font-size:11px;margin:0 0 10px;color:var(--ink-3);letter-spacing:.12em;text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:8px}
+.card h2::after{content:"";flex:1;height:1px;background:var(--line-2)}
+.card h2 .n{color:var(--ink-3);font-weight:400;letter-spacing:0;text-transform:none}
+.sub{font-size:11.5px;color:var(--ink-3)}
+.row{display:flex;align-items:center;gap:10px}
+.grow{flex:1;min-width:0}
+.badge{display:inline-block;font-size:10.5px;padding:1px 6px;border-radius:3px;background:var(--panel-2);color:var(--ink-2);border:1px solid var(--line-2);white-space:nowrap;letter-spacing:.04em}
+.badge.hot{background:var(--hot-soft);color:var(--hot-text);border-color:transparent}
+.badge.warm{background:var(--warm-soft);color:var(--warm-text);border-color:transparent}
+.badge.cool{background:var(--cool-soft);color:var(--cool-text);border-color:transparent}
+.badge.acc{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+.btn{border:1px solid var(--line);background:var(--panel-2);border-radius:6px;padding:9px 13px;font-weight:700;line-height:1.2;transition:transform .06s,background .15s}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+.btn.ghost{background:transparent}
+.btn.sm{padding:5px 9px;font-size:12px;font-weight:400}
+.btn.block{width:100%}
+.notice{background:var(--accent-soft);color:var(--ink);border-radius:6px;padding:9px 11px;font-size:12.5px;display:flex;gap:10px;align-items:center;margin:10px 0;border-left:3px solid var(--accent)}
+.notice .grow{flex:1}
+.toast{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 14px;border-radius:6px;font-size:12.5px;max-width:92vw;box-shadow:var(--shadow);opacity:0;transition:opacity .2s;pointer-events:none;z-index:20}
+.toast.show{opacity:1}
+
+/* ---- home ---- */
+.unitform{display:flex;gap:8px;align-items:stretch}
+.unitform input{flex:1;min-width:0;border:1px solid var(--line);border-radius:6px;padding:9px 12px;font-size:24px;letter-spacing:.08em;background:var(--device);color:var(--led)}
+.unitform input::placeholder{color:var(--led-dim)}
+.unitform input:focus{border-color:var(--accent);outline:none}
+.search{width:100%;border:1px solid var(--line);border-radius:6px;padding:8px 10px;background:var(--panel-2);font-size:14px;margin-bottom:8px}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mcard{display:flex;flex-direction:column;gap:4px;text-align:left;background:var(--panel-2);border:1px solid var(--line-2);border-radius:6px;padding:9px 10px;min-height:74px}
+.mcard:active{transform:scale(.98)}
+.mcard .name{font-weight:700;font-size:13.5px;line-height:1.25}
+.mcard .full{font-size:10.5px;color:var(--ink-3);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mcard .foot{display:flex;justify-content:space-between;align-items:center;margin-top:auto;font-size:11px;color:var(--ink-2)}
+.mcard .foot .u{color:var(--ink-3);font-size:10px}
+.mcard .tags{display:flex;gap:4px;flex-wrap:wrap}
+.mcard.on{border-color:var(--accent)}
+
+/* ---- judge header ---- */
+.mhead{display:flex;align-items:center;gap:10px;padding:6px 2px 2px}
+.mhead .name{font-size:21px;line-height:1.2}
+.mhead .full{font-size:10.5px;color:var(--ink-3)}
+.unitchip{font-size:11px;padding:4px 9px;border-radius:5px;background:var(--device);border:1px solid var(--device-line);white-space:nowrap;color:var(--led-label)}
+.unitchip b{font-size:16px;color:var(--led);font-weight:400;margin-left:4px}
+
+/* ---- result cluster ---- */
+.result{border:1px solid var(--line);border-radius:8px;background:var(--panel);box-shadow:var(--shadow);padding:12px;margin:10px 0;position:relative;overflow:hidden}
+.result::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--none)}
+.result.hot::before{background:var(--hot)} .result.warm::before{background:var(--warm)} .result.cool::before{background:var(--cool)}
+.verdict{display:flex;align-items:flex-start;gap:12px}
+.verdict .word{font-size:28px;line-height:1.15}
+.verdict.hot .word{color:var(--hot-text)} .verdict.warm .word{color:var(--warm-text)} .verdict.cool .word{color:var(--cool-text)} .verdict.none .word{color:var(--ink-2)}
+.verdict .why{font-size:12.5px;color:var(--ink-2);margin-top:5px}
+.gauge{margin:12px 0 4px}
+.gauge .lab{display:flex;justify-content:space-between;font-size:10.5px;color:var(--ink-3);margin-bottom:4px}
+.gauge .lab b{color:var(--ink);font-size:13px;font-weight:700}
+.gauge .track{height:10px;border-radius:2px;background:var(--panel-3);position:relative;overflow:hidden;display:flex;gap:2px}
+.gauge .seg{flex:1;background:var(--panel-3)}
+.gauge .seg.on{background:var(--hot)} .gauge .seg.on.mid{background:var(--warm)} .gauge .seg.on.low{background:var(--cool)}
+.gauge .ticks{display:flex;justify-content:space-between;font-size:9.5px;color:var(--ink-3);margin-top:3px}
+.kpis{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin:10px 0 4px}
+.kpi{background:var(--panel-2);border:1px solid var(--line-2);border-radius:6px;padding:7px 9px}
+.kpi .l{font-size:10px;color:var(--ink-3);letter-spacing:.08em;text-transform:uppercase}
+.kpi .v{font-size:20px;font-weight:600;line-height:1.2;margin-top:2px}
+.kpi .v small{font-size:11px;font-weight:400;color:var(--ink-3)}
+.bars{margin:10px 0 2px;display:grid;grid-template-columns:auto 1fr auto;gap:5px 8px;align-items:center}
+.bar{display:contents}
+.bar .l{font-size:11px;color:var(--ink-2)}
+.bar .track{height:12px;background:var(--panel-3);border-radius:0 3px 3px 0;position:relative}
+.bar .fill{height:100%;border-radius:0 3px 3px 0;background:var(--none);min-width:2px;transition:width .25s}
+.bar.hot .fill{background:var(--hot)} .bar.warm .fill{background:var(--warm)} .bar.cool .fill{background:var(--cool)}
+.bar.dead .fill{background:var(--none);opacity:.4}
+.bar .v{font-size:11.5px;text-align:right;color:var(--ink-2);min-width:44px}
+.bar.best .l,.bar.best .v{color:var(--ink);font-weight:700}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:10.5px;color:var(--ink-3);margin-top:6px}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+.legend .hot i{background:var(--hot)} .legend .warm i{background:var(--warm)} .legend .cool i{background:var(--cool)}
+.evid{margin:10px 0 0;padding:10px 0 0;border-top:1px solid var(--line-2)}
+.evid h3{font-size:10.5px;color:var(--ink-3);margin:0 0 6px;letter-spacing:.12em;text-transform:uppercase}
+.evtable{width:100%;border-collapse:collapse;font-size:12px}
+.evtable th{font-size:10px;color:var(--ink-3);font-weight:400;text-align:left;padding:2px 4px;border-bottom:1px solid var(--line-2);letter-spacing:.06em}
+.evtable td{padding:5px 4px;border-bottom:1px dashed var(--line-2);vertical-align:middle}
+.evtable td.r{text-align:right;white-space:nowrap}
+.evtable td.lab{max-width:120px}
+.evtable .near{font-size:10px;color:var(--ink-3);display:block}
+.scale{display:grid;grid-template-columns:auto 1fr auto;gap:5px;align-items:center;font-size:9.5px;color:var(--ink-3);min-width:110px}
+.scale .tr{height:5px;background:var(--line);border-radius:3px;position:relative}
+.scale .mk{position:absolute;top:50%;width:10px;height:10px;border-radius:50%;background:var(--ink);border:2px solid var(--panel);transform:translate(-50%,-50%)}
+.scale .mk.edge{border-radius:2px;width:7px}
+.foot{font-size:10.5px;color:var(--ink-3);margin-top:10px;line-height:1.5}
+
+/* ---- precision panel additions ---- */
+.status{display:flex;gap:5px;flex-wrap:wrap;margin:8px 0 0}
+.stchip{display:inline-flex;align-items:baseline;gap:4px;font-size:10.5px;color:var(--ink-3);border:1px solid var(--line-2);border-radius:3px;padding:1px 6px;background:var(--panel-2);white-space:nowrap}
+.stchip b{color:var(--ink);font-weight:600}
+.stchip.hot b{color:var(--hot-text)} .stchip.cool b{color:var(--cool-text)}
+.segctl{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--panel-2)}
+.segctl button{border:0;background:transparent;padding:5px 10px;font-size:11.5px;color:var(--ink-2);line-height:1.2}
+.segctl button.on{background:var(--accent);color:var(--accent-ink);font-weight:700}
+.prior{margin:12px 0 2px;padding:9px 10px;border:1px dashed var(--line);border-radius:6px;background:var(--panel-2)}
+.prior .ph{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.prior .ph .t{font-size:11px;color:var(--ink-2)}
+.prior .ph .t b{color:var(--ink);font-weight:700}
+.prior .strip{display:flex;height:9px;border-radius:2px;overflow:hidden;gap:1px;margin:7px 0 4px;background:var(--panel-3)}
+.prior .strip i{display:block;height:100%;background:var(--none)}
+.prior .strip i.cool{background:var(--cool)} .prior .strip i.warm{background:var(--warm)} .prior .strip i.hot{background:var(--hot)}
+.prior .pv{display:flex;justify-content:space-between;font-size:10px;color:var(--ink-3)}
+.prior .pv span b{color:var(--ink-2);font-weight:400}
+.prior .pm{font-size:10px;color:var(--ink-3);margin-top:4px;line-height:1.45}
+.bar .track .pmark{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--ink);opacity:.55;transform:translateX(-1px)}
+.lr{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;white-space:nowrap}
+.lr .lb{width:34px;height:6px;background:var(--panel-3);border-radius:2px;position:relative;overflow:hidden;flex:none}
+.lr .lb i{position:absolute;top:0;bottom:0;background:var(--none);left:50%;width:0}
+.lr.hot .lb i{background:var(--hot);left:50%} .lr.cool .lb i{background:var(--cool);left:auto;right:50%}
+.lr.hot{color:var(--hot-text)} .lr.cool{color:var(--cool-text)} .lr.none{color:var(--ink-3)}
+.kpis.four{grid-template-columns:1fr 1fr}
+.dfield .rate .z{color:var(--led);margin-left:4px}
+.gate[hidden],[hidden]{display:none!important}
+.gate{position:fixed;inset:0;background:var(--bg);z-index:50;display:flex;align-items:center;justify-content:center;padding:20px}
+.gatebox{width:100%;max-width:360px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;box-shadow:var(--shadow)}
+.gatebox input[type=password]{width:100%;border:1px solid var(--line);border-radius:6px;padding:10px 12px;background:var(--device);color:var(--led);font-size:18px;letter-spacing:.08em;margin:10px 0 8px}
+.gatebox .row{font-size:12px;color:var(--ink-2);margin-bottom:10px;gap:6px}
+.gatebox .msg{font-size:11.5px;color:var(--warm-text);min-height:1.4em;margin-top:8px}
+
+/* ---- counter device ---- */
+.device{background:var(--device);border:1px solid var(--device-line);border-radius:8px;padding:11px;color:#E6EAEE}
+.device h2{color:var(--led-label);font-size:10.5px;margin:0 0 10px;letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.device h2::after{content:"";flex:1;height:1px;background:var(--device-line)}
+.device h2 .n{color:#5F6975;margin-left:0;font-weight:400;letter-spacing:0;text-transform:none}
+.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.dfield{background:var(--device-2);border:1px solid var(--device-line);border-radius:6px;padding:7px 9px 6px;position:relative}
+.dfield.wide{grid-column:1 / -1}
+.dfield label{display:block;font-size:10.5px;color:var(--led-label);letter-spacing:.06em}
+.dfield label .imp{color:var(--led);margin-left:4px}
+.dfield input{width:100%;background:transparent;border:0;border-bottom:1px solid var(--device-line);color:var(--led);font-size:28px;line-height:1.1;padding:2px 0;text-align:right;letter-spacing:.04em}
+.dfield input::placeholder{color:var(--led-dim)}
+.dfield input:focus{outline:none;border-bottom-color:var(--led)}
+.dfield .tools{display:grid;grid-template-columns:1fr 2fr auto;gap:5px;align-items:center;margin-top:6px}
+.dfield .tools.one{grid-template-columns:1fr auto}
+.dfield .plus,.dfield .minus1{background:#161C23;border:1px solid #2A333D;color:var(--led);border-radius:5px;padding:7px 0;font-size:14px;font-weight:700}
+.dfield .minus1{color:#8E98A3}
+.dfield .plus:active,.dfield .minus1:active{background:#22292F}
+.dfield .help{background:none;border:1px solid #2A333D;color:#8E98A3;border-radius:5px;width:30px;height:30px;font-size:12px}
+.dfield .helptext{font-size:10.5px;color:#AEB7C0;margin-top:6px;line-height:1.5}
+.dfield .helptext.hid{display:none}
+.dfield .rate{font-size:10.5px;color:#8E98A3;text-align:right;margin-top:2px;line-height:1.4}
+.dfield .rate b{color:#E6EAEE;font-weight:400}
+.dfield .sub{color:#8E98A3}
+.dfield .subin{display:flex;align-items:baseline;gap:6px;margin-top:5px;font-size:10.5px;color:var(--led-label)}
+.dfield .subin input{font-size:17px;border-bottom-color:#2A333D}
+
+/* ---- hints ---- */
+.hgroup{margin:10px 0 0;padding:10px 0 0;border-top:1px solid var(--line-2)}
+.hgroup:first-child{border-top:0;padding-top:0;margin-top:0}
+.hgroup h3{font-size:12.5px;margin:0 0 4px;display:flex;align-items:center;gap:6px}
+.hgroup h3 .cnt{font-size:10px;color:var(--accent);font-weight:400}
+.hgroup .gnote{font-size:10.5px;color:var(--ink-3);margin:0 0 6px;line-height:1.45}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--panel-2);border-radius:6px;padding:6px 9px;font-size:12.5px;max-width:100%;text-align:left;line-height:1.3;transition:transform .06s}
+.chip:active{transform:scale(.97)}
+.chip .eff{font-size:10px;color:var(--ink-3);white-space:nowrap}
+.chip.on{border-color:var(--accent);background:var(--accent-soft)}
+.chip.on .eff{color:var(--accent)}
+.chip .cnt{background:var(--accent);color:var(--accent-ink);border-radius:99px;min-width:20px;height:20px;font-size:11.5px;display:inline-flex;align-items:center;justify-content:center;padding:0 6px;font-weight:700}
+.chip .minus{border:0;background:transparent;color:var(--accent);font-weight:700;padding:0 2px;font-size:14px}
+.chip.lock.on .cnt{display:none}
+.chips.pics{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.chip.pic{flex-direction:column;align-items:stretch;padding:0;gap:0;position:relative;overflow:hidden}
+.chip.pic img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:var(--panel-3)}
+.chip.pic .cap{display:block;padding:5px 6px 6px;font-size:10.5px;line-height:1.3;text-align:left}
+.chip.pic .eff{display:block;margin-top:2px}
+.chip.pic .cnt{position:absolute;top:4px;left:4px;box-shadow:0 0 0 2px var(--panel)}
+.chip.pic .minus{position:absolute;top:2px;right:2px;background:var(--panel);border-radius:99px;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:14px}
+.sel{width:100%;padding:9px;border:1px solid var(--line);border-radius:6px;background:var(--panel-2);font-size:13.5px;color:var(--ink)}
+
+/* ---- memo / share ---- */
+.memo textarea{width:100%;border:1px solid var(--line);border-radius:6px;padding:8px 10px;background:var(--panel-2);color:var(--ink);font-size:13.5px;line-height:1.5;resize:vertical;min-height:42px}
+.memo textarea.out{font-size:11.5px;min-height:150px;background:var(--device);color:#C9D2DB;font-family:"IBM Plex Mono","BIZ UDPGothic",ui-monospace,monospace;border-color:var(--device-line)}
+.memo .acts{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.memo .acts .btn{flex:1;text-align:center;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.memo .btn.line{background:#06C755;color:#fff;border-color:transparent}
+
+/* ---- history ---- */
+table{border-collapse:collapse;width:100%;font-size:12px}
+th{font-size:10px;color:var(--ink-3);font-weight:400;text-align:right;padding:4px 5px;border-bottom:1px solid var(--line-2);white-space:nowrap;letter-spacing:.06em}
+td{text-align:right;padding:5px 5px;border-bottom:1px solid var(--line-2);white-space:nowrap}
+th:first-child,td:first-child{text-align:left;padding-left:2px}
+.tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.diffcell{display:flex;align-items:center;justify-content:flex-end;gap:6px}
+.dbar{height:8px;border-radius:0 2px 2px 0;background:var(--plus);display:inline-block}
+.dbar.neg{background:var(--minus);border-radius:2px 0 0 2px}
+.pl{color:var(--hot-text)} .mn{color:var(--cool-text)}
+.sumgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0}
+.sumgrid .kpi .v{font-size:17px}
+.spark{width:100%;height:84px;display:block;margin:6px 0 2px}
+.spark .zero{stroke:var(--line);stroke-width:1}
+.spark .p{fill:var(--plus)} .spark .m{fill:var(--minus)}
+.spark text{fill:var(--ink-3);font-size:9px}
+
+/* ---- help ---- */
+.help p{margin:6px 0 10px;font-size:13.5px;max-width:62ch}
+.help h3{font-size:13.5px;margin:14px 0 4px}
+.help ul{padding-left:18px;margin:4px 0 10px}
+.help li{margin:3px 0}
+
+/* ---- details ---- */
+details.adv summary{cursor:pointer;font-size:12.5px;color:var(--ink-2);padding:6px 0;list-style:none;display:flex;align-items:center;gap:8px}
+details.adv summary::before{content:"▸";color:var(--ink-3);font-size:11px}
+details.adv[open] summary::before{content:"▾"}
+details.adv summary::-webkit-details-marker{display:none}
+
+/* ---- bottom nav ---- */
+.nav{position:fixed;left:0;right:0;bottom:0;background:var(--panel);border-top:1px solid var(--line-2);padding:4px 8px calc(4px + env(safe-area-inset-bottom));z-index:10}
+.nav .in{max-width:540px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.nav button{background:none;border:0;padding:6px 2px 4px;font-size:10px;color:var(--ink-3);border-radius:6px;line-height:1.2;display:flex;flex-direction:column;align-items:center;gap:3px;letter-spacing:.04em}
+.nav button svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav button b{font-size:12px;font-weight:700;color:inherit}
+.nav button.on{color:var(--accent);background:var(--accent-soft)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.hidden{display:none!important}
+</style>
+
+<div class="app" id="app">
+  <div class="top">
+    <div class="brand"><span class="disp t">設定判別ツール</span><span class="s">SETTING ANALYZER · v1.0</span></div>
+    <div class="meta" id="topmeta"></div>
+  </div>
+  <div id="view"></div>
+</div>
+<div class="nav"><div class="in" id="nav">
+  <button data-nav="home"><svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></svg><b>台を選ぶ</b></button>
+  <button data-nav="judge"><svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M8 15v-4M12 15V7M16 15v-2"/></svg><b>判別</b></button>
+  <button data-nav="history"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5M12 8v4l3 2"/></svg><b>履歴</b></button>
+  <button data-nav="help"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 1-1 1.7M12 17h.01"/></svg><b>使い方</b></button>
+</div></div>
+<div class="toast" id="toast"></div>
+<div class="gate" id="gate" hidden><div class="gatebox"><div class="disp" style="font-size:20px">設定判別ツール</div><div class="sub" style="margin-top:4px">データは暗号化して保存されています。合言葉を入れて解錠してください。</div>
+<form id="gateform"><input type="password" id="gatepass" autocomplete="current-password" placeholder="合言葉" aria-label="合言葉"><label class="row"><input type="checkbox" id="gatesave" checked> この端末に記憶する</label><button class="btn primary block" type="submit">解錠</button></form><div class="msg" id="gatemsg"></div></div></div>
+
+<script>
+(function(){
+'use strict';
+function boot(DATA, HIST){
+var MACHINES = DATA.machines;
+var byId = {}; MACHINES.forEach(function(m){ byId[m.id] = m; });
+var byAnaslo = {}; MACHINES.forEach(function(m){ (m.anaslo_names||[]).forEach(function(n){ byAnaslo[n] = m; }); });
+var unitCounts = {}, unitRanges = {};
+Object.keys(HIST.unit_machine).forEach(function(u){
+  var n = HIST.unit_machine[u]; var m = byAnaslo[n]; if(!m) return;
+  unitCounts[m.id] = (unitCounts[m.id]||0)+1;
+  var r = unitRanges[m.id] || (unitRanges[m.id] = {min:u,max:u});
+  if(u < r.min) r.min = u; if(u > r.max) r.max = u;
+});
+
+/* ---------- helpers ---------- */
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function num(v){ var x = parseFloat(String(v==null?'':v).replace(/,/g,'')); return isFinite(x) && x>0 ? x : 0; }
+function fmt(n){ return Math.round(n).toLocaleString('ja-JP'); }
+function fmtInv(n,k){ return k>0 ? '1/' + (n/k).toFixed(1) : '—'; }
+function pct(x){ return (x*100).toFixed(x*100 >= 10 ? 0 : 1) + '%'; }
+function sIdx(m, s){ return m.settings.indexOf(s); }
+function sNum(s){ return s === 'V' ? 5 : parseInt(s,10); }
+function tierOf(m, s){ var v = sNum(s); return v>=4 ? 'hot' : (v===3 ? 'warm' : 'cool'); }
+function isHigh(m,s){ return tierOf(m,s)==='hot'; }
+function store(k,v){ try{ if(v===undefined) return JSON.parse(localStorage.getItem(k)||'null'); localStorage.setItem(k, JSON.stringify(v)); }catch(e){ return null; } }
+function toast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toast._t); toast._t=setTimeout(function(){t.classList.remove('show');},2600); }
+
+/* ---------- state ---------- */
+var S = store('sn:app') || {view:'home', machineId:null, unit:''};
+if(S.prior!=='flat') S.prior = 'hall';
+function stateKey(){ return 'sn:' + (S.machineId||'-') + ':' + (S.unit||'-'); }
+function blankInput(){ return {games:'', at_games:'', counts:{}, denoms:{}, hints:{}, memo:'', sample:false}; }
+var IN = null;
+function loadInput(){ IN = store(stateKey()) || blankInput(); if(!IN.counts) IN.counts={}; if(!IN.denoms) IN.denoms={}; if(!IN.hints) IN.hints={}; }
+function saveInput(){ store(stateKey(), IN); store('sn:app', S); }
+
+/* ---------- engine ---------- */
+function priorOf(m){ return (S.prior==='hall' && m.prior && m.prior.p) ? m.prior.p : null; }
+function lrOf(m, f, pri){
+  // f: {設定: 対数尤度(または対数の重み)} → 高設定(4以上) 対 低設定(3以下) の尤度比。事前配分があればその重みで平均する
+  var hi=0, lo=0, whi=0, wlo=0, mx=-Infinity;
+  m.settings.forEach(function(s){ if(f[s]>mx) mx=f[s]; });
+  m.settings.forEach(function(s){ var w = pri ? pri[s] : 1; var v = w*Math.exp(f[s]-mx); if(isHigh(m,s)){ hi+=v; whi+=w; } else { lo+=v; wlo+=w; } });
+  if(!whi||!wlo) return null;
+  return (hi/whi)/(lo/wlo);
+}
+function compute(m, IN){
+  var S6 = m.settings, logL = {}, dead = {}, evid = [], anyHard = false, hardMin = null, hardOnly = null, denies = [];
+  var pri = priorOf(m);
+  S6.forEach(function(s){ logL[s] = 0; dead[s] = false; });
+  var games = num(IN.games), atg = num(IN.at_games);
+  var normal = Math.max(0, games - atg);
+  var atUnknown = (m.type==='at' && games>0 && atg===0);
+  m.counters.forEach(function(c){
+    var k = Math.floor(num(IN.counts[c.key]));
+    var n;
+    if(c.denom==='games') n = games; else if(c.denom==='normal') n = normal; else { n = num(IN.denoms[c.key]); if(!n && c.key==='grape' && k>0) n = games; }
+    n = Math.floor(n);
+    if(!n) return;
+    if(k > n) k = n;
+    var touched = (k>0) || (IN.counts[c.key]!=='' && IN.counts[c.key]!=null);
+    if(!touched) return;
+    var ll = {};
+    S6.forEach(function(s){ var p = c.p[s]; var v = k*Math.log(p) + (n-k)*Math.log(1-p); logL[s] += v; ll[s]=v; });
+    var obs = k>0 ? n/k : null; var near = null, bestd = Infinity;
+    S6.forEach(function(s){ var th = 1/c.p[s]; var d = obs ? Math.abs(Math.log(obs)-Math.log(th)) : Infinity; if(d<bestd){bestd=d;near=s;} });
+    evid.push({c:c, k:k, n:n, obs:obs, near:near, ll:ll, lr:lrOf(m, ll, pri)});
+  });
+  var hintsUsed = [], recorded = [];
+  m.hints.forEach(function(g, gi){ g.items.forEach(function(it, ii){
+    var cnt = IN.hints[gi+'_'+ii]|0; if(!cnt) return;
+    var e = it.effect; if(e.type==='info'){ recorded.push({g:g, it:it, cnt:cnt}); return; }
+    var f = {}; S6.forEach(function(s){ f[s]=0; });
+    var hard = false;
+    if(e.type==='evenonly'){ hard=true; S6.forEach(function(s){ if(sNum(s)%2===1) dead[s]=true; }); }
+    else if(e.type==='oddonly'){ hard=true; S6.forEach(function(s){ if(sNum(s)%2===0) dead[s]=true; }); }
+    else if(e.type==='min'){ hard=true; hardMin = Math.max(hardMin||0, e.k); S6.forEach(function(s){ if(sNum(s) < e.k) dead[s]=true; }); }
+    else if(e.type==='only'){ hard=true; hardOnly = e.k; S6.forEach(function(s){ if(sNum(s) !== e.k) dead[s]=true; }); }
+    else if(e.type==='deny'){ hard=true; e.ks.forEach(function(k){ denies.push(k); S6.forEach(function(s){ if(sNum(s)===k) dead[s]=true; }); }); }
+    else if(e.type==='odd'){ S6.forEach(function(s){ if(sNum(s)%2===1) f[s] = cnt*Math.log(e.w); }); }
+    else if(e.type==='even'){ S6.forEach(function(s){ if(sNum(s)%2===0) f[s] = cnt*Math.log(e.w); }); }
+    else if(e.type==='high'){ S6.forEach(function(s){ if(isHigh(m,s)) f[s] = cnt*Math.log(e.w); }); }
+    else if(e.type==='set'){ S6.forEach(function(s){ if(e.ks.indexOf(sNum(s))>=0) f[s] = cnt*Math.log(e.w); }); }
+    else if(e.type==='weights'){ S6.forEach(function(s){ var w = e.w[s]; if(w==null) w = 1; f[s] = cnt*Math.log(Math.max(w,1e-9)); }); }
+    if(hard) anyHard = true; else S6.forEach(function(s){ logL[s] += f[s]; });
+    hintsUsed.push({g:g, it:it, cnt:cnt, hard:hard, lr: hard ? null : lrOf(m, f, pri)});
+  }); });
+  var alive = S6.filter(function(s){ return !dead[s]; });
+  var post = {}, flat = {};
+  var hasAny = evid.length>0 || hintsUsed.length>0;
+  if(alive.length){
+    var lp = function(s){ return logL[s] + (pri ? Math.log(Math.max(pri[s],1e-6)) : 0); };
+    var mx = -Infinity; alive.forEach(function(s){ if(lp(s)>mx) mx=lp(s); });
+    var sum = 0; alive.forEach(function(s){ post[s] = Math.exp(lp(s)-mx); sum += post[s]; });
+    alive.forEach(function(s){ post[s] /= sum; }); S6.forEach(function(s){ if(dead[s]) post[s]=0; });
+    var mx2 = -Infinity; alive.forEach(function(s){ if(logL[s]>mx2) mx2=logL[s]; });
+    var sum2 = 0; alive.forEach(function(s){ flat[s] = Math.exp(logL[s]-mx2); sum2 += flat[s]; });
+    alive.forEach(function(s){ flat[s] /= sum2; }); S6.forEach(function(s){ if(dead[s]) flat[s]=0; });
+  }
+  var pHigh = 0, pLow = 0, pHighFlat = 0; S6.forEach(function(s){ if(isHigh(m,s)){ pHigh += post[s]||0; pHighFlat += flat[s]||0; } if(tierOf(m,s)==='cool') pLow += post[s]||0; });
+  var top = null; S6.forEach(function(s){ if(top===null || (post[s]||0) > (post[top]||0)) top = s; });
+  return {post:post, flat:flat, dead:dead, alive:alive, pHigh:pHigh, pHighFlat:pHighFlat, pLow:pLow, top:top, games:games, normal:normal, atUnknown:atUnknown, prior:pri, hasAny:hasAny,
+          lrAll: hasAny ? lrOf(m, logL, pri) : null,
+          evid:evid, hints:hintsUsed, recorded:recorded, anyHard:anyHard, hardMin:hardMin, hardOnly:hardOnly, denies:denies, contradiction: alive.length===0};
+}
+function sampleTier(m, R){
+  var g = m.type==='at' ? R.normal : R.games;
+  var th = m.type==='at' ? [1000,3000,5000] : [500,1500,3000];
+  var i = 0; while(i<th.length && g>=th[i]) i++;
+  var labels = ['まだ少ない','出はじめ','そこそこ','十分'];
+  return {i:i, label:labels[i], next: i<th.length ? th[i]-g : 0, g:g};
+}
+
+/* ---------- render: result ---------- */
+function verdict(m, R, T){
+  var w, why, cls;
+  var hasEvidence = R.evid.length>0 || R.hints.length>0;
+  if(R.contradiction){ return {w:'示唆が矛盾', why:'入力した示唆どうしが両立しません。別の台の演出が混ざっていないか見直してください。', cls:'none'}; }
+  if(R.hardOnly){ return {w:'設定'+R.hardOnly+'濃厚', why:'設定'+R.hardOnly+'を示す確定系の演出が出ています。これ以上の判別は不要です。', cls: isHigh(m, String(R.hardOnly===5&&m.settings.indexOf('V')>=0?'V':R.hardOnly))?'hot':'warm'}; }
+  if(!hasEvidence){ return {w:'入力待ち', why:'データカウンタの数字を入れると、設定ごとの確率が出ます。', cls:'none'}; }
+  var lead = '';
+  if(R.hardMin){ lead = '設定'+R.hardMin+'以上濃厚の演出あり。'; }
+  if(R.denies.length){ lead += '設定'+R.denies.join('・')+'は否定。'; }
+  if(T.i===0 && !R.hardMin && R.hints.length===0){
+    return {w:'まだ判断できない', why:'回転数が少なすぎます（'+fmt(T.g)+'G）。'+(m.type==='at'?'AT機は最低1,000G':'ジャグラーは最低500G')+'、できれば'+(m.type==='at'?'3,000G':'1,500G')+'以上で見てください。', cls:'none'};
+  }
+  var p = R.pHigh;
+  if(R.hardMin && R.hardMin>=4){ w='設定'+R.hardMin+'以上濃厚'; cls='hot'; }
+  else if(p>=0.75){ w='高設定に期待'; cls='hot'; }
+  else if(p>=0.55){ w='やや高設定寄り'; cls='hot'; }
+  else if(p<=0.2){ w='低設定寄り'; cls='cool'; }
+  else if(p<=0.4){ w='やや低設定寄り'; cls='cool'; }
+  else { w='五分五分'; cls='warm'; }
+  why = lead + '設定4以上の確率 ' + pct(p) + (R.prior ? '（この店の実績配分を加味。均等前提なら ' + pct(R.pHighFlat) + '）。' : '（全設定が同じ割合で使われていると仮定）。');
+  if(T.i<=1) why += ' サンプルはまだ' + T.label + 'なので、結論は保留気味に。';
+  return {w:w, why:why, cls:cls};
+}
+function lrParts(lr){
+  if(lr==null || !isFinite(lr)) return null;
+  var hi = lr>=1, v = hi ? lr : 1/lr;
+  var txt = v>=9999 ? '×9999+' : v>=100 ? '×'+Math.round(v) : v>=10 ? '×'+v.toFixed(0) : '×'+v.toFixed(1);
+  return {hi:hi, v:v, txt:txt, neutral:v<1.15, w:Math.min(1, Math.log10(Math.max(v,1))/3)*100};
+}
+function lrText(lr){ var q = lrParts(lr); if(!q) return '—'; return q.neutral ? '中立' : (q.hi?'高 ':'低 ')+q.txt; }
+function lrCell(lr){
+  var q = lrParts(lr); if(!q) return '<span class="lr none">—</span>';
+  var cls = q.neutral ? 'none' : (q.hi ? 'hot' : 'cool');
+  return '<span class="lr '+cls+'"><span class="lb"><i style="width:'+(q.neutral?0:q.w).toFixed(0)+'%"></i></span>'+esc(lrText(lr))+'</span>';
+}
+function evidenceRow(m, e){
+  var c = e.c, s1 = m.settings[0], sT = m.settings[m.settings.length-1];
+  var isPct = /%$/.test(c.disp[s1]);
+  var obsTxt = e.k>0 ? (isPct ? (e.k/e.n*100).toFixed(1)+'%' : fmtInv(e.n,e.k)) : (isPct ? '0%' : '0回');
+  var d1 = 1/c.p[s1], dT = 1/c.p[sT];
+  var x1 = Math.log(d1), xT = Math.log(dT), pos = null, edge = '';
+  if(e.obs){ var x = Math.log(e.obs); var t = (x - x1)/(xT - x1); if(t<0){pos=0;edge='edge';} else if(t>1){pos=1;edge='edge';} else pos=t; }
+  else if(e.n>0){ pos = 0; edge='edge'; }
+  var near = '';
+  if(e.k>0 && e.near){ near = e.obs < dT ? '設定'+sT+'より良い' : (e.obs > d1 ? '設定'+s1+'より悪い' : '設定'+e.near+'相当'); }
+  else if(e.n>0){ near = '0回'; }
+  return '<tr><td class="lab"><b>'+esc(c.label)+'</b>'+(c.approx?' <span class="badge">目安</span>':'')+'<span class="near">'+esc(near)+'</span></td>'+
+    '<td class="r num">'+fmt(e.k)+'<span class="sub">/'+fmt(e.n)+(c.denom==='own'&&isPct?'回':'G')+'</span><br><b>'+obsTxt+'</b></td>'+
+    '<td><div class="scale"><span class="num">'+esc(c.disp[s1])+'</span><div class="tr">'+(pos!=null?'<span class="mk '+edge+'" style="left:'+(pos*100).toFixed(1)+'%"></span>':'')+'</div><span class="num">'+esc(c.disp[sT])+'</span></div></td>'+
+    '<td class="r">'+lrCell(e.lr)+'</td></tr>';
+}
+function memoText(m, R, T, V){
+  var d = new Date(), pad = function(n){ return (n<10?'0':'')+n; };
+  var head = '【設定判別ツール】' + (d.getMonth()+1) + '/' + d.getDate() + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  var lines = [head, m.short + (S.unit ? '　台番 ' + S.unit : '')];
+  var hasAny = R.evid.length || R.hints.length;
+  lines.push('判定: ' + V.w + (hasAny && !R.contradiction ? '（設定4以上 ' + pct(R.pHigh) + '）' : ''));
+  if(hasAny) lines.push('前提: ' + (R.prior ? '店の実績配分(推定)' : '全設定均等') + (R.lrAll!=null ? '　高/低 尤度比 ' + lrText(R.lrAll) : ''));
+  var games = num(IN.games), atg = num(IN.at_games);
+  if(games) lines.push('総回転数 ' + fmt(games) + 'G' + (m.type==='at' && atg ? '（AT中 ' + fmt(atg) + 'G を除外）' : '') + '　サンプル: ' + T.label);
+  R.evid.forEach(function(e){ var c = e.c, isPct = /%$/.test(c.disp[m.settings[0]]);
+    var obs = e.k>0 ? (isPct ? (e.k/e.n*100).toFixed(1)+'%' : fmtInv(e.n,e.k)) : '0回';
+    lines.push('・' + c.label + ' ' + fmt(e.k) + '回/' + fmt(e.n) + (c.denom==='own'&&isPct?'回':'G') + ' = ' + obs + (e.near ? '（設定' + e.near + '相当）' : '')); });
+  if(R.hints.length) lines.push('演出: ' + R.hints.map(function(h){ return h.it.label + (h.cnt>1?'×'+h.cnt:''); }).join('、'));
+  if(R.recorded.length) lines.push('記録: ' + R.recorded.map(function(h){ return h.it.label + (h.cnt>1?'×'+h.cnt:''); }).join('、'));
+  if(hasAny) lines.push('設定別: ' + m.settings.map(function(s){ return s + '=' + (R.dead[s] ? '×' : pct(R.post[s]||0)); }).join(' '));
+  if(IN.memo && IN.memo.trim()) lines.push('メモ: ' + IN.memo.trim());
+  return lines.join('\n');
+}
+function updateMemo(m, R, T, V){
+  var el = document.getElementById('memoOut'); if(!el) return;
+  var text = memoText(m, R, T, V); el.value = text;
+  var a = document.getElementById('lineShare'); if(a) a.href = 'https://line.me/R/share?text=' + encodeURIComponent(text);
+}
+function priorPanel(m){
+  var pr = m.prior; if(!pr) return '';
+  var on = S.prior==='hall';
+  var ctl = '<span class="segctl" role="group" aria-label="前提とする設定配分"><button type="button" data-prior="flat"'+(on?'':' class="on"')+'>均等</button><button type="button" data-prior="hall"'+(on?' class="on"':'')+'>店の実績配分</button></span>';
+  var strip = m.settings.map(function(s){ return '<i class="'+tierOf(m,s)+'" style="width:'+(pr.p[s]*100).toFixed(1)+'%" title="設定'+esc(s)+' '+pct(pr.p[s])+'"></i>'; }).join('');
+  var pv = m.settings.map(function(s){ return '<span>'+esc(s)+' <b class="num">'+pct(pr.p[s])+'</b></span>'; }).join('');
+  var meth = pr.method==='em' ? 'BB・RB回数からEM推定' : pr.method==='payout' ? '実績機械割から推定' : '既定値（台日数が少ない）';
+  var meta = '推定の元: 直近'+pr.days+'日（'+esc(String(pr.from).slice(5))+'〜'+esc(String(pr.to).slice(5))+'）'+pr.units+'台・'+fmt(pr.unit_days)+'台日／'+meth+(pr.obs_payout?'／実績機械割 '+pr.obs_payout+'%':'')+'／設定4以上 '+pct(pr.p_high);
+  return '<div class="prior"><div class="ph"><span class="t">前提とする設定配分 <b>'+(on?'店の実績（推定）':'均等')+'</b></span>'+ctl+'</div><div class="strip">'+strip+'</div><div class="pv">'+pv+'</div><div class="pm">'+esc(meta)+(on?'':'　※いまは均等前提。上の配分は参考表示')+'</div></div>';
+}
+function renderResult(m){
+  var R = compute(m, IN), T = sampleTier(m, R), V = verdict(m, R, T);
+  var el = document.getElementById('result'); if(!el) return;
+  var hasAny = R.hasAny, pr = (S.prior==='hall') ? m.prior : null;
+  var bars = m.settings.map(function(s){ var p = R.post[s]||0; var t = tierOf(m,s); var top = (s===R.top && !R.contradiction && hasAny);
+    return '<div class="bar '+t+(R.dead[s]?' dead':'')+(top?' best':'')+'"><span class="l">設定'+esc(s)+'</span><div class="track"><div class="fill" style="width:'+(p*100).toFixed(1)+'%"></div>'+(pr&&hasAny?'<i class="pmark" style="left:'+(pr.p[s]*100).toFixed(1)+'%" title="事前 '+pct(pr.p[s])+'"></i>':'')+'</div><span class="v num">'+(R.dead[s]?'否定':pct(p))+'</span></div>'; }).join('');
+  var status = '<div class="status"><span class="stchip">根拠 <b class="num">'+R.evid.length+'</b>項目</span><span class="stchip">演出 <b class="num">'+R.hints.length+'</b>件</span><span class="stchip">前提 <b>'+(R.prior?'実績配分':'均等')+'</b></span>'+
+    (R.lrAll!=null?'<span class="stchip '+(lrParts(R.lrAll).neutral?'':(lrParts(R.lrAll).hi?'hot':'cool'))+'">高/低 尤度比 <b class="num">'+esc(lrText(R.lrAll))+'</b></span>':'')+'</div>';
+  var kpis = '<div class="kpis four">'+
+    '<div class="kpi"><div class="l">設定4以上</div><div class="v num">'+(hasAny?pct(R.pHigh):'—')+(hasAny&&R.prior?' <small>均等なら '+pct(R.pHighFlat)+'</small>':'')+'</div></div>'+
+    '<div class="kpi"><div class="l">設定1・2</div><div class="v num">'+(hasAny?pct(R.pLow):'—')+'</div></div>'+
+    '<div class="kpi"><div class="l">最尤設定</div><div class="v num">'+(hasAny&&!R.contradiction?'設定'+esc(R.top)+' <small>'+pct(R.post[R.top]||0)+'</small>':'—')+'</div></div>'+
+    '<div class="kpi"><div class="l">サンプル</div><div class="v">'+esc(T.label)+' <small class="num">'+fmt(T.g)+'G</small></div></div></div>';
+  var evid = R.evid.length ? '<div class="evid"><h3>根拠（生の数字）</h3><table class="evtable"><thead><tr><th>項目</th><th style="text-align:right">回数/分母 → 実測</th><th>設定'+esc(m.settings[0])+' ← 位置 → 設定'+esc(m.settings[m.settings.length-1])+'</th><th style="text-align:right">高/低 尤度比</th></tr></thead><tbody>'+R.evid.map(function(e){ return evidenceRow(m,e); }).join('')+'</tbody></table></div>' : '';
+  var hints = R.hints.length ? '<div class="evid"><h3>反映した演出</h3><div class="sub">'+R.hints.map(function(h){ return esc(h.it.label)+(h.cnt>1?' ×'+h.cnt:'')+' <span class="num">('+(h.hard?'確定系':esc(lrText(h.lr)))+')</span>'; }).join('、')+'</div></div>' : '';
+  if(R.recorded.length) hints += '<div class="evid"><h3>記録した演出（判定には未反映）</h3><div class="sub">'+R.recorded.map(function(h){ return esc(h.it.label)+(h.cnt>1?' ×'+h.cnt:''); }).join('、')+'</div></div>';
+  var notes = [];
+  if(m.type==='at' && R.atUnknown) notes.push('総回転数にAT中の回転が含まれているため、初当り確率は実際より辛めに出ています。「AT中の回転数」を入れると補正します。');
+  if(T.next>0 && !R.hardOnly) notes.push('あと約'+fmt(T.next)+'G回すと判断材料のランクが上がります。');
+  if(R.prior) notes.push('確率はこの店の実績から推定した設定配分を事前分布にしています（推定値。配分の根拠は上の枠）。「均等」に切り替えると全設定同率の前提で計算します。');
+  else notes.push('確率は「全設定が同じ割合で使われている」前提の計算です。実際のホールは低設定が多いので、高設定の割合は控えめに見てください。');
+  notes.push('尤度比は「設定4以上」と「設定3以下」のどちらをどれだけ支持するか（×2なら高設定側が2倍もっともらしい）。');
+  var segs = ''; for(var gi2=0; gi2<20; gi2++){ var on = hasAny && (gi2+0.5)/20 <= R.pHigh; segs += '<span class="seg'+(on?' on'+(R.pHigh<0.4?' low':R.pHigh<0.6?' mid':''):'')+'"></span>'; }
+  var gauge = '<div class="gauge"><div class="lab"><span>設定4以上の事後確率</span><b class="num">'+(hasAny?pct(R.pHigh):'—')+'</b></div><div class="track">'+segs+'</div><div class="ticks"><span>0</span><span>25</span><span>50</span><span>75</span><span>100%</span></div></div>';
+  el.className = 'result ' + V.cls;
+  el.innerHTML = '<div class="verdict '+V.cls+'"><div class="grow"><div class="disp word">'+esc(V.w)+'</div><div class="why">'+esc(V.why)+'</div></div></div>'+status+gauge+kpis+
+    '<div class="bars">'+bars+'</div><div class="legend"><span class="cool"><i></i>低設定 1・2</span><span class="warm"><i></i>中間 3</span><span class="hot"><i></i>高設定 4以上</span>'+(pr&&hasAny?'<span>▏事前分布の位置</span>':'')+'</div>'+priorPanel(m)+evid+hints+'<div class="foot">'+notes.map(esc).join('<br>')+'</div>';
+  updateMemo(m, R, T, V);
+}
+
+/* ---------- render: judge ---------- */
+function dfield(c, wide){
+  var imp = c.importance>=3 ? '<span class="imp">★ 主役</span>' : '';
+  var val = IN.counts[c.key]!=null ? IN.counts[c.key] : '';
+  var own = c.denom==='own' ? '<div class="subin"><span>'+esc(c.denom_label||'数えた回転数')+'</span><input inputmode="numeric" pattern="[0-9]*" class="led" data-denom="'+esc(c.key)+'" value="'+esc(IN.denoms[c.key]||'')+'" placeholder="'+(c.key==='grape'?'空欄=総回転数':'0')+'"></div>' : '';
+  return '<div class="dfield'+(wide?' wide':'')+'"><label>'+esc(c.label)+imp+(c.approx?' <span class="sub">目安</span>':'')+'</label>'+
+    '<input inputmode="numeric" pattern="[0-9]*" class="led" data-count="'+esc(c.key)+'" value="'+esc(val)+'" placeholder="0">'+own+
+    '<div class="rate" data-rate="'+esc(c.key)+'"></div>'+
+    '<div class="tools"><button class="minus1" data-minus="'+esc(c.key)+'" aria-label="1減らす">−1</button><button class="plus" data-plus="'+esc(c.key)+'">＋1</button><button class="help" data-help="'+esc(c.key)+'" aria-label="説明">?</button></div>'+
+    '<div class="helptext hid" data-helptext="'+esc(c.key)+'">'+esc(c.help)+(c.note?'（'+esc(c.note)+'）':'')+'</div></div>';
+}
+function effLabel(e){
+  if(e.type==='min') return '設定'+e.k+'以上'; if(e.type==='only') return '設定'+e.k+'濃厚'; if(e.type==='deny') return '設定'+e.ks.join('・')+'否定';
+  if(e.type==='odd') return '奇数'+(e.w>=3?'(強)':'(弱)'); if(e.type==='even') return '偶数'+(e.w>=3?'(強)':'(弱)');
+  if(e.type==='high') return '高設定'+(e.w>=3?'(強)':e.w>=2?'(中)':'(弱)'); if(e.type==='set') return '設定'+e.ks.join('・')+'示唆';
+  if(e.type==='weights') return '設定差あり'; if(e.type==='evenonly') return '偶数設定濃厚'; if(e.type==='oddonly') return '奇数設定濃厚'; if(e.type==='info') return '記録のみ'; return '';
+}
+function isLock(e){ return e.type==='min'||e.type==='only'||e.type==='deny'||e.type==='evenonly'||e.type==='oddonly'; }
+function renderHints(m){
+  var el = document.getElementById('hints'); if(!el) return;
+  if(!m.hints.length){ el.innerHTML = '<div class="sub">この機種は演出での設定示唆がありません（数字だけで判断します）。</div>'; return; }
+  el.innerHTML = m.hints.map(function(g, gi){
+    var approx = g.items.some(function(it){ return it.effect.approx && it.effect.type!=='weights'; });
+    var gsel = g.items.reduce(function(a,it,ii){ return a + (IN.hints[gi+'_'+ii]|0); },0);
+    var head = '<div class="hgroup"><h3>'+esc(g.group)+(gsel?'<span class="cnt">'+gsel+'件</span>':'')+'</h3>'+(g.note?'<div class="gnote">'+esc(g.note)+'</div>':'')+(approx?'<div class="gnote">奇数/偶数/高設定示唆の重みは公表値がないため目安（弱=1.5倍、強=3倍）</div>':'');
+    if(g.ui==='select'){
+      var sel = -1; g.items.forEach(function(it, ii){ if(IN.hints[gi+'_'+ii]) sel = ii; });
+      return head+'<select class="sel" data-hintsel="'+gi+'"><option value="">未入力（該当なし）</option>'+g.items.map(function(it, ii){ return '<option value="'+ii+'"'+(sel===ii?' selected':'')+'>'+esc(it.label)+'</option>'; }).join('')+'</select></div>';
+    }
+    var pics = g.items.some(function(it){ return it.img; });
+    return head+'<div class="chips'+(pics?' pics':'')+'">'+g.items.map(function(it, ii){ var key = gi+'_'+ii, cnt = IN.hints[key]|0, lock = isLock(it.effect);
+      var badge = cnt?'<span class="cnt">'+cnt+'</span><span class="minus" data-hintminus="'+key+'" role="button" aria-label="1つ減らす">−</span>':'';
+      if(it.img) return '<button class="chip pic'+(cnt?' on':'')+(lock?' lock':'')+'" data-hint="'+key+'" title="'+esc(it.note||'')+'"><img src="'+it.img+'" alt="" loading="lazy"><span class="cap">'+esc(it.label)+'<span class="eff">'+esc(it.eff_label||effLabel(it.effect))+'</span></span>'+badge+'</button>';
+      return '<button class="chip'+(cnt?' on':'')+(lock?' lock':'')+'" data-hint="'+key+'" title="'+esc(it.note||'')+'"><span>'+esc(it.label)+'</span><span class="eff">'+esc(it.eff_label||effLabel(it.effect))+'</span>'+badge+'</button>'; }).join('')+'</div></div>';
+  }).join('');
+}
+function renderRates(m){
+  var games = num(IN.games), atg = num(IN.at_games), normal = Math.max(0, games-atg);
+  var R = compute(m, IN);
+  m.counters.forEach(function(c){
+    var el = document.querySelector('[data-rate="'+c.key+'"]'); if(!el) return;
+    var k = num(IN.counts[c.key]); var n = c.denom==='games'?games:c.denom==='normal'?normal:(num(IN.denoms[c.key])||(c.key==='grape'?games:0));
+    var isPct = /%$/.test(c.disp[m.settings[0]]);
+    if(!n||!k){ el.innerHTML = '理論値 設定'+m.settings[0]+' '+esc(c.disp[m.settings[0]])+' 〜 設定'+m.settings[m.settings.length-1]+' '+esc(c.disp[m.settings[m.settings.length-1]]); return; }
+    var z = '';
+    if(R.hasAny && R.top && !R.contradiction){ var p0 = c.p[R.top], ex = n*p0, sd = Math.sqrt(n*p0*(1-p0)); if(sd>0){ var zz = (k-ex)/sd; z = '<span class="z">最尤設定'+esc(R.top)+'の期待 '+(ex>=10?fmt(ex):ex.toFixed(1))+'回 → '+(zz>=0?'+':'')+zz.toFixed(1)+'σ</span>'; } }
+    el.innerHTML = '実測 <b class="num">'+(isPct?(k/n*100).toFixed(1)+'%':fmtInv(n,k))+'</b>　理論値 設定'+m.settings[0]+' '+esc(c.disp[m.settings[0]])+' 〜 設定'+m.settings[m.settings.length-1]+' '+esc(c.disp[m.settings[m.settings.length-1]])+z;
+  });
+}
+function renderJudge(){
+  var v = document.getElementById('view');
+  var m = byId[S.machineId];
+  if(!m){ v.innerHTML = '<div class="card"><h2>まず台を選んでください</h2><div class="sub">「台を選ぶ」で台番号を入れるか、機種を選ぶと判別画面が開きます。</div><div style="margin-top:10px"><button class="btn primary" data-go="home">台を選ぶ</button></div></div>'; return; }
+  var main = m.counters.filter(function(c){ return !c.advanced; }), adv = m.counters.filter(function(c){ return c.advanced; });
+  var gamesHelp = m.inputs.games.help;
+  var atField = m.type==='at' ? '<div class="dfield"><label>'+esc(m.inputs.at_games.label)+'</label><input inputmode="numeric" pattern="[0-9]*" class="led" data-in="at_games" value="'+esc(IN.at_games||'')+'" placeholder="0"><div class="tools one"><span class="sub" style="font-size:10.5px">'+esc(m.inputs.at_games.help)+'</span></div></div>' : '';
+  v.innerHTML =
+    '<div class="mhead"><div class="grow"><div class="disp name">'+esc(m.short)+'</div><div class="full">'+esc(m.name)+'　<span class="sub">'+esc(m.type==='at'?'AT・スマスロ':'ノーマル')+'</span></div></div>'+
+      (S.unit?'<span class="unitchip">台番 <b class="num">'+esc(S.unit)+'</b></span>':'')+'<button class="btn sm ghost" data-go="home">台を変える</button></div>'+
+    (IN.sample?'<div class="notice" id="samplenote"><span class="grow">これはサンプル入力です。自分の台の数字に書き換えるか、消して始めてください。</span><button class="btn sm" data-clear="1">消す</button></div>':'')+
+    (m.flags&&m.flags.reference_only?'<div class="notice"><span class="grow">この機種の理論値はスロマガ・すろらぼに未掲載のため、手入力の参考値です。要確認。</span></div>':'')+
+    '<div class="result" id="result"></div>'+
+    '<div class="card memo" id="memocard"><h2>結果をLINEに送る<span class="n">メモ</span></h2>'+
+      '<textarea data-in="memo" rows="2" placeholder="ひとこと（任意）例: 隣が全6っぽい / 18時に移動">'+esc(IN.memo||'')+'</textarea>'+
+      '<div class="acts"><a class="btn line" id="lineShare" href="#" target="_blank" rel="noopener">LINEで送る</a><button class="btn" data-copy="1">コピー</button>'+(navigator.share?'<button class="btn" data-share="1">共有…</button>':'')+'</div>'+
+      '<textarea class="out" id="memoOut" readonly></textarea>'+
+      '<div class="sub">「LINEで送る」でLINEが開き、送る相手を選べます。自分だけのメモにするならKeepメモや自分のグループへ。開かない場合はコピーして貼り付けてください。</div></div>'+
+    '<div class="device"><h2>データカウンタを写す<span class="n">数字をそのまま</span></h2><div class="dgrid">'+
+      '<div class="dfield'+(m.type==='at'?'':' wide')+'"><label>'+esc(m.inputs.games.label)+'<span class="imp">必須</span></label><input inputmode="numeric" pattern="[0-9]*" class="led" data-in="games" value="'+esc(IN.games||'')+'" placeholder="0"><div class="tools one"><span class="sub" style="font-size:10.5px">'+esc(gamesHelp)+'</span></div></div>'+atField+
+      main.map(function(c){ return dfield(c, c.denom==='own'); }).join('')+'</div>'+
+      (adv.length?'<details class="adv" style="margin-top:8px"><summary style="color:#AEB7C0">くわしく数える（上級者向け '+adv.length+'項目）</summary><div class="dgrid" style="margin-top:6px">'+adv.map(function(c){ return dfield(c, true); }).join('')+'</div></details>':'')+
+    '</div>'+
+    '<div class="card"><h2>見た演出をタップ<span class="n">出た回数ぶん押す</span></h2><div id="hints"></div></div>'+
+    '<div class="card"><h2>この機種のコツ</h2><ul class="help" style="margin:0;padding-left:18px">'+m.notes.map(function(n){ return '<li>'+esc(n)+'</li>'; }).join('')+'</ul>'+
+      '<div class="sub" style="margin-top:8px">機械割: '+m.settings.map(function(s){ return '設定'+s+' '+m.payout[s]+'%'; }).join(' / ')+'<br>出典: '+esc(m.source.name)+'</div></div>'+
+    '<div class="row" style="justify-content:space-between;margin:6px 2px 20px"><span class="sub">入力はこの端末に自動保存されます</span><button class="btn sm" data-clear="1">この台の入力を消す</button></div>';
+  renderHints(m); renderRates(m); renderResult(m);
+}
+
+/* ---------- render: home ---------- */
+function renderHome(){
+  var v = document.getElementById('view');
+  var q = (S.q||'').trim();
+  var groups = [{t:'ジャグラー・ハナハナ（ノーマル）', type:'normal'},{t:'AT・スマスロ', type:'at'}];
+  var list = groups.map(function(g){
+    var ms = MACHINES.filter(function(m){ return m.type===g.type && (!q || (m.name+m.short).indexOf(q)>=0); }).sort(function(a,b){ return (unitCounts[b.id]||0)-(unitCounts[a.id]||0); });
+    if(!ms.length) return '';
+    return '<div class="card"><h2>'+esc(g.t)+'<span class="n">'+ms.length+'機種</span></h2><div class="mgrid">'+ms.map(function(m){ var r = unitRanges[m.id]; var nimg = m.hints.reduce(function(a,g){ return a + g.items.filter(function(it){return it.img;}).length; },0);
+      return '<button class="mcard'+(m.id===S.machineId?' on':'')+'" data-pick="'+m.id+'"><span class="name">'+esc(m.short)+'</span><span class="full">'+esc(m.name)+'</span>'+
+        '<span class="tags">'+(m.prior?'<span class="badge'+(m.prior.p_high>=0.35?' hot':m.prior.p_high>=0.2?' warm':'')+'" title="店の実績から推定した設定4以上の割合">4↑ '+pct(m.prior.p_high)+'</span>':'')+(m.settings.length!==6?'<span class="badge">設定'+m.settings.join('・')+'</span>':'')+(nimg?'<span class="badge acc">画像 '+nimg+'</span>':'')+(m.flags&&m.flags.reference_only?'<span class="badge warm">参考値</span>':'')+'</span>'+
+        '<span class="foot"><span class="num">'+(unitCounts[m.id]||0)+'台</span>'+(r?'<span class="u num">'+esc(r.min)+'–'+esc(r.max)+'</span>':'')+'</span></button>'; }).join('')+'</div></div>';
+  }).join('');
+  v.innerHTML = '<div class="card"><h2>台番号から始める</h2><form class="unitform" id="unitform"><input inputmode="numeric" pattern="[0-9]*" class="led" id="unitin" placeholder="3512" value="'+esc(S.unit||'')+'" aria-label="台番号"><button class="btn primary" type="submit">この台で判別</button></form>'+
+    '<div class="sub" style="margin-top:8px">台番を入れると機種が自動で決まり、その台の直近の履歴も見られます（配置は '+esc(HIST.latest)+' 時点）。</div></div>'+
+    '<input class="search" id="msearch" placeholder="機種名で絞り込み" value="'+esc(q)+'" aria-label="機種検索">'+list+
+    '<div class="sub" style="margin:4px 2px 16px">対応 '+MACHINES.length+'機種 / '+Object.keys(unitCounts).reduce(function(a,k){return a+unitCounts[k];},0)+'台（'+esc(DATA.store)+'）。「4↑」はこの店の実績から推定した設定4以上の割合（直近'+(DATA.prior_days||90)+'日）。</div>';
+}
+
+/* ---------- render: history ---------- */
+function renderHistory(){
+  var v = document.getElementById('view');
+  var unit = S.unit; var m = byId[S.machineId];
+  var head = '<div class="card"><h2>台番号</h2><form class="unitform" id="unitform2"><input inputmode="numeric" pattern="[0-9]*" class="num" id="unitin2" placeholder="例 3512" value="'+esc(unit||'')+'" aria-label="台番号"><button class="btn primary" type="submit">表示</button></form></div>';
+  if(!unit || !HIST.history[unit]){ v.innerHTML = head + '<div class="card"><div class="sub">'+(unit?'台番 '+esc(unit)+' の履歴データがありません（対応機種の台のみ）。':'台番号を入れると、その台の直近の履歴が見られます。')+'</div></div>'; return; }
+  var rows = HIST.history[unit].slice().sort(function(a,b){ return b[0]-a[0]; });
+  var mname = HIST.unit_machine[unit] || '';
+  var isNormal = m && m.type==='normal';
+  var maxAbs = 1; rows.forEach(function(r){ maxAbs = Math.max(maxAbs, Math.abs(r[5])); });
+  var last7 = rows.slice(0,7);
+  var sumG=0,sumBB=0,sumRB=0,sumART=0,sumD=0,plus=0; last7.forEach(function(r){ sumG+=r[1]; sumBB+=r[2]; sumRB+=r[3]; sumART+=r[4]; sumD+=r[5]; if(r[5]>0) plus++; });
+  // 同機種全台の平均差枚（直近7日分）
+  var peers = Object.keys(HIST.history).filter(function(u){ return HIST.unit_machine[u]===mname; });
+  var lastIdx = rows[0][0]; var pd=0,pn=0; peers.forEach(function(u){ HIST.history[u].forEach(function(r){ if(r[0]>lastIdx-7){ pd+=r[5]; pn++; } }); });
+  var sum = '<div class="sumgrid">'+
+    '<div class="kpi"><div class="l">直近'+last7.length+'日 平均差枚</div><div class="v num '+(sumD>=0?'pl':'mn')+'">'+(sumD>=0?'+':'')+fmt(sumD/last7.length)+'</div></div>'+
+    '<div class="kpi"><div class="l">プラスの日</div><div class="v num">'+plus+' <small>/ '+last7.length+'日</small></div></div>'+
+    (isNormal?'<div class="kpi"><div class="l">直近'+last7.length+'日 REG確率</div><div class="v num">'+fmtInv(sumG,sumRB)+' <small>'+sumRB+'回</small></div></div><div class="kpi"><div class="l">直近'+last7.length+'日 合成</div><div class="v num">'+fmtInv(sumG,sumBB+sumRB)+' <small>'+fmt(sumG)+'G</small></div></div>'
+             :'<div class="kpi"><div class="l">直近'+last7.length+'日 平均G数</div><div class="v num">'+fmt(sumG/last7.length)+'</div></div><div class="kpi"><div class="l">直近'+last7.length+'日 ART/AT合計</div><div class="v num">'+sumART+' <small>回</small></div></div>')+
+    '<div class="kpi" style="grid-column:1/-1"><div class="l">同機種 全'+peers.length+'台の平均差枚（直近7日・1台1日あたり）</div><div class="v num '+(pd>=0?'pl':'mn')+'">'+(pn?(pd>=0?'+':'')+fmt(pd/pn):'—')+'</div></div></div>';
+  var asc = rows.slice().reverse(); var W = 360, Hh = 84, mid = 42, bw = Math.max(3, Math.floor((W-10)/asc.length)-2);
+  var mx = Math.max(1, Math.max.apply(null, asc.map(function(r){ return Math.abs(r[5]); })));
+  var spark = '<svg class="spark" viewBox="0 0 '+W+' '+Hh+'" preserveAspectRatio="none" role="img" aria-label="直近の差枚推移"><line class="zero" x1="0" y1="'+mid+'" x2="'+W+'" y2="'+mid+'"/>'+
+    asc.map(function(r,i){ var h = Math.round(Math.abs(r[5])/mx*(mid-6)); var x = 5 + i*((W-10)/asc.length); return r[5]>=0 ? '<rect class="p" x="'+x+'" y="'+(mid-h)+'" width="'+bw+'" height="'+h+'"/>' : '<rect class="m" x="'+x+'" y="'+mid+'" width="'+bw+'" height="'+h+'"/>'; }).join('')+
+    '<text x="2" y="10">+'+fmt(mx)+'</text><text x="2" y="'+(Hh-2)+'">-'+fmt(mx)+'</text></svg><div class="sub" style="display:flex;justify-content:space-between"><span>'+esc(HIST.dates[asc[0][0]].slice(5))+'</span><span>差枚の推移（'+asc.length+'日）</span><span>'+esc(HIST.dates[asc[asc.length-1][0]].slice(5))+'</span></div>';
+  var table = spark + '<div class="tscroll"><table><thead><tr><th>日付</th><th>G数</th><th>BB</th><th>RB</th><th>ART</th>'+(isNormal?'<th>合成</th><th>REG確率</th>':'')+'<th>差枚</th></tr></thead><tbody>'+
+    rows.map(function(r){ var d = HIST.dates[r[0]].slice(5).replace('-','/'); var w = Math.round(Math.abs(r[5])/maxAbs*60);
+      return '<tr><td>'+d+'</td><td class="num">'+fmt(r[1])+'</td><td class="num">'+r[2]+'</td><td class="num">'+r[3]+'</td><td class="num">'+r[4]+'</td>'+(isNormal?'<td class="num">'+fmtInv(r[1],r[2]+r[3])+'</td><td class="num">'+fmtInv(r[1],r[3])+'</td>':'')+
+        '<td><span class="diffcell"><span class="dbar'+(r[5]<0?' neg':'')+'" style="width:'+w+'px"></span><span class="num '+(r[5]>=0?'pl':'mn')+'">'+(r[5]>0?'+':'')+fmt(r[5])+'</span></span></td></tr>'; }).join('')+'</tbody></table></div>';
+  v.innerHTML = head + '<div class="card"><h2>台番 '+esc(unit)+'<span class="n">'+esc(mname)+'</span></h2>'+sum+table+
+    '<div class="foot">出典: ana-slo（'+esc(HIST.store)+'）。'+esc(HIST.dates[0])+'〜'+esc(HIST.latest)+'の'+HIST.dates.length+'日分。抜けている日は取得できていない日です。差枚は閉店時点の値で、設定を直接示すものではありません。</div></div>';
+}
+
+/* ---------- render: help ---------- */
+function renderHelp(){
+  document.getElementById('view').innerHTML = '<div class="card help">'+
+    '<h2>このツールでできること</h2><p>設置機種について、データカウンタの数字と見た演出から「今の台がどの設定っぽいか」を確率で出します。対応は'+MACHINES.length+'機種。数字はすべて生の値（回数÷回転数）を併記し、自分で検算できるようにしています。</p>'+
+    '<h3>設定とは</h3><p>スロットには1〜6の「設定」があり、店が毎日決めています。数字が大きいほど当たりやすく、設定4以上なら長く打つほど勝ちやすい（機械割100%超）。設定は台のどこにも表示されないので、当たった回数などから推測します。</p>'+
+    '<h3>使い方（3ステップ）</h3><ul><li><b>台を選ぶ</b>: 台の上のデータカウンタか台番シールの4桁を入れる。機種が自動で決まります。</li><li><b>判別</b>: データカウンタの「総回転数」「BB」「RB」（AT機なら「ART/AT」）をそのまま入力。ぶどうなどは自分で数えたときだけ。</li><li><b>演出をタップ</b>: 終了画面やトロフィーなど「見たもの」を押す。確定系が出たら結論が固まります。</li></ul>'+
+    '<h3>結果の見方</h3><ul><li><b>見出し</b>が結論。「まだ判断できない」は回転数不足で、これも正しい答えです。</li><li><b>設定4以上 xx%</b>が一番大事な数字。75%を超えたら期待、20%を下回ったら見切りの目安。</li><li><b>最尤設定</b>は今いちばん確率が高い設定。<b>高/低 尤度比</b>は「設定4以上」と「設定3以下」のどちらを何倍支持するか（×2なら高設定側が2倍もっともらしい）。項目ごとの尤度比を見ると、どの数字が結論を動かしているか分かります。</li><li>入力欄の<b>±σ</b>は、最尤設定を仮定したときの期待回数からのズレ。±2σを超える項目は「その設定らしくない」サインです。</li><li>ジャグラーは<b>REG（RB）回数</b>が主役。BIGは設定差が小さく、ぶどうは補助です。</li></ul>'+
+    '<h3>前提とする設定配分（事前分布）</h3><p>確率は「事前分布 × 尤度」で計算します。初期設定は<b>店の実績配分</b>で、この店の直近'+(DATA.prior_days||90)+'日の台データから機種ごとに推定した「設定がどの割合で使われているか」です。ノーマルタイプはBB・RB回数の分布から（EM法）、AT機は実績の機械割から推定しています（AT機のデータカウンタはAT中の回転を含むため回数が使えません）。あくまで推定なので、判別画面の「均等」に切り替えれば全設定同率の前提と比べられます。台数が少ない機種は既定の配分（一般的なホールの傾向）です。</p>'+
+    '<h3>注意（ここが大事）</h3><ul><li>回転数が少ないうちは大きくブレます。ジャグラーで1,500G、AT機で3,000Gあたりからが目安。</li><li>AT機の総回転数にはAT中も含まれます。「AT中の回転数」を入れると通常時の回転数で計算します。</li><li>奇数/偶数/高設定示唆の重みは公表されていないため目安です（弱=1.5倍、強=3倍）。「設定○以上」「設定○否定」などの確定系はそのまま反映します。設定別の振り分けが公表されている演出はその数値を使います。</li><li>「目安」「参考値」と付いた数字は逆算値・補間・手入力です。</li></ul>'+
+    '<h3>LINEに送る</h3><p>判別画面の「結果をLINEに送る」で、今の入力と判定を短い文章にします。「LINEで送る」を押すとLINEが開いて送る相手を選べます（Keepメモに送れば自分用の記録）。ひとこと欄に台の様子を書いておくと後で見返しやすくなります。</p>'+
+    '<h3>ホーム画面に置く（アプリ版）</h3><p>アプリ版はブラウザの共有メニューから「ホーム画面に追加」すると、アイコンから直接開けて、圏外でも動きます。データは暗号化されていて、初回に合言葉が必要です（「この端末に記憶する」を付けると次回から不要）。データを更新したときは自動で新しい版に切り替わります。</p>'+
+    '<h3>数字の出どころ</h3><p>理論値はパチマガスロマガ（'+esc(DATA.generated)+'時点）、一部はすろらぼ。台の履歴と設定配分の推定はana-sloの'+esc(HIST.store)+'データ（'+esc(HIST.latest)+'時点）。入力内容はこの端末の中だけに保存され、どこにも送信されません。演出の画像は会員向けサイトのものなので、このツールは自分用に留め、公開共有はしないでください。</p></div>';
+}
+
+/* ---------- nav / events ---------- */
+function setView(vw){ S.view = vw; store('sn:app', S); render(); window.scrollTo(0,0); }
+function render(){
+  document.querySelectorAll('#nav button').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-nav')===S.view); });
+  var un = Object.keys(unitCounts).reduce(function(a,k){return a+unitCounts[k];},0);
+  document.getElementById('topmeta').innerHTML = '<span class="stat">機種 <b class="num">'+MACHINES.length+'</b></span><span class="stat">台 <b class="num">'+un+'</b></span><span class="stat">台データ <b class="num">'+esc(HIST.latest.slice(5))+'</b></span>';
+  if(S.view==='home') renderHome(); else if(S.view==='judge') renderJudge(); else if(S.view==='history') renderHistory(); else renderHelp();
+}
+function pickUnit(u){
+  u = String(u||'').replace(/[^0-9]/g,'');
+  if(!u){ toast('台番号を入れてください'); return false; }
+  var name = HIST.unit_machine[u];
+  if(!name){ toast('台番 '+u+' が見つかりません（'+HIST.latest+'時点の配置）'); return false; }
+  var m = byAnaslo[name];
+  if(!m){ toast('台番 '+u+' は「'+name+'」。この機種はまだ未対応です'); return false; }
+  S.unit = u; S.machineId = m.id; loadInput(); saveInput(); return true;
+}
+document.getElementById('nav').addEventListener('click', function(e){ var b = e.target.closest('button'); if(b) setView(b.getAttribute('data-nav')); });
+document.getElementById('view').addEventListener('click', function(e){
+  var t = e.target;
+  var go = t.closest('[data-go]'); if(go){ setView(go.getAttribute('data-go')); return; }
+  var pick = t.closest('[data-pick]'); if(pick){ S.machineId = pick.getAttribute('data-pick'); S.unit=''; loadInput(); saveInput(); setView('judge'); return; }
+  var cp = t.closest('[data-copy]'); if(cp){ var ta = document.getElementById('memoOut'); var txt = ta ? ta.value : '';
+    var done = function(){ toast('コピーしました'); }, fail = function(){ if(ta){ ta.focus(); ta.select(); try{ document.execCommand('copy'); done(); }catch(e){ toast('長押しでコピーしてください'); } } };
+    if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, fail); else fail(); return; }
+  var sh = t.closest('[data-share]'); if(sh){ var ta2 = document.getElementById('memoOut'); if(navigator.share && ta2) navigator.share({text: ta2.value}).catch(function(){}); return; }
+  var prb = t.closest('[data-prior]'); if(prb){ S.prior = prb.getAttribute('data-prior'); store('sn:app', S); var mm = byId[S.machineId]; if(mm){ renderRates(mm); renderResult(mm); } return; }
+  var clr = t.closest('[data-clear]'); if(clr){ IN = blankInput(); saveInput(); renderJudge(); toast('入力を消しました'); return; }
+  var m = byId[S.machineId];
+  var mn1 = t.closest('[data-minus]'); if(mn1 && m){ var k0 = mn1.getAttribute('data-minus'); IN.counts[k0] = Math.max(0, Math.floor(num(IN.counts[k0]))-1); var inp0 = document.querySelector('[data-count="'+k0+'"]'); if(inp0) inp0.value = IN.counts[k0]; IN.sample=false; saveInput(); renderRates(m); renderResult(m); return; }
+  var plus = t.closest('[data-plus]'); if(plus && m){ var k = plus.getAttribute('data-plus'); IN.counts[k] = (Math.floor(num(IN.counts[k]))+1); var inp = document.querySelector('[data-count="'+k+'"]'); if(inp) inp.value = IN.counts[k]; IN.sample=false; saveInput(); renderRates(m); renderResult(m); return; }
+  var hlp = t.closest('[data-help]'); if(hlp){ var ht = document.querySelector('[data-helptext="'+hlp.getAttribute('data-help')+'"]'); if(ht) ht.classList.toggle('hid'); return; }
+  var mi = t.closest('[data-hintminus]'); if(mi && m){ var key = mi.getAttribute('data-hintminus'); IN.hints[key] = Math.max(0,(IN.hints[key]|0)-1); saveInput(); renderHints(m); renderResult(m); e.stopPropagation(); return; }
+  var chip = t.closest('[data-hint]'); if(chip && m){ var key2 = chip.getAttribute('data-hint'); var parts = key2.split('_'); var it = m.hints[+parts[0]].items[+parts[1]];
+    if(isLock(it.effect)) IN.hints[key2] = IN.hints[key2] ? 0 : 1; else IN.hints[key2] = (IN.hints[key2]|0)+1;
+    IN.sample=false; saveInput(); renderHints(m); renderResult(m); return; }
+});
+document.getElementById('view').addEventListener('input', function(e){
+  var t = e.target; var m = byId[S.machineId];
+  if(t.id==='msearch'){ S.q = t.value; var cards = document.querySelectorAll('.mcard'); var q = t.value.trim(); cards.forEach(function(c){ var m2 = byId[c.getAttribute('data-pick')]; c.style.display = (!q || (m2.name+m2.short).indexOf(q)>=0) ? '' : 'none'; }); return; }
+  if(!m) return;
+  if(t.hasAttribute('data-in')){ IN[t.getAttribute('data-in')] = t.value; }
+  else if(t.hasAttribute('data-count')){ IN.counts[t.getAttribute('data-count')] = t.value; }
+  else if(t.hasAttribute('data-denom')){ IN.denoms[t.getAttribute('data-denom')] = t.value; }
+  else return;
+  if(IN.sample){ IN.sample=false; var nb=document.getElementById('samplenote'); if(nb) nb.remove(); }
+  saveInput(); renderRates(m); renderResult(m);
+});
+document.getElementById('view').addEventListener('change', function(e){
+  var t = e.target; var m = byId[S.machineId]; if(!m || !t.hasAttribute('data-hintsel')) return;
+  var gi = +t.getAttribute('data-hintsel'); m.hints[gi].items.forEach(function(it, ii){ delete IN.hints[gi+'_'+ii]; });
+  if(t.value!=='') IN.hints[gi+'_'+t.value] = 1;
+  IN.sample=false; saveInput(); renderResult(m);
+});
+document.getElementById('view').addEventListener('submit', function(e){
+  var f = e.target; if(f.id==='unitform'){ e.preventDefault(); if(pickUnit(document.getElementById('unitin').value)) setView('judge'); }
+  else if(f.id==='unitform2'){ e.preventDefault(); if(pickUnit(document.getElementById('unitin2').value)) setView('history'); }
+});
+
+/* ---------- boot ---------- */
+if(!S.machineId){
+  // 初回: サンプル入力で結果の見え方を示す（実データではない）
+  S.machineId = 'gogo3'; S.unit = ''; S.view = 'judge'; loadInput();
+  IN = {games:'2400', at_games:'', counts:{BB:'9', RB:'11'}, denoms:{}, hints:{}, sample:true}; saveInput();
+} else { loadInput(); }
+render();
+}
+
+/* ---------- 起動: inline(Artifact) はJSONを直接読む / pwa は暗号化データを解錠して読む ---------- */
+var MODE = (document.querySelector('meta[name="snv-mode"]')||{}).content || 'inline';
+function bootInline(){ boot(JSON.parse(document.getElementById('data-machines').textContent), JSON.parse(document.getElementById('data-history').textContent)); }
+function decryptPayload(buf, pass){
+  var u8 = new Uint8Array(buf);
+  if(String.fromCharCode(u8[0],u8[1],u8[2],u8[3])!=='SNV1') return Promise.reject(new Error('形式が違います'));
+  var salt = u8.slice(4,20), iv = u8.slice(20,32), ct = u8.slice(32);
+  return crypto.subtle.importKey('raw', new TextEncoder().encode(pass), 'PBKDF2', false, ['deriveKey'])
+    .then(function(k){ return crypto.subtle.deriveKey({name:'PBKDF2', salt:salt, iterations:200000, hash:'SHA-256'}, k, {name:'AES-GCM', length:256}, false, ['decrypt']); })
+    .then(function(key){ return crypto.subtle.decrypt({name:'AES-GCM', iv:iv}, key, ct); })
+    .then(function(pt){ return JSON.parse(new TextDecoder().decode(pt)); });
+}
+function bootPwa(){
+  var gate = document.getElementById('gate'), msg = document.getElementById('gatemsg'), form = document.getElementById('gateform'), inp = document.getElementById('gatepass'), save = document.getElementById('gatesave');
+  var bufP = null;
+  function getBuf(){ if(!bufP) bufP = fetch('data.enc').then(function(r){ if(!r.ok) throw new Error('data.enc '+r.status); return r.arrayBuffer(); }).catch(function(e){ bufP = null; throw e; }); return bufP; }
+  function tryPass(pass, remember){
+    msg.textContent = '解錠中…';
+    return getBuf().then(function(buf){ return decryptPayload(buf, pass); }).then(function(pl){
+      try{ if(remember) localStorage.setItem('snv:pass', pass); else localStorage.removeItem('snv:pass'); }catch(e){}
+      gate.hidden = true; boot(pl.data, pl.history);
+    }).catch(function(err){ gate.hidden = false; msg.textContent = (err && (err.name==='OperationError' || /decrypt/i.test(String(err.message)))) ? '合言葉が違います' : 'データを読めませんでした: '+(err && err.message ? err.message : err); });
+  }
+  form.addEventListener('submit', function(e){ e.preventDefault(); tryPass(inp.value.trim(), save.checked); });
+  var saved = null; try{ saved = localStorage.getItem('snv:pass'); }catch(e){}
+  if(saved){ tryPass(saved, true); } else { gate.hidden = false; try{ inp.focus(); }catch(e){} }
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('sw.js').then(function(reg){
+      reg.addEventListener('updatefound', function(){ var nw = reg.installing; if(!nw) return;
+        nw.addEventListener('statechange', function(){ if(nw.state==='installed' && navigator.serviceWorker.controller){ var t = document.getElementById('toast'); t.textContent = '新しい版に更新しました。再読み込みします…'; t.classList.add('show'); setTimeout(function(){ location.reload(); }, 1500); } }); });
+    }).catch(function(){});
+  }
+}
+if(MODE==='pwa') bootPwa(); else bootInline();
+})();
+</script>
+
+</body>
+</html>
