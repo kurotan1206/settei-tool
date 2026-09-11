@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png">
-<meta name="snv-version" content="a2ed58ef04">
+<meta name="snv-version" content="d347bebcb6">
 </head>
 <body>
 <meta name="snv-mode" content="pwa">
@@ -172,6 +172,25 @@ button{cursor:pointer;-webkit-tap-highlight-color:transparent}
 .scale .mk{position:absolute;top:50%;width:10px;height:10px;border-radius:50%;background:var(--ink);border:2px solid var(--panel);transform:translate(-50%,-50%)}
 .scale .mk.edge{border-radius:2px;width:7px}
 .foot{font-size:10.5px;color:var(--ink-3);margin-top:10px;line-height:1.5}
+
+/* ---- machine theme (壁紙=機種POP / テーマ色) ---- */
+body.wall::before{content:"";position:fixed;inset:-24px;background:var(--wall) var(--wall-bgpos,center top)/cover no-repeat;opacity:.16;filter:blur(7px) saturate(1.15);z-index:-1;pointer-events:none}
+@media (prefers-color-scheme:light){ :root:not([data-theme="dark"]) body.wall::before{opacity:.12} }
+:root[data-theme="light"] body.wall::before{opacity:.12}
+.hero{position:relative;margin:4px -10px 0;padding:0;min-height:196px;background:var(--panel-3) var(--hero-pos,center) / var(--hero-size,cover) no-repeat;border-bottom:1px solid var(--line-2);overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,.05) 0%, rgba(0,0,0,.25) 45%, rgba(0,0,0,.72) 78%, var(--bg) 100%)}
+.hero .hin{position:relative;display:flex;align-items:flex-end;gap:10px;padding:150px 12px 10px;color:#fff}
+.hero .hin .name{font-size:24px;line-height:1.15;text-shadow:0 2px 12px rgba(0,0,0,.7)}
+.hero .hin .full{font-size:10.5px;color:rgba(255,255,255,.78);text-shadow:0 1px 6px rgba(0,0,0,.7)}
+.hero .hin .unitchip{background:rgba(0,0,0,.55);border-color:rgba(255,255,255,.25)}
+.hero .hin .btn.ghost{color:#fff;border-color:rgba(255,255,255,.35);background:rgba(0,0,0,.35)}
+.hero .credit{position:relative;font-size:8.5px;color:rgba(255,255,255,.55);padding:0 12px 6px;text-align:right;letter-spacing:.02em}
+.hero .tag{position:absolute;top:10px;left:12px;font-size:9.5px;letter-spacing:.14em;color:#fff;background:var(--accent);padding:2px 7px;border-radius:3px;font-weight:700;text-transform:uppercase}
+.app.themed .card h2{color:var(--accent)} .app.themed .card h2::after{background:var(--accent-soft)}
+.app.themed .device h2{color:var(--accent)}
+.app.themed .segctl button.on,.app.themed .chip.on{border-color:var(--accent)}
+.mcard.themed{border-left:3px solid var(--accent);background:linear-gradient(90deg, var(--panel-2) 52%, rgba(0,0,0,0) 100%), var(--wall) var(--card-pos,right center)/cover no-repeat var(--panel-2)}
+.mcard.themed .name{color:var(--ink)}
 
 /* ---- precision panel additions ---- */
 .status{display:flex;gap:5px;flex-wrap:wrap;margin:8px 0 0}
@@ -606,9 +625,13 @@ function renderJudge(){
   var main = m.counters.filter(function(c){ return !c.advanced; }), adv = m.counters.filter(function(c){ return c.advanced; });
   var gamesHelp = m.inputs.games.help;
   var atField = m.type==='at' ? '<div class="dfield"><label>'+esc(m.inputs.at_games.label)+'</label><input inputmode="numeric" pattern="[0-9]*" class="led" data-in="at_games" value="'+esc(IN.at_games||'')+'" placeholder="0"><div class="tools one"><span class="sub" style="font-size:10.5px">'+esc(m.inputs.at_games.help)+'</span></div></div>' : '';
-  v.innerHTML =
-    '<div class="mhead"><div class="grow"><div class="disp name">'+esc(m.short)+'</div><div class="full">'+esc(m.name)+'　<span class="sub">'+esc(m.type==='at'?'AT・スマスロ':'ノーマル')+'</span></div></div>'+
-      (S.unit?'<span class="unitchip">台番 <b class="num">'+esc(S.unit)+'</b></span>':'')+'<button class="btn sm ghost" data-go="home">台を変える</button></div>'+
+  var th = m.theme;
+  var head = th && th.wall
+    ? '<div class="hero" style="background-image:url(&quot;'+th.wall+'&quot;);--hero-pos:'+esc(th.wall_pos||'center')+';--hero-size:'+esc(th.hero_size||'cover')+'"><span class="tag">機種テーマ</span><div class="hin"><div class="grow"><div class="disp name">'+esc(m.short)+'</div><div class="full">'+esc(m.name)+'　'+esc(m.type==='at'?'AT・スマスロ':'ノーマル')+'</div></div>'+
+        (S.unit?'<span class="unitchip">台番 <b class="num">'+esc(S.unit)+'</b></span>':'')+'<button class="btn sm ghost" data-go="home">台を変える</button></div>'+(th.credit?'<div class="credit">'+esc(th.credit)+'</div>':'')+'</div>'
+    : '<div class="mhead"><div class="grow"><div class="disp name">'+esc(m.short)+'</div><div class="full">'+esc(m.name)+'　<span class="sub">'+esc(m.type==='at'?'AT・スマスロ':'ノーマル')+'</span></div></div>'+
+      (S.unit?'<span class="unitchip">台番 <b class="num">'+esc(S.unit)+'</b></span>':'')+'<button class="btn sm ghost" data-go="home">台を変える</button></div>';
+  v.innerHTML = head +
     (IN.sample?'<div class="notice" id="samplenote"><span class="grow">これはサンプル入力です。自分の台の数字に書き換えるか、消して始めてください。</span><button class="btn sm" data-clear="1">消す</button></div>':'')+
     (m.flags&&m.flags.reference_only?'<div class="notice"><span class="grow">この機種の理論値はスロマガ・すろらぼに未掲載のため、手入力の参考値です。要確認。</span></div>':'')+
     '<div class="result" id="result"></div>'+
@@ -638,7 +661,8 @@ function renderHome(){
     var ms = MACHINES.filter(function(m){ return m.type===g.type && (!q || (m.name+m.short).indexOf(q)>=0); }).sort(function(a,b){ return (unitCounts[b.id]||0)-(unitCounts[a.id]||0); });
     if(!ms.length) return '';
     return '<div class="card"><h2>'+esc(g.t)+'<span class="n">'+ms.length+'機種</span></h2><div class="mgrid">'+ms.map(function(m){ var r = unitRanges[m.id]; var nimg = m.hints.reduce(function(a,g){ return a + g.items.filter(function(it){return it.img;}).length; },0);
-      return '<button class="mcard'+(m.id===S.machineId?' on':'')+'" data-pick="'+m.id+'"><span class="name">'+esc(m.short)+'</span><span class="full">'+esc(m.name)+'</span>'+
+      var tstyle = (m.theme&&m.theme.wall) ? ' style="--accent:'+esc(m.theme.accent)+';--accent-soft:'+esc(m.theme.accent)+'33;--wall:url(&quot;'+m.theme.wall+'&quot;);--card-pos:'+esc(m.theme.card_pos||'right center')+'"' : '';
+      return '<button class="mcard'+(m.id===S.machineId?' on':'')+((m.theme&&m.theme.wall)?' themed':'')+'" data-pick="'+m.id+'"'+tstyle+'><span class="name">'+esc(m.short)+'</span><span class="full">'+esc(m.name)+'</span>'+
         '<span class="tags">'+(m.prior?'<span class="badge'+(m.prior.p_high>=0.35?' hot':m.prior.p_high>=0.2?' warm':'')+'" title="店の実績から推定した設定4以上の割合">4↑ '+pct(m.prior.p_high)+'</span>':'')+(m.settings.length!==6?'<span class="badge">設定'+m.settings.join('・')+'</span>':'')+(nimg?'<span class="badge acc">画像 '+nimg+'</span>':'')+(m.flags&&m.flags.reference_only?'<span class="badge warm">参考値</span>':'')+'</span>'+
         '<span class="foot"><span class="num">'+(unitCounts[m.id]||0)+'台</span>'+(r?'<span class="u num">'+esc(r.min)+'–'+esc(r.max)+'</span>':'')+'</span></button>'; }).join('')+'</div></div>';
   }).join('');
@@ -698,7 +722,22 @@ function renderHelp(){
 
 /* ---------- nav / events ---------- */
 function setView(vw){ S.view = vw; store('sn:app', S); render(); window.scrollTo(0,0); }
+function hexA(hex, a){ return hex + a; }
+function applyTheme(){
+  var m = byId[S.machineId], th = (S.view==='judge' && m && m.theme) ? m.theme : null;
+  var root = document.documentElement.style, app = document.getElementById('app');
+  if(th){
+    root.setProperty('--accent', th.accent); root.setProperty('--accent-ink', th.accent_ink||'#FFFFFF'); root.setProperty('--accent-soft', hexA(th.accent,'33'));
+    app.classList.add('themed');
+    if(th.wall){ document.body.classList.add('wall'); root.setProperty('--wall', 'url("'+th.wall+'")'); root.setProperty('--wall-bgpos', th.bg_pos||'center top'); }
+    else { document.body.classList.remove('wall'); root.removeProperty('--wall'); }
+  } else {
+    root.removeProperty('--accent'); root.removeProperty('--accent-ink'); root.removeProperty('--accent-soft'); root.removeProperty('--wall'); root.removeProperty('--wall-bgpos');
+    app.classList.remove('themed'); document.body.classList.remove('wall');
+  }
+}
 function render(){
+  applyTheme();
   document.querySelectorAll('#nav button').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-nav')===S.view); });
   var un = Object.keys(unitCounts).reduce(function(a,k){return a+unitCounts[k];},0);
   document.getElementById('topmeta').innerHTML = '<span class="stat">機種 <b class="num">'+MACHINES.length+'</b></span><span class="stat">台 <b class="num">'+un+'</b></span><span class="stat">台データ <b class="num">'+esc(HIST.latest.slice(5))+'</b></span>';
