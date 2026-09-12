@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png">
-<meta name="snv-version" content="1033b5e488">
+<meta name="snv-version" content="d522c8302d">
 </head>
 <body>
 <meta name="snv-mode" content="pwa">
@@ -223,6 +223,9 @@ body.wall::before{content:"";position:fixed;inset:-24px;background:var(--wall) v
 .gatebox{width:100%;max-width:360px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;box-shadow:var(--shadow)}
 .gatebox input[type=password]{width:100%;border:1px solid var(--line);border-radius:6px;padding:10px 12px;background:var(--device);color:var(--led);font-size:18px;letter-spacing:.08em;margin:10px 0 8px}
 .gatebox .row{font-size:12px;color:var(--ink-2);margin-bottom:10px;gap:6px}
+.gatebox input[type=text]{width:100%;border:1px solid var(--line);border-radius:6px;padding:10px 12px;background:var(--panel-2);color:var(--ink);font-size:16px;margin:10px 0 0}
+.logtable td,.logtable th{text-align:left;white-space:normal}
+.logtable td.num{white-space:nowrap}
 .gatebox .msg{font-size:11.5px;color:var(--warm-text);min-height:1.4em;margin-top:8px}
 
 /* ---- counter device ---- */
@@ -338,11 +341,66 @@ details.adv summary::-webkit-details-marker{display:none}
 </div></div>
 <div class="toast" id="toast"></div>
 <div class="gate" id="gate" hidden><div class="gatebox"><div class="disp" style="font-size:20px">設定判別ツール</div><div class="sub" style="margin-top:4px">データは暗号化して保存されています。合言葉を入れて解錠してください。</div>
-<form id="gateform"><input type="password" id="gatepass" autocomplete="current-password" placeholder="合言葉" aria-label="合言葉"><label class="row"><input type="checkbox" id="gatesave" checked> この端末に記憶する</label><button class="btn primary block" type="submit">解錠</button></form><div class="msg" id="gatemsg"></div></div></div>
+<form id="gateform"><input type="text" id="gatename" autocomplete="nickname" placeholder="名前（ニックネーム）" aria-label="名前" maxlength="20"><input type="password" id="gatepass" autocomplete="current-password" placeholder="合言葉" aria-label="合言葉"><label class="row"><input type="checkbox" id="gatesave" checked> この端末に記憶する</label><button class="btn primary block" type="submit">解錠</button></form><div class="msg" id="gatemsg"></div></div></div>
 
 <script>
 (function(){
 'use strict';
+/* ---------- ログイン履歴(誰がどの端末から): この端末に保存し、共有ログ(GitHub issue)が設定されていれば送る ---------- */
+var MODE = (document.querySelector('meta[name="snv-mode"]')||{}).content || 'inline';
+var VERSION = (document.querySelector('meta[name="snv-version"]')||{}).content || 'inline';
+var LOGCFG = null;
+function lget(k){ try{ return JSON.parse(localStorage.getItem(k)||'null'); }catch(e){ return null; } }
+function lset(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+function userName(){ try{ return localStorage.getItem('snv:name')||''; }catch(e){ return ''; } }
+function setUserName(n){ try{ localStorage.setItem('snv:name', String(n||'').trim().slice(0,20)); }catch(e){} }
+function deviceId(){ var id = null; try{ id = localStorage.getItem('snv:devid'); if(!id){ id = Math.random().toString(16).slice(2,10); localStorage.setItem('snv:devid', id); } }catch(e){ id = 'unknown'; } return id; }
+function deviceInfo(){
+  var ua = navigator.userAgent || '', os = 'その他', br = 'ブラウザ', model = '';
+  if(/iPhone/.test(ua)) os = 'iPhone'; else if(/iPad/.test(ua) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1)) os = 'iPad'; else if(/Android/.test(ua)) os = 'Android'; else if(/Windows/.test(ua)) os = 'Windows'; else if(/Mac OS X/.test(ua)) os = 'Mac';
+  var v = ua.match(/(?:iPhone|CPU) OS (\d+[_.]\d+)/) || ua.match(/Android (\d+(?:\.\d+)?)/) || ua.match(/Windows NT (\d+\.\d+)/) || ua.match(/Mac OS X (\d+[_.]\d+)/); if(v) os += ' ' + v[1].replace('_','.');
+  if(/Android/.test(ua)){ var mm = ua.match(/Android [^;]+; ([^;)]+)\)/); if(mm) model = mm[1].replace(/ Build.*/,'').trim(); }
+  if(/Edg\//.test(ua)) br='Edge'; else if(/CriOS/.test(ua)) br='Chrome(iOS)'; else if(/Line\//.test(ua)) br='LINE内ブラウザ'; else if(/Chrome\//.test(ua)) br='Chrome'; else if(/Safari\//.test(ua)) br='Safari'; else if(/Firefox|FxiOS/.test(ua)) br='Firefox';
+  var standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || navigator.standalone===true;
+  var tz = ''; try{ tz = Intl.DateTimeFormat().resolvedOptions().timeZone||''; }catch(e){}
+  return {id: deviceId(), os: os, model: model, browser: br, screen: screen.width+'×'+screen.height, lang: navigator.language||'', tz: tz, app: standalone?'ホーム画面':'ブラウザ'};
+}
+function devLabel(d){ return [d.os, d.model, d.browser, d.app].filter(Boolean).join(' / '); }
+function fmtT(iso){ var d = new Date(iso); if(isNaN(d)) return iso; var p=function(n){return (n<10?'0':'')+n;}; return (d.getMonth()+1)+'/'+d.getDate()+' '+p(d.getHours())+':'+p(d.getMinutes()); }
+function kindLabel(k){ return {unlock:'解錠', auto:'自動解錠', fail:'失敗', open:'起動'}[k]||k; }
+function logLine(e){ return fmtT(e.t)+' '+(e.name||'(名前なし)')+'｜'+devLabel(e.dev||{})+' '+((e.dev||{}).screen||'')+'｜端末 '+((e.dev||{}).id||'?')+'｜'+kindLabel(e.kind)+(e.mode==='pwa'?'':'（'+e.mode+'）'); }
+function readLog(){ return lget('snv:log')||[]; }
+function addLog(kind, extra){
+  var e = {t: new Date().toISOString(), kind: kind, name: userName(), dev: deviceInfo(), ver: VERSION, mode: MODE};
+  if(extra) for(var k in extra) e[k] = extra[k];
+  var log = readLog(); log.push(e); if(log.length>300) log = log.slice(-300); lset('snv:log', log);
+  var box = lget('snv:outbox')||[]; box.push(e); if(box.length>100) box = box.slice(-100); lset('snv:outbox', box);
+  flushLog(); return e;
+}
+var flushing = false;
+function ghHeaders(){ return {'Authorization':'Bearer '+LOGCFG.token,'Accept':'application/vnd.github+json','Content-Type':'application/json','X-GitHub-Api-Version':'2022-11-28'}; }
+function flushLog(){
+  if(!LOGCFG || flushing || navigator.onLine===false) return; var box = lget('snv:outbox')||[]; if(!box.length) return;
+  flushing = true;
+  var body = box.map(function(e){ return '- ' + logLine(e); }).join('\n') + '\n\n<!-- snvlog ' + JSON.stringify(box) + ' -->';
+  fetch('https://api.github.com/repos/'+LOGCFG.repo+'/issues/'+LOGCFG.issue+'/comments', {method:'POST', headers:ghHeaders(), body: JSON.stringify({body: body})})
+    .then(function(r){ if(r.ok){ var cur = lget('snv:outbox')||[]; lset('snv:outbox', cur.slice(box.length)); } })
+    .catch(function(){}).then(function(){ flushing = false; });
+}
+function fetchCentralLog(cb){
+  if(!LOGCFG) return cb(null, []);
+  var all = [], page = 1;
+  function next(){
+    fetch('https://api.github.com/repos/'+LOGCFG.repo+'/issues/'+LOGCFG.issue+'/comments?per_page=100&page='+page, {headers:ghHeaders()})
+      .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+      .then(function(list){ list.forEach(function(c){ var m = /<!-- snvlog (\[[\s\S]*?\]) -->/.exec(c.body||''); if(m){ try{ JSON.parse(m[1]).forEach(function(e){ all.push(e); }); }catch(e){} } });
+        if(list.length===100 && page<5){ page++; next(); } else { all.sort(function(a,b){ return a.t<b.t?1:(a.t>b.t?-1:0); }); cb(null, all); } })
+      .catch(function(err){ cb(err, all); });
+  }
+  next();
+}
+window.addEventListener('online', function(){ flushLog(); });
+
 function boot(DATA, HIST){
 var MACHINES = DATA.machines;
 var byId = {}; MACHINES.forEach(function(m){ byId[m.id] = m; });
@@ -709,8 +767,31 @@ function renderHistory(){
 }
 
 /* ---------- render: help ---------- */
+function logTable(rows){
+  if(!rows.length) return '<div class="sub">まだ記録がありません。</div>';
+  return '<div class="tscroll"><table class="logtable"><thead><tr><th>日時</th><th>名前</th><th>端末</th><th>種別</th></tr></thead><tbody>'+rows.map(function(e){ var d = e.dev||{}; return '<tr><td class="num">'+esc(fmtT(e.t))+'</td><td>'+esc(e.name||'(名前なし)')+'</td><td>'+esc(devLabel(d))+' <span class="sub num">'+esc(d.screen||'')+' '+esc(d.id||'')+'</span></td><td>'+esc(kindLabel(e.kind))+(e.mode&&e.mode!=='pwa'?' <span class="sub">'+esc(e.mode)+'</span>':'')+'</td></tr>'; }).join('')+'</tbody></table></div>';
+}
+function renderCentralLog(){
+  var el = document.getElementById('centrallog'); if(!el) return;
+  if(!LOGCFG){ el.innerHTML = '<div class="sub">共有ログは未設定です。GitHubのトークン（Issues権限のみ）を設定すると、全端末のログインが1か所に集まり、ここと GitHub の issue で見られます。</div>'; return; }
+  el.innerHTML = '<div class="sub">読み込み中…</div>';
+  fetchCentralLog(function(err, rows){
+    if(err && !rows.length){ el.innerHTML = '<div class="sub">読み込めませんでした（'+esc(err.message||err)+'）。圏外か、トークンが無効の可能性があります。</div>'; return; }
+    var byName = {}; rows.forEach(function(e){ var k = e.name||'(名前なし)'; byName[k] = byName[k] || {n:0, devs:{}}; byName[k].n++; byName[k].devs[(e.dev||{}).id||'?'] = 1; });
+    var sum = Object.keys(byName).map(function(k){ return esc(k)+' <b class="num">'+byName[k].n+'</b>回・'+Object.keys(byName[k].devs).length+'端末'; }).join('　');
+    el.innerHTML = (rows.length?'<div class="sub" style="margin-bottom:6px">'+rows.length+'件　'+sum+'</div>':'')+logTable(rows.slice(0,100))+(err?'<div class="sub">一部読み込めませんでした。</div>':'');
+  });
+}
 function renderHelp(){
-  document.getElementById('view').innerHTML = '<div class="card help">'+
+  var mine = readLog().slice().reverse().slice(0, 30);
+  var d0 = deviceInfo();
+  document.getElementById('view').innerHTML = '<div class="card"><h2>ログイン履歴<span class="n">誰がどの端末から</span></h2>'+
+    '<div class="row" style="gap:6px;margin-bottom:8px"><span class="sub" style="white-space:nowrap">この端末の名前</span><input class="search" style="flex:1;margin:0" id="logname" value="'+esc(userName())+'" maxlength="20" placeholder="名前（ニックネーム）" aria-label="この端末の名前"><button class="btn sm" data-setname="1">保存</button></div>'+
+    '<div class="sub" style="margin-bottom:8px">この端末: '+esc(devLabel(d0))+' '+esc(d0.screen)+'　端末ID <b class="num">'+esc(d0.id)+'</b>　版 <span class="num">'+esc(VERSION)+'</span></div>'+
+    '<h3 style="font-size:12px;margin:8px 0 4px">この端末での記録（直近'+mine.length+'件）</h3>'+logTable(mine)+
+    '<h3 style="font-size:12px;margin:12px 0 4px">全端末の共有ログ <button class="btn sm ghost" data-logrefresh="1" style="margin-left:6px">更新</button>'+(LOGCFG?' <a class="sub" href="https://github.com/'+esc(LOGCFG.repo)+'/issues/'+esc(String(LOGCFG.issue))+'" target="_blank" rel="noopener">GitHubで見る</a>':'')+'</h3><div id="centrallog"></div>'+
+    '<div class="sub" style="margin-top:8px">解錠・自動解錠・合言葉の失敗を、名前と端末（OS/機種/ブラウザ/画面サイズ/端末ID）付きで記録します。端末IDはこの端末で自動生成した8桁で、個人情報は送りません。</div></div>'+
+    '<div class="card help">'+
     '<h2>このツールでできること</h2><p>設置機種について、データカウンタの数字と見た演出から「今の台がどの設定っぽいか」を確率で出します。対応は'+MACHINES.length+'機種。数字はすべて生の値（回数÷回転数）を併記し、自分で検算できるようにしています。</p>'+
     '<h3>設定とは</h3><p>スロットには1〜6の「設定」があり、店が毎日決めています。数字が大きいほど当たりやすく、設定4以上なら長く打つほど勝ちやすい（機械割100%超）。設定は台のどこにも表示されないので、当たった回数などから推測します。</p>'+
     '<h3>使い方（3ステップ）</h3><ul><li><b>台を選ぶ</b>: 台の上のデータカウンタか台番シールの4桁を入れる。機種が自動で決まります。</li><li><b>判別</b>: データカウンタの「総回転数」「BB」「RB」（AT機なら「ART/AT」）をそのまま入力。ぶどうなどは自分で数えたときだけ。</li><li><b>演出をタップ</b>: 終了画面やトロフィーなど「見たもの」を押す。確定系が出たら結論が固まります。</li></ul>'+
@@ -719,7 +800,8 @@ function renderHelp(){
     '<h3>注意（ここが大事）</h3><ul><li>回転数が少ないうちは大きくブレます。ジャグラーで1,500G、AT機で3,000Gあたりからが目安。</li><li>AT機の総回転数にはAT中も含まれます。「AT中の回転数」を入れると通常時の回転数で計算します。</li><li>奇数/偶数/高設定示唆の重みは公表されていないため目安です（弱=1.5倍、強=3倍）。「設定○以上」「設定○否定」などの確定系はそのまま反映します。設定別の振り分けが公表されている演出はその数値を使います。</li><li>「目安」「参考値」と付いた数字は逆算値・補間・手入力です。</li></ul>'+
     '<h3>LINEに送る</h3><p>判別画面の「結果をLINEに送る」で、今の入力と判定を短い文章にします。「LINEで送る」を押すとLINEが開いて送る相手を選べます（Keepメモに送れば自分用の記録）。ひとこと欄に台の様子を書いておくと後で見返しやすくなります。</p>'+
     '<h3>ホーム画面に置く（アプリ版）</h3><p>アプリ版はブラウザの共有メニューから「ホーム画面に追加」すると、アイコンから直接開けて、圏外でも動きます。データは暗号化されていて、初回に合言葉が必要です（「この端末に記憶する」を付けると次回から不要）。データを更新したときは自動で新しい版に切り替わります。</p>'+
-    '<h3>数字の出どころ</h3><p>理論値はパチマガスロマガ（'+esc(DATA.generated)+'時点）、一部はすろらぼ。台の履歴と設定配分の推定はana-sloの'+esc(HIST.store)+'データ（'+esc(HIST.latest)+'時点）。入力内容はこの端末の中だけに保存され、どこにも送信されません。演出の画像は会員向けサイトのものなので、このツールは自分用に留め、公開共有はしないでください。</p></div>';
+    '<h3>数字の出どころ</h3><p>理論値はパチマガスロマガ（'+esc(DATA.generated)+'時点）、一部はすろらぼ。台の履歴と設定配分の推定はana-sloの'+esc(HIST.store)+'データ（'+esc(HIST.latest)+'時点）。判別の入力内容はこの端末の中だけに保存されます（送信するのはログイン履歴だけ）。演出の画像は会員向けサイトのものなので、このツールは仲間内に留め、公開共有はしないでください。</p></div>';
+  renderCentralLog();
 }
 
 /* ---------- nav / events ---------- */
@@ -765,6 +847,8 @@ document.getElementById('view').addEventListener('click', function(e){
     var done = function(){ toast('コピーしました'); }, fail = function(){ if(ta){ ta.focus(); ta.select(); try{ document.execCommand('copy'); done(); }catch(e){ toast('長押しでコピーしてください'); } } };
     if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, fail); else fail(); return; }
   var sh = t.closest('[data-share]'); if(sh){ var ta2 = document.getElementById('memoOut'); if(navigator.share && ta2) navigator.share({text: ta2.value}).catch(function(){}); return; }
+  var sn = t.closest('[data-setname]'); if(sn){ var nmEl = document.getElementById('logname'); setUserName(nmEl ? nmEl.value : ''); toast('名前を保存しました'); return; }
+  var lr = t.closest('[data-logrefresh]'); if(lr){ flushLog(); renderCentralLog(); return; }
   var prb = t.closest('[data-prior]'); if(prb){ S.prior = prb.getAttribute('data-prior'); store('sn:app', S); var mm = byId[S.machineId]; if(mm){ renderRates(mm); renderResult(mm); } return; }
   var clr = t.closest('[data-clear]'); if(clr){ IN = blankInput(); saveInput(); renderJudge(); toast('入力を消しました'); return; }
   var m = byId[S.machineId];
@@ -808,8 +892,7 @@ render();
 }
 
 /* ---------- 起動: inline(Artifact) はJSONを直接読む / pwa は暗号化データを解錠して読む ---------- */
-var MODE = (document.querySelector('meta[name="snv-mode"]')||{}).content || 'inline';
-function bootInline(){ boot(JSON.parse(document.getElementById('data-machines').textContent), JSON.parse(document.getElementById('data-history').textContent)); }
+function bootInline(){ boot(JSON.parse(document.getElementById('data-machines').textContent), JSON.parse(document.getElementById('data-history').textContent)); addLog('open'); }
 function decryptPayload(buf, pass){
   var u8 = new Uint8Array(buf);
   if(String.fromCharCode(u8[0],u8[1],u8[2],u8[3])!=='SNV1') return Promise.reject(new Error('形式が違います'));
@@ -820,19 +903,24 @@ function decryptPayload(buf, pass){
     .then(function(pt){ return JSON.parse(new TextDecoder().decode(pt)); });
 }
 function bootPwa(){
-  var gate = document.getElementById('gate'), msg = document.getElementById('gatemsg'), form = document.getElementById('gateform'), inp = document.getElementById('gatepass'), save = document.getElementById('gatesave');
+  var gate = document.getElementById('gate'), msg = document.getElementById('gatemsg'), form = document.getElementById('gateform'), inp = document.getElementById('gatepass'), save = document.getElementById('gatesave'), nameIn = document.getElementById('gatename');
+  nameIn.value = userName();
   var bufP = null;
   function getBuf(){ if(!bufP) bufP = fetch('data.enc').then(function(r){ if(!r.ok) throw new Error('data.enc '+r.status); return r.arrayBuffer(); }).catch(function(e){ bufP = null; throw e; }); return bufP; }
-  function tryPass(pass, remember){
+  function tryPass(pass, remember, auto){
     msg.textContent = '解錠中…';
     return getBuf().then(function(buf){ return decryptPayload(buf, pass); }).then(function(pl){
       try{ if(remember) localStorage.setItem('snv:pass', pass); else localStorage.removeItem('snv:pass'); }catch(e){}
+      LOGCFG = pl.log || null;
       gate.hidden = true; boot(pl.data, pl.history);
-    }).catch(function(err){ gate.hidden = false; msg.textContent = (err && (err.name==='OperationError' || /decrypt/i.test(String(err.message)))) ? '合言葉が違います' : 'データを読めませんでした: '+(err && err.message ? err.message : err); });
+      addLog(auto ? 'auto' : 'unlock');
+    }).catch(function(err){ gate.hidden = false; var wrong = (err && (err.name==='OperationError' || /decrypt/i.test(String(err.message)))); msg.textContent = wrong ? '合言葉が違います' : 'データを読めませんでした: '+(err && err.message ? err.message : err); if(wrong) addLog('fail'); });
   }
-  form.addEventListener('submit', function(e){ e.preventDefault(); tryPass(inp.value.trim(), save.checked); });
-  var saved = null; try{ saved = localStorage.getItem('snv:pass'); }catch(e){}
-  if(saved){ tryPass(saved, true); } else { gate.hidden = false; try{ inp.focus(); }catch(e){} }
+  form.addEventListener('submit', function(e){ e.preventDefault(); var nm = nameIn.value.trim(); if(!nm){ msg.textContent = '名前を入れてください'; try{ nameIn.focus(); }catch(e2){} return; } setUserName(nm); tryPass(inp.hidden && savedPass ? savedPass : inp.value.trim(), inp.hidden ? true : save.checked, false); });
+  var savedPass = null; try{ savedPass = localStorage.getItem('snv:pass'); }catch(e){}
+  if(savedPass && userName()){ tryPass(savedPass, true, true); }
+  else if(savedPass){ gate.hidden = false; inp.hidden = true; inp.value = savedPass; msg.textContent = '合言葉は記憶済みです。名前を入れて解錠してください（誰が使ったかの記録用）。'; try{ nameIn.focus(); }catch(e){} }
+  else { gate.hidden = false; try{ nameIn.focus(); }catch(e){} }
   if('serviceWorker' in navigator){
     navigator.serviceWorker.register('sw.js').then(function(reg){
       reg.addEventListener('updatefound', function(){ var nw = reg.installing; if(!nw) return;
