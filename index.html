@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png">
-<meta name="snv-version" content="d522c8302d">
+<meta name="snv-version" content="cd5b40a3b3">
 </head>
 <body>
 <meta name="snv-mode" content="pwa">
@@ -773,7 +773,7 @@ function logTable(rows){
 }
 function renderCentralLog(){
   var el = document.getElementById('centrallog'); if(!el) return;
-  if(!LOGCFG){ el.innerHTML = '<div class="sub">共有ログは未設定です。GitHubのトークン（Issues権限のみ）を設定すると、全端末のログインが1か所に集まり、ここと GitHub の issue で見られます。</div>'; return; }
+  if(!LOGCFG){ el.innerHTML = '<div class="sub">共有ログは使っていません。記録はこの端末の中だけに残り、どこにも送信されません。</div>'; return; }
   el.innerHTML = '<div class="sub">読み込み中…</div>';
   fetchCentralLog(function(err, rows){
     if(err && !rows.length){ el.innerHTML = '<div class="sub">読み込めませんでした（'+esc(err.message||err)+'）。圏外か、トークンが無効の可能性があります。</div>'; return; }
