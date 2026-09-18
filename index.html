@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png">
-<meta name="snv-version" content="cd5b40a3b3">
+<meta name="snv-version" content="df0ed2a108">
 </head>
 <body>
 <meta name="snv-mode" content="pwa">
@@ -557,7 +557,7 @@ function evidenceRow(m, e){
   if(e.obs){ var x = Math.log(e.obs); var t = (x - x1)/(xT - x1); if(t<0){pos=0;edge='edge';} else if(t>1){pos=1;edge='edge';} else pos=t; }
   else if(e.n>0){ pos = 0; edge='edge'; }
   var near = '';
-  if(e.k>0 && e.near){ near = e.obs < dT ? '設定'+sT+'より良い' : (e.obs > d1 ? '設定'+s1+'より悪い' : '設定'+e.near+'相当'); }
+  if(e.k>0 && e.near){ near = (d1===dT) ? (e.obs < d1 ? '理論値より良い（設定差なし）' : e.obs > d1 ? '理論値より悪い（設定差なし）' : '理論値どおり') : (e.obs < dT ? '設定'+sT+'より良い' : (e.obs > d1 ? '設定'+s1+'より悪い' : '設定'+e.near+'相当')); }
   else if(e.n>0){ near = '0回'; }
   return '<tr><td class="lab"><b>'+esc(c.label)+'</b>'+(c.approx?' <span class="badge">目安</span>':'')+'<span class="near">'+esc(near)+'</span></td>'+
     '<td class="r num">'+fmt(e.k)+'<span class="sub">/'+fmt(e.n)+(c.denom==='own'&&isPct?'回':'G')+'</span><br><b>'+obsTxt+'</b></td>'+
