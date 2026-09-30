@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png">
-<meta name="snv-version" content="24527212cf">
+<meta name="snv-version" content="d1722cdb42">
 </head>
 <body>
 <meta name="snv-mode" content="pwa">
@@ -315,10 +315,144 @@ details.adv summary::before{content:"▸";color:var(--ink-3);font-size:11px}
 details.adv[open] summary::before{content:"▾"}
 details.adv summary::-webkit-details-marker{display:none}
 
+@media (max-width:420px){
+  .evtable th,.evtable td{padding-left:3px;padding-right:3px}
+  .evtable .scale{min-width:92px;gap:3px}
+  .evtable .lr .lb{display:none}
+}
+
+/* ---- aim (狙い目: 天井・リセット・一覧・手順) ---- */
+.subtabs{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--panel-2);margin:8px 0 4px}
+.subtabs button{border:0;border-right:1px solid var(--line-2);background:transparent;padding:9px 2px;font-size:12px;color:var(--ink-2);line-height:1.2}
+.subtabs button:last-child{border-right:0}
+.subtabs button.on{background:var(--accent);color:var(--accent-ink);font-weight:700}
+.hero.mini{min-height:0;background-size:cover}
+.hero.mini .hin{padding:58px 12px 10px;flex-wrap:wrap;gap:6px 8px}
+.hero.mini .hin .name{font-size:21px}
+.mhead.wrap{flex-wrap:wrap;gap:6px 8px}
+.aimlink{display:flex;align-items:center;gap:8px;width:100%;text-align:left;margin:8px 0 0;padding:8px 10px;border:1px solid var(--line-2);border-left:3px solid var(--accent);border-radius:6px;background:var(--panel);font-size:12.5px;line-height:1.35}
+.aimlink b{white-space:nowrap}
+.aimlink .grow{color:var(--ink-2);font-size:11.5px}
+.aimlink .go{color:var(--accent);font-weight:700;white-space:nowrap}
+.evhero{display:flex;align-items:baseline;gap:4px 10px;flex-wrap:wrap;margin:10px 0 2px}
+.evhero .l{font-size:10.5px;color:var(--ink-3);letter-spacing:.08em;width:100%}
+.evhero .v{font-size:38px;font-weight:600;line-height:1.05}
+.evhero .v small{font-size:15px;font-weight:400;color:var(--ink-2);margin-left:2px}
+.evhero .from{font-size:11.5px;color:var(--ink-2)}
+.flags{display:flex;gap:5px;flex-wrap:wrap;margin:8px 0 0}
+.flags:empty{display:none}
+.golines{margin:10px 0 0;padding:9px 10px;border:1px dashed var(--line);border-radius:6px;background:var(--panel-2)}
+.golines .t{font-size:11px;color:var(--ink-2);margin-bottom:3px}
+.golines .ln{display:flex;justify-content:space-between;gap:10px;align-items:baseline;padding:3px 0;font-size:12px;border-top:1px dashed var(--line-2)}
+.golines .ln:first-of-type{border-top:0}
+.golines .ln .k{color:var(--ink-2);white-space:nowrap}
+.golines .ln b{font-size:14.5px;font-weight:600;text-align:right}
+.golines .ln b.no{font-size:12px;font-weight:400;color:var(--ink-3)}
+.calc{font-size:11px;color:var(--ink-2);margin:6px 0 0;line-height:1.55;overflow-wrap:anywhere}
+.calc b{color:var(--ink)}
+.calc .eq{display:block}
+.dfield .tools.four{grid-template-columns:repeat(4,1fr)}
+.conds{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-top:9px}
+.condrow{display:grid;gap:3px;min-width:0;align-content:start}
+.condrow.wide{grid-column:1 / -1}
+.condrow label{font-size:10.5px;color:var(--ink-2);letter-spacing:.04em}
+.condrow .sel{min-width:0;padding:8px 7px;font-size:13px}
+.condrow .sel:disabled{opacity:.8}
+.device .condrow label{color:var(--led-label)}
+.device .sel{background:var(--device-2);border-color:var(--device-line);color:#E6EAEE}
+.hero + .device,.mhead + .device,.card + .device,.result + .device{margin-top:10px}
+.device + .result,.device + .card{margin-top:10px}
+.foot a{color:var(--ink-2)}
+.usetable{font-size:10.5px;color:#8E98A3;margin-top:8px;line-height:1.45;overflow-wrap:anywhere}
+.subtabs.rateseg{margin:0}
+.subtabs.rateseg button{font-size:11.5px;padding:8px 2px}
+.rategrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.rategrid.one{grid-template-columns:1fr}
+.rategrid label{display:grid;gap:3px;font-size:11px;color:var(--ink-2)}
+.rategrid input,.thgrid input{width:100%;border:1px solid var(--line);border-radius:6px;padding:8px 10px;background:var(--panel-2);color:var(--ink);font-size:16px;text-align:right}
+.thgrid{display:grid;gap:8px;margin:6px 0 4px}
+.thgrid label{display:grid;grid-template-columns:1fr 104px auto;gap:6px;align-items:center;font-size:12px;color:var(--ink-2)}
+.evchart{position:relative;margin:2px 0 0}
+.evchart svg{display:block;width:100%;height:auto;touch-action:pan-y;-webkit-user-select:none;user-select:none;outline-offset:2px}
+.evchart .grid{stroke:var(--line-2);stroke-width:1}
+.evchart .zero{stroke:var(--ink-3);stroke-width:1}
+.evchart .thr{stroke:var(--warm);stroke-width:1;stroke-dasharray:5 3}
+.evchart .ln{fill:none;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.evchart .ln.p{stroke:var(--plus)} .evchart .ln.m{stroke:var(--minus)}
+.evchart .ln.low{stroke-dasharray:1 5}
+.evchart .ar.p{fill:var(--plus);opacity:.13} .evchart .ar.m{fill:var(--minus);opacity:.13}
+.evchart text{fill:var(--ink-3);font-size:10px;font-family:"IBM Plex Mono","BIZ UDPGothic",ui-monospace,monospace}
+.evchart text.lab{fill:var(--ink-2);font-family:inherit}
+.evchart .cur{stroke:var(--ink);stroke-width:1.5}
+.evchart .dot{fill:var(--ink);stroke:var(--panel);stroke-width:2}
+.evchart .xh{stroke:var(--ink-3);stroke-width:1}
+.evchart .xd{fill:var(--ink-2);stroke:var(--panel);stroke-width:2}
+.evtip{position:absolute;top:0;left:0;pointer-events:none;background:var(--panel-3);border:1px solid var(--line);border-radius:6px;padding:5px 8px;font-size:11px;line-height:1.45;color:var(--ink-2);box-shadow:var(--shadow);white-space:nowrap;z-index:2}
+.evtip b{display:block;font-size:14px;color:var(--ink);font-weight:600}
+.chartkey{display:flex;gap:4px 12px;flex-wrap:wrap;font-size:10.5px;color:var(--ink-3);margin-top:4px}
+.chartkey i{display:inline-block;width:14px;height:0;border-top:2px solid var(--ink-3);margin-right:4px;vertical-align:3px}
+.chartkey .p i{border-color:var(--plus)} .chartkey .m i{border-color:var(--minus)} .chartkey .low i{border-top-style:dotted} .chartkey .thr i{border-color:var(--warm);border-top-style:dashed;border-top-width:1px}
+.chartkey .cur i{width:8px;height:8px;border:0;border-radius:50%;background:var(--ink);vertical-align:-1px}
+.evrows tr.cur td{background:var(--accent-soft)}
+.evrows tr.cur td:first-child{box-shadow:inset 3px 0 0 var(--accent)}
+.evrows tr.low td{color:var(--ink-3)}
+.evrows td:first-child{padding-left:7px}
+.evrows .tagm{font-size:9.5px;color:var(--ink-3);margin-left:3px}
+.aimrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1px 10px;padding:7px 0;border-top:1px dashed var(--line-2)}
+.aimrow:first-of-type{border-top:0;padding-top:0}
+.aimrow .k{font-weight:700;font-size:12.5px}
+.aimrow .v{font-size:14px;font-weight:600;text-align:right}
+.aimrow .d{font-size:11.5px;color:var(--ink-2)}
+.aimrow .s{font-size:10.5px;color:var(--ink-3);text-align:right;white-space:nowrap}
+.aimrow.far{opacity:.62}
+.aimtable td,.aimtable th{text-align:left;white-space:normal;vertical-align:top;padding:6px 5px}
+.aimtable th{font-size:10.5px}
+.aimtable td:first-child{font-weight:700;width:30%}
+.plist{margin:0;padding-left:18px;font-size:12.5px}
+.plist li{margin:3px 0}
+.srcline{font-size:10.5px;color:var(--ink-3);margin-top:8px;line-height:1.5;overflow-wrap:anywhere}
+.srcline a{color:var(--ink-2)}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:10px 0 0}
+.cmpc{border:1px solid var(--line-2);border-radius:6px;background:var(--panel-2);padding:8px 9px;position:relative;overflow:hidden;min-width:0}
+.cmpc::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--none)}
+.cmpc.hot::before{background:var(--hot)} .cmpc.warm::before{background:var(--warm)} .cmpc.cool::before{background:var(--cool)}
+.cmpc .h{font-size:11.5px;font-weight:700}
+.cmpc .st{font-size:10.5px;color:var(--ink-3);line-height:1.35;min-height:2.7em;overflow-wrap:anywhere}
+.cmpc .v{font-size:23px;font-weight:600;line-height:1.15;margin-top:4px}
+.cmpc .v small{font-size:12px;font-weight:400;color:var(--ink-2)}
+.cmpc .w{font-size:12px;font-weight:700;margin-top:2px}
+.cmpc .w.hot{color:var(--hot-text)} .cmpc .w.warm{color:var(--warm-text)} .cmpc .w.cool{color:var(--cool-text)}
+.cmpc .m{font-size:10.5px;color:var(--ink-2);line-height:1.5;margin-top:4px}
+.lrows{display:grid;gap:6px}
+.lrow{display:grid;gap:3px;width:100%;text-align:left;background:var(--panel-2);border:1px solid var(--line-2);border-radius:6px;padding:8px 10px}
+.lrow:active{transform:scale(.99)}
+.lrow.on{border-color:var(--accent)}
+.lrow .ln1{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.lrow .name{font-weight:700;font-size:13.5px}
+.lrow .u{margin-left:auto;font-size:11px;color:var(--ink-2)}
+.lrow .ln2{font-size:11.5px;color:var(--ink-2);line-height:1.45}
+.lrow .ln2 b{color:var(--ink);font-weight:600}
+.lrow .ln2 .sep{color:var(--ink-3);margin:0 5px}
+.manual .lead{font-size:13px;margin:0 0 10px;max-width:62ch}
+.manual h3{font-size:11.5px;color:var(--ink-2);margin:12px 0 4px}
+.steps{list-style:none;margin:0;padding:0;counter-reset:st;display:grid;gap:9px}
+.steps li{counter-increment:st;display:grid;grid-template-columns:26px minmax(0,1fr);gap:0 8px}
+.steps li::before{content:counter(st);grid-row:1 / span 2;width:24px;height:24px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:12.5px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.steps li b{font-size:13px}
+.steps li span{font-size:12.5px;color:var(--ink-2);grid-column:2}
+.checks{list-style:none;margin:0;padding:0;font-size:12.5px;display:grid;gap:2px}
+.checks label{display:grid;grid-template-columns:20px minmax(0,1fr);gap:6px;align-items:start;padding:3px 0}
+.checks input{width:16px;height:16px;margin:2px 0 0;accent-color:var(--accent)}
+.cautions{margin:0;padding-left:18px;font-size:12.5px;color:var(--ink-2)}
+.terms{margin:0;display:grid;gap:8px}
+.terms dt{font-weight:700;font-size:13px}
+.terms dd{margin:1px 0 0;font-size:12.5px;color:var(--ink-2)}
+.notice.warn{background:var(--warm-soft);border-left-color:var(--warm)}
+
 /* ---- bottom nav ---- */
 .nav{position:fixed;left:0;right:0;bottom:0;background:var(--panel);border-top:1px solid var(--line-2);padding:4px 8px calc(4px + env(safe-area-inset-bottom));z-index:10}
-.nav .in{max-width:540px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
-.nav button{background:none;border:0;padding:6px 2px 4px;font-size:10px;color:var(--ink-3);border-radius:6px;line-height:1.2;display:flex;flex-direction:column;align-items:center;gap:3px;letter-spacing:.04em}
+.nav .in{max-width:540px;margin:0 auto;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:4px}
+.nav button{background:none;border:0;padding:6px 2px 4px;font-size:10px;color:var(--ink-3);border-radius:6px;line-height:1.2;display:flex;flex-direction:column;align-items:center;gap:3px;letter-spacing:.04em;white-space:nowrap}
 .nav button svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .nav button b{font-size:12px;font-weight:700;color:inherit}
 .nav button.on{color:var(--accent);background:var(--accent-soft)}
@@ -331,11 +465,13 @@ details.adv summary::-webkit-details-marker{display:none}
     <div class="brand"><span class="disp t">設定判別ツール</span><span class="s">SETTING ANALYZER · v1.0</span></div>
     <div class="meta" id="topmeta"></div>
   </div>
+  <div class="notice warn" id="bootnote" hidden></div>
   <div id="view"></div>
 </div>
 <div class="nav"><div class="in" id="nav">
   <button data-nav="home"><svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></svg><b>台を選ぶ</b></button>
   <button data-nav="judge"><svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M8 15v-4M12 15V7M16 15v-2"/></svg><b>判別</b></button>
+  <button data-nav="aim" id="navaim" hidden><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg><b>狙い目</b></button>
   <button data-nav="history"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5M12 8v4l3 2"/></svg><b>履歴</b></button>
   <button data-nav="help"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 1-1 1.7M12 17h.01"/></svg><b>使い方</b></button>
 </div></div>
@@ -401,7 +537,7 @@ function fetchCentralLog(cb){
 }
 window.addEventListener('online', function(){ flushLog(); });
 
-function boot(DATA, HIST){
+function boot(DATA, HIST, EXTRA){
 var MACHINES = DATA.machines;
 var byId = {}; MACHINES.forEach(function(m){ byId[m.id] = m; });
 var byAnaslo = {}; MACHINES.forEach(function(m){ (m.anaslo_names||[]).forEach(function(n){ byAnaslo[n] = m; }); });
@@ -689,6 +825,7 @@ function renderJudge(){
         (S.unit?'<span class="unitchip">台番 <b class="num">'+esc(S.unit)+'</b></span>':'')+'<button class="btn sm ghost" data-go="home">台を変える</button></div>'+(th.credit?'<div class="credit">'+esc(th.credit)+'</div>':'')+'</div>'
     : '<div class="mhead"><div class="grow"><div class="disp name">'+esc(m.short)+'</div><div class="full">'+esc(m.name)+'　<span class="sub">'+esc(m.type==='at'?'AT・スマスロ':'ノーマル')+'</span></div></div>'+
       (S.unit?'<span class="unitchip">台番 <b class="num">'+esc(S.unit)+'</b></span>':'')+'<button class="btn sm ghost" data-go="home">台を変える</button></div>';
+  head += aimLink(m);
   v.innerHTML = head +
     (IN.sample?'<div class="notice" id="samplenote"><span class="grow">これはサンプル入力です。自分の台の数字に書き換えるか、消して始めてください。</span><button class="btn sm" data-clear="1">消す</button></div>':'')+
     (m.flags&&m.flags.reference_only?'<div class="notice"><span class="grow">この機種の理論値はスロマガ・すろらぼに未掲載のため、手入力の参考値です。要確認。</span></div>':'')+
@@ -799,16 +936,889 @@ function renderHelp(){
     '<h3>前提とする設定配分（事前分布）</h3><p>確率は「事前分布 × 尤度」で計算します。初期設定は<b>店の実績配分</b>で、この店の直近'+(DATA.prior_days||90)+'日の台データから機種ごとに推定した「設定がどの割合で使われているか」です。ノーマルタイプはBB・RB回数の分布から（EM法）、AT機は実績の機械割から推定しています（AT機のデータカウンタはAT中の回転を含むため回数が使えません）。あくまで推定なので、判別画面の「均等」に切り替えれば全設定同率の前提と比べられます。台数が少ない機種は既定の配分（一般的なホールの傾向）です。</p>'+
     '<h3>注意（ここが大事）</h3><ul><li>回転数が少ないうちは大きくブレます。ジャグラーで1,500G、AT機で3,000Gあたりからが目安。</li><li>AT機の総回転数にはAT中も含まれます。「AT中の回転数」を入れると通常時の回転数で計算します。</li><li>奇数/偶数/高設定示唆の重みは公表されていないため目安です（弱=1.5倍、強=3倍）。「設定○以上」「設定○否定」などの確定系はそのまま反映します。設定別の振り分けが公表されている演出はその数値を使います。</li><li>「目安」「参考値」と付いた数字は逆算値・補間・手入力です。</li></ul>'+
     '<h3>LINEに送る</h3><p>判別画面の「結果をLINEに送る」で、今の入力と判定を短い文章にします。「LINEで送る」を押すとLINEが開いて送る相手を選べます（Keepメモに送れば自分用の記録）。ひとこと欄に台の様子を書いておくと後で見返しやすくなります。</p>'+
+    (HAS_AIM ? '<h3>狙い目（天井・リセット）</h3><p>下の「狙い目」では、いまのゲーム数から当たるまで打ったときの期待値（同じ条件で何度も打ったときの、1回あたりの平均の収支）を計算します。機種・状態・交換率を選んでゲーム数を入れると、「打てる／ボーダー付近／まだ早い」と、何Gから打てるかが出ます。</p><ul><li><b>天井狙い</b>: いまのG数からの期待値。グラフと50G刻みの表でも見られます。</li><li><b>リセット狙い</b>: 朝イチ、設定変更（リセット）された台の期待値。前日の最終G数を入れると、据え置きだった場合と並べて比べられます。</li><li><b>一覧</b>: 設置機種の天井条件と狙い目ラインをまとめて見る。</li><li><b>手順</b>: 天井狙い・リセット狙いの進め方と用語。</li><li>数字には必ずサンプル数と出典を付けています。サンプルが少ない行、表に無いG数を前後の行から補間した値、表の範囲外は、その旨を表示します。期待値は平均なので、1回ごとの結果は大きくぶれます。</li></ul>' : '')+
     '<h3>ホーム画面に置く（アプリ版）</h3><p>アプリ版はブラウザの共有メニューから「ホーム画面に追加」すると、アイコンから直接開けて、圏外でも動きます。データは暗号化されていて、初回に合言葉が必要です（「この端末に記憶する」を付けると次回から不要）。データを更新したときは自動で新しい版に切り替わります。</p>'+
     '<h3>数字の出どころ</h3><p>理論値はパチマガスロマガ（'+esc(DATA.generated)+'時点）、一部はすろらぼ。台の履歴と設定配分の推定はana-sloの'+esc(HIST.store)+'データ（'+esc(HIST.latest)+'時点）。判別の入力内容はこの端末の中だけに保存されます（送信するのはログイン履歴だけ）。演出の画像は会員向けサイトのものなので、このツールは仲間内に留め、公開共有はしないでください。</p></div>';
   renderCentralLog();
+}
+
+/* ---------- 狙い目: データと状態 ---------- */
+var TENJO = (EXTRA && EXTRA.tenjo && EXTRA.tenjo.machines) ? EXTRA.tenjo : null;
+var AIMD = (EXTRA && EXTRA.aim && EXTRA.aim.machines) ? EXTRA.aim : null;
+var MANUAL = (EXTRA && EXTRA.manual && EXTRA.manual.sections && EXTRA.manual.sections.length) ? EXTRA.manual : null;
+var HAS_AIM = !!(TENJO || AIMD || MANUAL);
+var RESET_RE = /設定変更|リセット/;
+if(!S.aim || typeof S.aim!=='object') S.aim = {};
+var A = S.aim;
+['rate','th','sel','g','prev','rsel','st','memo'].forEach(function(k){ if(!A[k] || typeof A[k]!=='object' || Array.isArray(A[k])) A[k] = {}; });
+if(['46_51','50_50','chodama','custom'].indexOf(A.rate.preset)<0) A.rate.preset = '46_51';
+if(A.rate.kashi==null) A.rate.kashi = 46;
+if(A.rate.kokan==null) A.rate.kokan = 51;
+if(A.rate.ck==null) A.rate.ck = 51;
+var TH_DEFAULT = {go:2000, border:0, nmin:100};
+['go','border','nmin'].forEach(function(k){ if(typeof A.th[k]!=='number' || !isFinite(A.th[k])) A.th[k] = TH_DEFAULT[k]; });
+if(typeof A.q!=='string') A.q = '';
+function aimTabs(){ var t = []; if(TENJO||AIMD){ t.push(['tenjo','天井狙い'],['reset','リセット狙い'],['list','一覧']); } if(MANUAL) t.push(['manual','手順']); return t; }
+function aimTab(){ var ts = aimTabs().map(function(x){ return x[0]; }); if(ts.indexOf(A.tab)<0) A.tab = ts[0]||'tenjo'; return A.tab; }
+function tenjoOf(id){ return (TENJO && TENJO.machines[id]) || null; }
+function aimOf(id){ return (AIMD && AIMD.machines[id]) || null; }
+function numOr(v, d){ var x = parseFloat(String(v==null?'':v).replace(/,/g,'')); return isFinite(x) ? x : d; }
+function yen(v){ if(v==null || !isFinite(v)) return '—'; var r = Math.round(v); return (r>0?'+':(r<0?'-':'±')) + Math.abs(r).toLocaleString('ja-JP'); }
+function yen0(v){ return (v!=null && isFinite(v) && Math.round(v)===0) ? '0' : yen(v); }
+function pm(v){ var r = Math.round(v); return r>0 ? 'pl' : (r<0 ? 'mn' : ''); }
+function f1(v){ return (v==null || !isFinite(v)) ? '—' : (Math.round(v*10)/10).toFixed(1); }
+function lerp(a, b, t){ return a + (b-a)*t; }
+function safeUrl(u){ u = String(u||''); return /^https?:\/\//i.test(u) ? u : ''; }
+function stripName(title, name){
+  // 表の題から先頭の機種名を外す(空白の有無は無視して照合)
+  title = String(title||''); name = String(name||'').replace(/\s+/g,''); if(!name) return title.trim();
+  var i = 0, j = 0;
+  while(i<title.length && j<name.length){ var c = title.charAt(i); if(/\s/.test(c)){ i++; continue; } if(c!==name.charAt(j)) return title.trim(); i++; j++; }
+  return j===name.length ? (title.slice(i).trim() || title.trim()) : title.trim();
+}
+function srcName(M){
+  if(M.src) return String(M.src);
+  if(M.source) return typeof M.source==='string' ? M.source : String(M.source.name||'');
+  var u = String(M.url||''); if(/slolaboratory\.com/.test(u)) return 'すろらぼ';
+  var h = /^https?:\/\/([^\/]+)/.exec(u); return h ? h[1] : '出典の記載なし';
+}
+
+/* ---------- 狙い目: 交換率 ---------- */
+function rnum(v, d){ var x = numOr(v, NaN); return (isFinite(x) && x>=10 && x<=1000) ? x : d; }
+function rateNow(){
+  var r = A.rate, p = r.preset;
+  if(p==='50_50') return {id:p, kashi:50, kokan:50, label:'等価（50枚貸し・50枚交換）', short:'等価'};
+  if(p==='chodama'){ var k = rnum(r.ck, 51); return {id:p, kashi:k, kokan:k, chodama:true, label:'貯メダル再プレイ（投資も交換も'+k+'枚で計算）', short:'貯メダル'+k+'枚'}; }
+  if(p==='custom'){ var a = rnum(r.kashi, 50), b = rnum(r.kokan, 50); return {id:p, kashi:a, kokan:b, label:a+'枚貸し・'+b+'枚交換', short:a+'-'+b}; }
+  return {id:'46_51', kashi:46, kokan:51, label:'46枚貸し・51枚交換', short:'46-51'};
+}
+function parseRate(s){
+  // 「等価」「46枚貸し51枚交換」「46-52」「5.6枚交換」「k46_o51」などを {kashi, kokan}(1000円あたりの枚数) に直す。読めなければ null
+  s = String(s==null?'':s); var m;
+  if((m = /k(\d+(?:\.\d+)?)_o(\d+(?:\.\d+)?)/i.exec(s))) return {kashi:+m[1], kokan:+m[2]};
+  if(/貯メダル|貯玉|再プレイ/.test(s)) return {kashi:50, kokan:50, chodama:true};
+  var nums = (s.replace(/\d+(?:\.\d+)?\s*円/g, ' ').match(/\d+(?:\.\d+)?/g)||[]).map(Number).filter(function(x){ return x>=4 && x<=1000; });
+  var up = function(x){ return x<10 ? Math.round(x*100)/10 : x; };     // 5.6枚(100円あたり) → 56枚(1000円あたり)
+  var mk = /(\d+(?:\.\d+)?)\s*枚?\s*貸/.exec(s), mo = /(\d+(?:\.\d+)?)\s*枚?\s*(?:交換|換金)/.exec(s);
+  if(mk && mo && +mk[1]>=4 && +mo[1]>=4) return {kashi:up(+mk[1]), kokan:up(+mo[1])};   // 「46枚貸し51枚交換」「51枚交換(46枚貸し)」など語で判定
+  if(nums.length>=2) return {kashi:up(nums[0]), kokan:up(nums[1])};
+  if(/等価/.test(s) && !/非等価/.test(s)) return {kashi:50, kokan:50};
+  if(nums.length===1) return {kashi:50, kokan:up(nums[0])};
+  return null;
+}
+function rateDist(a, b){ if(!a || !b) return Infinity; return Math.abs(Math.log(a.kokan/a.kashi) - Math.log(b.kokan/b.kashi)); }
+function rateText(pr, raw){ if(!pr) return String(raw||''); if(pr.chodama) return '貯メダル'; if(pr.kashi===50 && pr.kokan===50) return '等価'; return pr.kashi+'枚貸し・'+pr.kokan+'枚交換'; }
+
+/* ---------- 狙い目: 計算式(ここ1か所) ----------
+   行 r = {g:打ち始めG, inv:投資枚, get:AT獲得枚, ng:通常時の消化G, tg:総消化G, n:サンプル数}
+   tenjo.json の機種に formula_id があり、下の表に無い値なら 基本式(basic) で計算して画面に「参考」と出す */
+var FORMULAS = {
+  basic: {
+    ev: function(r, rate, M){ return r.get*1000/rate.kokan - r.inv*1000/rate.kashi; },
+    payout: function(r, M){ var c = +M.coin_g; if(!(c>0) || !(r.tg>0)) return null; return (r.ng*(3-50/c) + (r.tg-r.ng)*3 + r.get)/(r.tg*3)*100; },
+    minutes: function(r, M){ return r.tg/800*60; },
+    hit: function(r, M){ return r.hit!=null ? r.hit : (r.ng>0 ? r.ng : null); },     // 初当りの目安: 表に hit(分母)があればそれ、無ければ 1/ng
+    text: function(r, rate, M){ return '獲得 '+f1(r.get)+'枚'+(hasCoef(M)?'(補正後)':'')+'×1000÷'+rate.kokan+' − 投資 '+f1(r.inv)+'枚×1000÷'+rate.kashi; }
+  }
+};
+function hasCoef(M){ var c = +M.coef; return isFinite(c) && c>0 && Math.abs(c-1)>1e-9; }
+function formulaOf(M){
+  var id = M.formula_id;
+  if(id==null || id==='' || id==='basic' || id==='static') return {f:FORMULAS.basic, known:true, id:String(id||'basic')};
+  if(FORMULAS[id]) return {f:FORMULAS[id], known:true, id:id};
+  return {f:FORMULAS.basic, known:false, id:String(id)};
+}
+
+/* ---------- 狙い目: 表・状態・セレクタ ---------- */
+function byG(a, b){ return a.g-b.g; }
+function rowsOf(tb){
+  if(tb._rows) return tb._rows;
+  var out = [], hits = Array.isArray(tb.hit) ? tb.hit : null;
+  (tb.rows||[]).forEach(function(a, i){
+    if(!a) return;
+    var r = Array.isArray(a) ? {g:+a[0], inv:+a[1], get:+a[2], ng:+a[3], tg:+a[4], n:+a[5]} : {g:+a.g, inv:+a.inv, get:+a.get, ng:+a.ng, tg:+a.tg, n:+a.n};
+    if(!isFinite(r.g) || !isFinite(r.inv) || !isFinite(r.get) || !isFinite(r.ng) || !(r.tg>0) || !(r.n>0)) return;   // サンプル0の行は使わない
+    var h = hits ? +hits[i] : (a && !Array.isArray(a) ? +a.hit : NaN); r.hit = (isFinite(h) && h>0) ? h : null;
+    out.push(r);
+  });
+  out.sort(byG); tb._rows = out; return out;
+}
+function srowsOf(st){
+  if(st._rows) return st._rows;
+  var out = [];
+  (st.rows||[]).forEach(function(r){
+    if(!r) return; var g = parseFloat(String(r.g).replace(/,/g,'')), ev = numOr(r.ev, NaN);
+    if(!isFinite(g) || !isFinite(ev)) return;
+    out.push({g:g, ev:ev, payout:numOr(r.payout, null), min:numOr(r.min, null), hourly:numOr(r.hourly, null), hit:numOr(r.hit, null), n:numOr(r.n, null)});
+  });
+  out.sort(byG); st._rows = out; return out;
+}
+function lowN(p){ return p.n!=null && p.n<A.th.nmin; }      // サンプルが少ない(n が不明の表は少ないとは扱わない)
+function nText(p){ return p.n==null ? '—' : fmt(p.n); }
+function optV(o){ return (o && typeof o==='object') ? String(o.v) : String(o); }
+function optT(o){ return (o && typeof o==='object') ? String(o.t!=null ? o.t : o.v) : String(o); }
+function optText(sel, v){ var os = (sel && sel.options)||[]; for(var i=0;i<os.length;i++){ if(optV(os[i])===v) return optT(os[i]); } return v; }
+function cleanLabel(s){ return String(s==null?'':s).replace(/<br\s*\/?>/gi,'').replace(/<[^>]*>/g,''); }
+function smartSplit(key, sels){
+  // 選択肢の値そのものに「,」が入っている場合に備えて、左から選択肢の値で照合する
+  var res = [], pos = 0;
+  for(var i=0;i<sels.length;i++){
+    var last = (i===sels.length-1), vals = ((sels[i].options||[]).map(optV)).concat(['']);
+    vals.sort(function(a,b){ return b.length-a.length; });
+    var hit = null;
+    for(var j=0;j<vals.length;j++){ var v = vals[j]; if(key.substr(pos, v.length)===v && (last ? pos+v.length===key.length : key.charAt(pos+v.length)===',')){ hit = v; break; } }
+    if(hit===null) return null;
+    res.push(hit); pos += hit.length+1;
+  }
+  return res;
+}
+function staticGroups(M){
+  // static を題ごとにまとめる(出現順)。題を空白で区切った語を、セレクタの選択値として使う
+  if(M._sgroups) return M._sgroups;
+  var groups = [], seen = {};
+  (M.static||[]).forEach(function(st){ var t = String(st.title||''); if(seen[t]){ seen[t].list.push(st); return; } var g = {title:t, list:[st], toks:t.split(/\s+/).filter(Boolean)}; seen[t] = g; groups.push(g); });
+  var n = 0; groups.forEach(function(g){ n = Math.max(n, g.toks.length); });
+  var sels = [];
+  if(groups.length>1){
+    for(var i=0;i<n;i++){
+      var vals = []; groups.forEach(function(g){ var v = g.toks[i]||''; if(v && vals.indexOf(v)<0) vals.push(v); });
+      var lab = commonAffix(vals) || (i===0 ? '分類' : '条件'+(i+1)); if(lab==='スルー') lab = 'スルー回数';
+      sels.push({label:lab, options:vals});
+    }
+  }
+  groups.forEach(function(g){ var parts = []; for(var i=0;i<n;i++) parts.push(g.toks[i]||''); g.key = parts.join(','); g.parts = parts; });
+  M._sgroups = groups; M._sels = sels; return groups;
+}
+function commonAffix(vals){
+  if(vals.length<2) return '';
+  var pre = vals[0], suf = vals[0];
+  vals.forEach(function(v){ var i = 0; while(i<pre.length && i<v.length && pre.charAt(i)===v.charAt(i)) i++; pre = pre.slice(0, i); var j = 0; while(j<suf.length && j<v.length && suf.charAt(suf.length-1-j)===v.charAt(v.length-1-j)) j++; suf = suf.slice(suf.length-j); });
+  pre = pre.replace(/[0-9０-９+\-−～〜]+$/, ''); suf = suf.replace(/^[0-9０-９+\-−～〜]+/, '');
+  if(pre.length>=2) return pre; if(suf.length>=2) return suf; return '';
+}
+function selsOf(M){ if(!(M.tables && M.tables.length) && M.static && M.static.length){ staticGroups(M); return M._sels||[]; } return M.selectors||[]; }
+function convOf(M){
+  if(M._conv) return M._conv;
+  var sels = M.selectors||[], n = sels.length, tables = M.tables||[], out = [];
+  if(!tables.length && M.static && M.static.length){
+    var groups = staticGroups(M);
+    if((M._sels||[]).length) groups.forEach(function(g, i){ out.push({key:g.key, parts:g.parts, idx:i}); });
+    M._conv = out; return out;
+  }
+  if(n && M.conv && typeof M.conv==='object'){
+    Object.keys(M.conv).forEach(function(key){
+      var idx = M.conv[key]; if(!tables[idx]) return;
+      var parts = key.split(',');
+      if(parts.length!==n){ parts = smartSplit(key, sels) || parts.slice(0, n); while(parts.length<n) parts.push(''); }
+      out.push({key:key, parts:parts, idx:idx});
+    });
+  }
+  M._conv = out; return out;
+}
+function statesOf(M){
+  // 状態の一覧。セレクタ(conv)がある機種は組合せごと、無い機種は表ごと、static だけの機種は題ごと
+  if(M._states) return M._states;
+  var out = [], sels = selsOf(M);
+  if(M.tables && M.tables.length){
+    var conv = convOf(M);
+    if(conv.length){
+      conv.forEach(function(c){
+        var tb = M.tables[c.idx], txt = [];
+        c.parts.forEach(function(v, i){ if(v!=='') txt.push(optText(sels[i], v)); });
+        out.push({id:'c:'+c.key, kind:'table', tb:tb, parts:c.parts, label:txt.join(' / '), title:String(tb.title||''), reset:RESET_RE.test(txt.join(' ')+' '+(tb.title||''))});
+      });
+    } else {
+      M.tables.forEach(function(tb, i){ out.push({id:'t:'+i, kind:'table', tb:tb, parts:null, label:stripName(tb.title||('表'+(i+1)), M.name), title:String(tb.title||''), reset:RESET_RE.test(String(tb.title||''))}); });
+    }
+  } else if(M.static && M.static.length){
+    var groups = staticGroups(M), sconv = convOf(M);
+    groups.forEach(function(g, i){
+      var lab = stripName(g.title, M.name) || '期待値表';
+      out.push({id:(sconv.length ? 'c:'+g.key : 's:'+i), kind:'static', list:g.list, parts:(sconv.length ? g.parts : null), label:lab, title:g.title, reset:RESET_RE.test(g.title)});
+    });
+  }
+  M._states = out; return out;
+}
+function resolveSel(M, want, prefer){
+  // 保存してある選択(want)を conv に合わせて有効な組合せに直す。cands[i] = そのセレクタでいま選べる値('' だけなら非表示)
+  var conv = convOf(M), sels = selsOf(M), chosen = [], cands = [], pool = conv;
+  for(var i=0;i<sels.length;i++){
+    var seen = {}, vals = [], order = (sels[i].options||[]).map(optV);
+    pool.forEach(function(c){ var v = c.parts[i]; if(!seen['v'+v]){ seen['v'+v] = 1; vals.push(v); } });
+    vals.sort(function(a, b){ var ia = order.indexOf(a), ib = order.indexOf(b); return (ia<0?999:ia) - (ib<0?999:ib); });
+    var v = null;
+    if(want && want[i]!=null && seen['v'+String(want[i])]) v = String(want[i]);
+    else if(prefer){ var pt = prefer[sels[i].label]; if(pt!=null) vals.forEach(function(x){ if(v===null && x!=='' && optText(sels[i], x)===pt) v = x; }); }
+    if(v===null) v = vals.length ? vals[0] : '';
+    chosen.push(v); cands.push(vals);
+    pool = pool.filter(function(c){ return c.parts[i]===v; });
+  }
+  return {chosen:chosen, cands:cands, entry:pool[0]||null};
+}
+function changeSel(M, id, i, v, key){
+  key = key || 'sel';
+  var sels = selsOf(M), old = resolveSel(M, A[key][id]), prefer = {}, want = old.chosen.slice();
+  sels.forEach(function(s, j){ if(old.chosen[j]!=='') prefer[s.label] = optText(s, old.chosen[j]); });
+  want[i] = String(v);
+  for(var j=i+1;j<sels.length;j++){ if(old.chosen[j]==='') want[j] = null; }   // いままで隠れていたセレクタは、同じ見出しの直前の選択を引き継ぐ
+  A[key][id] = resolveSel(M, want, prefer).chosen;
+}
+function stateById(M, sid){ var ss = statesOf(M); for(var i=0;i<ss.length;i++){ if(ss[i].id===sid) return ss[i]; } return null; }
+function currentState(M, id){
+  var ss = statesOf(M); if(!ss.length) return null;
+  if(convOf(M).length){ var r = resolveSel(M, A.sel[id]); A.sel[id] = r.chosen; return (r.entry && stateById(M, 'c:'+r.entry.key)) || ss[0]; }
+  var i = A.st[id]|0; if(i<0 || i>=ss.length) i = 0; return ss[i];
+}
+function pickStatic(st, rate){
+  // 交換率固定の表: 選択中と同じ交換率の表 → 無ければ「貸出=交換」どうしで換算 → 無ければ交換率の違う2つの表から投資枚・獲得枚を逆算 → それも無理なら一番近い表(参考)
+  var list = st.list.map(function(s){ return {s:s, pr:parseRate(s.rate)}; }).filter(function(x){ return !!x.pr; });
+  if(!list.length) return {mode:'near', st:st.list[0], rate:null, exact:false, scaled:false, scale:1};
+  for(var i=0;i<list.length;i++){ if(list[i].pr.kashi===rate.kashi && list[i].pr.kokan===rate.kokan) return {mode:'exact', st:list[i].s, rate:list[i].pr, exact:true, scaled:false, scale:1}; }
+  var eq = null; list.forEach(function(x){ if(!eq && x.pr.kashi===x.pr.kokan) eq = x; });
+  if(rate.kashi===rate.kokan && eq) return {mode:'scale', st:eq.s, rate:eq.pr, exact:false, scaled:true, scale:eq.pr.kokan/rate.kokan};   // 期待値=(獲得−投資)×1000/交換枚数
+  // 逆算: 比率(交換÷貸出)が違う2つの表があれば、行ごとに 獲得枚・投資枚 が一意に決まる
+  var byRatio = list.slice().sort(function(x, y){ return rateDist(x.pr, rate)-rateDist(y.pr, rate); });
+  var A = eq || byRatio[0], B = null;
+  byRatio.forEach(function(x){ if(!B && x!==A && Math.abs(Math.log((x.pr.kokan/x.pr.kashi)/(A.pr.kokan/A.pr.kashi)))>1e-6) B = x; });
+  if(B){ var C = null; list.forEach(function(x){ if(!C && x!==A && x!==B) C = x; }); return {mode:'derive', st:A.s, rate:A.pr, A:A, B:B, C:C, exact:false, scaled:false, scale:1}; }
+  return {mode:'near', st:byRatio[0].s, rate:byRatio[0].pr, exact:false, scaled:false, scale:1};
+}
+function solveGetInv(evA, prA, evB, prB){
+  // evA = get×1000/oa − inv×1000/ka, evB = get×1000/ob − inv×1000/kb を get, inv について解く
+  var a11 = 1000/prA.kokan, a12 = -1000/prA.kashi, a21 = 1000/prB.kokan, a22 = -1000/prB.kashi, det = a11*a22 - a12*a21;
+  if(Math.abs(det)<1e-9) return null;
+  return {get:(evA*a22 - a12*evB)/det, inv:(a11*evB - a21*evA)/det};
+}
+function staticPoints(pk, rate){
+  if(pk.mode!=='derive'){
+    return srowsOf(pk.st).map(function(r){ return {g:r.g, ev:r.ev*pk.scale, payout:r.payout, min:r.min, hourly:(r.hourly==null ? null : r.hourly*pk.scale), hit:r.hit, n:r.n, raw:null}; });
+  }
+  var rowsA = srowsOf(pk.A.s), mapB = {}, mapC = {};
+  srowsOf(pk.B.s).forEach(function(r){ mapB[r.g] = r; }); if(pk.C) srowsOf(pk.C.s).forEach(function(r){ mapC[r.g] = r; });
+  var out = [];
+  rowsA.forEach(function(r){
+    var rb = mapB[r.g]; if(!rb) return;
+    var gi = solveGetInv(r.ev, pk.A.pr, rb.ev, pk.B.pr); if(!gi) return;
+    var ev = gi.get*1000/rate.kokan - gi.inv*1000/rate.kashi, bad = false;
+    var rc = mapC[r.g]; if(rc){ var pred = gi.get*1000/pk.C.pr.kokan - gi.inv*1000/pk.C.pr.kashi; if(Math.abs(pred-rc.ev)>Math.max(60, Math.abs(rc.ev)*0.03)) bad = true; }   // 3つ目の表と合わない行は元データの不整合
+    out.push({g:r.g, ev:ev, payout:r.payout, min:r.min, hourly:(r.min>0 ? ev/r.min*60 : null), hit:r.hit, n:r.n, raw:null, derived:{get:gi.get, inv:gi.inv}, bad:bad});
+  });
+  return out;
+}
+function point(se, r){
+  var f = se.F.f, ev = f.ev(r, se.rate, se.M), min = f.minutes(r, se.M);
+  return {g:r.g, ev:ev, payout:f.payout(r, se.M), min:min, hourly:(min>0 ? ev/min*60 : null), hit:f.hit(r, se.M), n:r.n, raw:r};
+}
+function seriesFor(M, st, rate){
+  var se = {kind:st.kind, M:M, rate:rate, state:st, title:st.title, pts:[]};
+  if(st.kind==='table'){ se.F = formulaOf(M); se.pts = rowsOf(st.tb).map(function(r){ return point(se, r); }); return se; }
+  var pk = pickStatic(st, rate); se.pick = pk;
+  se.pts = staticPoints(pk, rate);
+  return se;
+}
+function seriesAt(se, G){
+  // G数での値。行の間は前後の行を線形補間、表の範囲外は端の行。mode: exact / interp / below / above / first(未入力)
+  var pts = se.pts; if(!pts.length) return null;
+  var first = pts[0], last = pts[pts.length-1];
+  if(G==null || !isFinite(G)) return {p:first, mode:'first', lo:first, hi:first};
+  if(G<first.g) return {p:first, mode:'below', lo:first, hi:first};
+  if(G>last.g) return {p:last, mode:'above', lo:last, hi:last};
+  var i = 0; while(i<pts.length && pts[i].g<G) i++;
+  if(pts[i].g===G) return {p:pts[i], mode:'exact', lo:pts[i], hi:pts[i]};
+  var lo = pts[i-1], hi = pts[i], t = (G-lo.g)/(hi.g-lo.g), n = (lo.n==null || hi.n==null) ? null : Math.min(lo.n, hi.n), p;
+  if(se.kind==='table'){
+    p = point(se, {g:G, inv:lerp(lo.raw.inv, hi.raw.inv, t), get:lerp(lo.raw.get, hi.raw.get, t), ng:lerp(lo.raw.ng, hi.raw.ng, t), tg:lerp(lo.raw.tg, hi.raw.tg, t), n:n, hit:((lo.raw.hit!=null && hi.raw.hit!=null) ? lerp(lo.raw.hit, hi.raw.hit, t) : null)});
+  } else {
+    var L = function(k){ return (lo[k]==null || hi[k]==null) ? null : lerp(lo[k], hi[k], t); };
+    p = {g:G, ev:L('ev'), payout:L('payout'), min:L('min'), hit:L('hit'), n:n, raw:null, bad:!!(lo.bad || hi.bad)};
+    if(lo.derived && hi.derived) p.derived = {get:lerp(lo.derived.get, hi.derived.get, t), inv:lerp(lo.derived.inv, hi.derived.inv, t)};
+    p.hourly = (p.min>0) ? p.ev/p.min*60 : L('hourly');
+  }
+  return {p:p, mode:'interp', lo:lo, hi:hi};
+}
+function goRanges(se, th){
+  // 期待値が th 円以上になるG数の範囲を 10G刻みで求める。サンプルが基準未満の行は判定に使わない(該当行がほとんど無い表は全行で判定し soft=true)
+  var pts = se.pts, out = {ranges:[], from:null, to:null, soft:false};
+  if(!pts.length) return out;
+  var solid = pts.filter(function(p){ return !lowN(p); });
+  out.soft = solid.length<2;
+  var use = out.soft ? pts : solid, g0 = use[0].g, g1 = use[use.length-1].g, grid = [g0], cur = null;
+  for(var g = Math.floor(g0/10)*10+10; g<=g1; g+=10) grid.push(g);
+  out.from = g0; out.to = g1;
+  grid.forEach(function(g){
+    var at = seriesAt(se, g), ok = !!at && at.p.ev>=th && (out.soft || !lowN(at.p));
+    if(ok){ if(!cur) cur = {from:g, to:g}; else cur.to = g; }
+    else if(cur){ out.ranges.push(cur); cur = null; }
+  });
+  if(cur){ cur.open = true; out.ranges.push(cur); }
+  return out;
+}
+function rangeText(R, r){
+  var head = (r.from===R.from);
+  if(r.open) return head ? '最初から' : fmt(r.from)+'G〜';
+  if(head) return '最初〜'+fmt(r.to)+'G';
+  return r.from===r.to ? fmt(r.from)+'G' : fmt(r.from)+'〜'+fmt(r.to)+'G';
+}
+function rangesText(R){
+  if(!R.ranges.length) return '表の範囲にはなし';
+  var rs = R.ranges, parts = rs.map(function(r){ return rangeText(R, r); });
+  if(parts.length>3) parts = [parts[0], parts[1], '…', parts[parts.length-1]];
+  return parts.join('、');
+}
+function goLines(title, R0, RG){
+  var th = A.th, go = Math.max(th.go, th.border);
+  return '<div class="golines"><div class="t">'+esc(title)+'</div>'+
+    '<div class="ln"><span class="k">'+(th.border===0 ? 'プラスになる（0円以上）' : 'ボーダー（'+esc(yen0(th.border))+'円以上）')+'</span><b class="num'+(R0.ranges.length?'':' no')+'">'+esc(rangesText(R0))+'</b></div>'+
+    (go!==th.border ? '<div class="ln"><span class="k">打てる（'+esc(yen0(go))+'円以上）</span><b class="num'+(RG.ranges.length?'':' no')+'">'+esc(rangesText(RG))+'</b></div>' : '')+
+    '<div class="sub" style="margin-top:3px">10G刻みで判定。'+(R0.soft ? 'サンプル'+fmt(th.nmin)+'件以上の行がほとんど無いため、全部の行を使用（参考）。' : 'サンプル'+fmt(th.nmin)+'件以上の範囲（'+fmt(R0.from)+'〜'+fmt(R0.to)+'G）が対象。')+'</div></div>';
+}
+function isSoft(se, at){
+  // 参考扱い: サンプル少 / 表の範囲外 / 式が未確定 / 交換率の違う固定表
+  return lowN(at.p) || at.mode==='above' || at.mode==='below' || (se.kind==='table' && !se.F.known) || (se.kind==='static' && (se.pick.mode==='near' || !!at.p.bad));
+}
+function aimVerdict(ev){
+  var go = Math.max(A.th.go, A.th.border);
+  if(ev>=go) return {w:'打てる', cls:'hot'};
+  if(ev>=A.th.border) return {w:'ボーダー付近', cls:'warm'};
+  return {w:'まだ早い', cls:'cool'};
+}
+function nextFrom(R, G){ for(var i=0;i<R.ranges.length;i++){ var r = R.ranges[i]; if(r.to>=G || r.open) return Math.max(r.from, G); } return null; }
+function hitText(p){ return (p.hit!=null && p.hit>0) ? '1/'+(p.hit>=100 ? fmt(p.hit) : f1(p.hit)) : '—'; }
+function minText(p){ return (p.min!=null && isFinite(p.min)) ? fmt(p.min)+'分' : '—'; }
+function unitOf(M, st){
+  // G数の呼び名: 表の sec(データG / ST間 …)があればそれ、無ければ機種の unit(括弧書きの注は外す)
+  var sec = st && st.kind==='table' && st.tb && st.tb.sec ? String(st.tb.sec) : '';
+  if(sec) return /G|ゲーム|あべし/.test(sec) ? sec : sec+'ゲーム数';
+  return String(M.unit||'ゲーム数').replace(/[（(].*$/, '') || 'ゲーム数';
+}
+function unitNotes(M, st){
+  var notes = (M.unit_note||[]).map(String), sec = (st && st.kind==='table' && st.tb && st.tb.sec) ? String(st.tb.sec) : '';
+  if(sec && notes.length>1){ var hit = notes.filter(function(x){ return x.indexOf(sec)>=0; }); if(hit.length) notes = hit; }
+  return notes;
+}
+function probLabel(st){ var pr = st && st.kind==='table' && st.tb && st.tb.prob ? String(st.tb.prob) : '初当り'; return pr+'の目安'; }
+function condLines(M, st){
+  // この表の集計条件(出典サイトの記載)。表の cond は cond_lines の番号
+  if(!st) return [];
+  if(st.kind==='table'){ var all = M.cond_lines||[], idx = st.tb && st.tb.cond; if(Array.isArray(idx)) return idx.map(function(i){ return all[i]; }).filter(function(x){ return x!=null; }).map(String); return all.map(String); }
+  var out = (M.cond_lines||[]).map(String); if(M.static_note) out.push(String(M.static_note)); return out;
+}
+function condHtml(M, st){
+  var ls = condLines(M, st); if(!ls.length) return '';
+  return '<details class="adv"><summary>この表の集計条件（出典サイトの記載 '+ls.length+'件）</summary><ul class="plist" style="font-size:11.5px;color:var(--ink-2)">'+ls.map(function(x){ return '<li>'+esc(x)+'</li>'; }).join('')+'</ul></details>';
+}
+function fixtureNames(){
+  var n = [];
+  if(TENJO && TENJO.fixture) n.push('期待値の表'); if(AIMD && AIMD.fixture) n.push('天井・狙い目の情報'); if(MANUAL && MANUAL.fixture) n.push('手順');
+  return n;
+}
+function modeFlags(se, at){
+  var p = at.p, pts = se.pts, flags = [];
+  if(TENJO && TENJO.fixture) flags.push(['warm', '見本データ']);
+  if(at.mode==='interp') flags.push(['', '補間（'+fmt(at.lo.g)+'Gと'+fmt(at.hi.g)+'Gの行から）']);
+  if(at.mode==='below') flags.push(['warm', '表の範囲外（表は'+fmt(pts[0].g)+'Gから。'+fmt(pts[0].g)+'Gの行で計算）']);
+  if(at.mode==='above') flags.push(['warm', '表の範囲外（表は'+fmt(pts[pts.length-1].g)+'Gまで。最後の行で計算）']);
+  if(at.mode==='first') flags.push(['', 'G数が未入力（表の先頭 '+fmt(pts[0].g)+'G の行）']);
+  if(lowN(p)) flags.push(['warm', '参考（サンプル '+fmt(p.n)+'件）']);
+  if(p.n==null) flags.push(['', 'サンプル数不明（表に記載なし）']);
+  if(se.kind==='table' && !se.F.known) flags.push(['warm', '参考（この機種の式は未確定。基本式で計算）']);
+  if(se.kind==='static' && se.pick.mode==='scale') flags.push(['', rateText(se.pick.rate, se.pick.st.rate)+'の表から換算']);
+  if(se.kind==='static' && se.pick.mode==='derive') flags.push([p.bad ? 'warm' : '', p.bad ? '参考（'+staticPairText(se.pick)+'の表から逆算したが、3つ目の表と合わない行）' : staticPairText(se.pick)+'の表から逆算']);
+  if(se.kind==='static' && se.pick.mode==='near') flags.push(['warm', '参考（'+rateText(se.pick.rate, se.pick.st.rate)+'の表。選択中の交換率の表なし）']);
+  return flags;
+}
+function staticPairText(pk){ return rateText(pk.A.pr, pk.A.s.rate)+'と'+rateText(pk.B.pr, pk.B.s.rate); }
+function flagsHtml(flags){ return flags.map(function(f){ return '<span class="badge'+(f[0]?' '+f[0]:'')+'" style="white-space:normal">'+esc(f[1])+'</span>'; }).join(''); }
+
+/* ---------- 狙い目: 部品 ---------- */
+function aimSubtabs(){
+  var cur = aimTab();
+  return '<div class="subtabs" role="tablist" aria-label="狙い目の切り替え">'+aimTabs().map(function(t){ return '<button type="button" role="tab" aria-selected="'+(t[0]===cur)+'" data-aimtab="'+t[0]+'"'+(t[0]===cur?' class="on"':'')+'>'+esc(t[1])+'</button>'; }).join('')+'</div>';
+}
+function aimNotice(){
+  var n = fixtureNames(); if(!n.length) return '';
+  return '<div class="notice warn"><span class="grow"><b>見本データで表示しています。</b>'+esc(n.join('・'))+'は開発用の見本で、実際の数値とは違います。実データを取り込むと置き換わります。</span></div>';
+}
+function aimHead(m, sub){
+  var th = m.theme, btns = '<button type="button" class="btn sm ghost" data-aimtab="list">機種を変える</button><button type="button" class="btn sm ghost" data-go="judge">判別へ</button>';
+  var unit = S.unit ? '<span class="unitchip">台番 <b class="num">'+esc(S.unit)+'</b></span>' : '';
+  if(th && th.wall) return '<div class="hero mini" style="background-image:url(&quot;'+th.wall+'&quot;);--hero-pos:'+esc(th.wall_pos||'center')+'"><span class="tag">'+esc(sub)+'</span><div class="hin"><div class="grow"><div class="disp name">'+esc(m.short)+'</div><div class="full">'+esc(m.name)+'</div></div>'+unit+btns+'</div></div>';
+  return '<div class="mhead wrap"><div class="grow"><div class="disp name">'+esc(m.short)+'</div><div class="full">'+esc(m.name)+'　<span class="sub">'+esc(sub)+'</span></div></div>'+unit+btns+'</div>';
+}
+function rateHelp(){
+  var r = A.rate, now = rateNow();
+  if(r.preset==='chodama') return now.label+'。手持ちの貯メダルで打つ前提です。';
+  if(r.preset==='50_50') return now.label+'。';
+  return now.label+'。現金で借りて打ち、出たメダルを交換する前提です。';
+}
+function rateCtl(){
+  var r = A.rate;
+  var opts = [['46_51','46枚・51枚'],['50_50','等価'],['chodama','貯メダル'],['custom','自分で入力']];
+  var h = '<div class="subtabs rateseg" role="group" aria-label="交換率">'+opts.map(function(o){ return '<button type="button"'+(r.preset===o[0]?' class="on"':'')+' data-aimrate="'+o[0]+'" aria-pressed="'+(r.preset===o[0])+'">'+esc(o[1])+'</button>'; }).join('')+'</div>';
+  if(r.preset==='custom') h += '<div class="rategrid"><label for="aimKashi">貸出枚数（1000円で借りられる枚数）<input id="aimKashi" inputmode="decimal" class="num" data-aimnum="kashi" value="'+esc(r.kashi)+'"></label><label for="aimKokan">交換枚数（1000円ぶんの景品に要る枚数）<input id="aimKokan" inputmode="decimal" class="num" data-aimnum="kokan" value="'+esc(r.kokan)+'"></label></div>';
+  if(r.preset==='chodama') h += '<div class="rategrid one"><label for="aimCk">交換枚数（1000円ぶんの景品に要る枚数）<input id="aimCk" inputmode="decimal" class="num" data-aimnum="ck" value="'+esc(r.ck)+'"></label></div>';
+  h += '<div class="sub" style="margin-top:6px">いまの計算: <b id="aimRateNow">'+esc(rateHelp())+'</b></div>';
+  return h;
+}
+function thCtl(){
+  var th = A.th;
+  return '<details class="adv" style="margin-top:6px"><summary>判定の基準を変える</summary><div class="thgrid">'+
+    '<label for="aimThGo">「打てる」にする期待値<input id="aimThGo" inputmode="numeric" class="num" data-aimth="go" value="'+esc(th.go)+'"><span>円以上</span></label>'+
+    '<label for="aimThBorder">「ボーダー付近」にする期待値<input id="aimThBorder" inputmode="numeric" class="num" data-aimth="border" value="'+esc(th.border)+'"><span>円以上</span></label>'+
+    '<label for="aimThN">サンプルが少ないとみなす件数<input id="aimThN" inputmode="numeric" class="num" data-aimth="nmin" value="'+esc(th.nmin)+'"><span>件未満</span></label></div>'+
+    '<div class="row" style="justify-content:space-between"><span class="sub">初期値: +2,000円 / 0円 / 100件</span><button type="button" class="btn sm" data-aimthreset="1">初期値に戻す</button></div></details>';
+}
+function stepField(id, key, label, imp, val, note){
+  return '<div class="dfield wide"><label for="'+id+'">'+esc(label)+(imp?'<span class="imp">'+esc(imp)+'</span>':'')+'</label>'+
+    '<input id="'+id+'" inputmode="numeric" pattern="[0-9]*" class="led" data-aim="'+key+'" value="'+esc(val==null?'':val)+'" placeholder="0">'+
+    '<div class="tools four"><button type="button" class="minus1" data-aimstep="-50" data-aimkey="'+key+'">−50</button><button type="button" class="minus1" data-aimstep="-10" data-aimkey="'+key+'">−10</button><button type="button" class="plus" data-aimstep="10" data-aimkey="'+key+'">＋10</button><button type="button" class="plus" data-aimstep="50" data-aimkey="'+key+'">＋50</button></div>'+
+    '<div class="rate" id="'+id+'Note">'+esc(note||'')+'</div></div>';
+}
+function selCtl(M, id, r, attr){
+  // 状態のセレクタ。conv が無い機種は表(題)を1つ選ぶ。2列に並べ、選択肢が長いものは横いっぱいに使う
+  // r: resolveSel の結果(省略時は天井狙い用に A.sel から作る)、attr: select に付ける data 属性(省略時 data-aimsel)
+  var ss = statesOf(M), sels = selsOf(M); attr = attr || 'data-aimsel';
+  if(convOf(M).length){
+    if(!r){ r = resolveSel(M, A.sel[id]); A.sel[id] = r.chosen; }
+    var vis = [], pfx = attr.replace(/^data-/, '');
+    sels.forEach(function(s, i){
+      var vals = r.cands[i]; if(!vals.length || (vals.length===1 && vals[0]==='')) return;
+      var longest = 0; vals.forEach(function(v){ longest = Math.max(longest, optText(s, v).length); });
+      vis.push({s:s, i:i, vals:vals, wide:longest>9});
+    });
+    var narrow = vis.filter(function(x){ return !x.wide; });
+    if(narrow.length%2===1) narrow[narrow.length-1].wide = true;
+    return vis.map(function(x){
+      return '<div class="condrow'+(x.wide?' wide':'')+'"><label for="'+pfx+x.i+'">'+esc(cleanLabel(x.s.label))+'</label><select class="sel" id="'+pfx+x.i+'" '+attr+'="'+x.i+'"'+(x.vals.length===1?' disabled':'')+'>'+
+        x.vals.map(function(v){ return '<option value="'+esc(v)+'"'+(v===r.chosen[x.i]?' selected':'')+'>'+esc(v==='' ? '（指定なし）' : optText(x.s, v))+'</option>'; }).join('')+'</select></div>';
+    }).join('');
+  }
+  if(ss.length<2) return '';
+  var cur = currentState(M, id);
+  return '<div class="condrow wide"><label for="aimState">状態（表を選ぶ）</label><select class="sel" id="aimState" data-aimstate="1">'+ss.map(function(s, i){ return '<option value="'+i+'"'+(s===cur?' selected':'')+'>'+esc(s.label)+'</option>'; }).join('')+'</select></div>';
+}
+function nearAims(AI, rate){
+  // 狙い目ラインを「選択中の交換率に近い順」に並べる。near=true が一番近い交換率のもの
+  var list = ((AI && AI.aim)||[]).map(function(a, i){ var any = !String(a.rate==null?'':a.rate).trim(), pr = any ? null : parseRate(a.rate); return {a:a, i:i, pr:pr, any:any, d:(any ? Infinity : rateDist(pr, rate))}; });
+  var best = Infinity; list.forEach(function(x){ if(!x.any && x.d<best) best = x.d; });
+  list.forEach(function(x){ x.near = x.any || (best===Infinity) || (x.d<=best+1e-9); });
+  list.sort(function(x, y){ return (x.near===y.near) ? x.i-y.i : (x.near ? -1 : 1); });
+  return list;
+}
+function srcOf(v){ if(!v) return ''; if(Array.isArray(v)) return v.map(srcOf).filter(Boolean).join('、'); if(typeof v==='object') return String(v.name||''); return String(v); }
+function aimInfo(AI, rate){
+  if(!AI) return '';
+  var h = '';
+  if(AI.ceiling && AI.ceiling.length) h += '<div class="card"><h2>天井の条件<span class="n">'+AI.ceiling.length+'件</span></h2>'+AI.ceiling.map(function(c){
+    return '<div class="aimrow"><div class="k">'+esc(c.name)+'</div><div class="v num">'+esc(c.cond)+'</div><div class="d">'+(c.benefit?'恩恵: '+esc(c.benefit):'')+'</div><div class="s">'+(srcOf(c.src)?'出典 '+esc(srcOf(c.src)):'出典の記載なし')+'</div></div>'; }).join('')+'</div>';
+  if(AI.aim && AI.aim.length){
+    var list = nearAims(AI, rate), nearL = list.filter(function(x){ return x.near; }), farL = list.filter(function(x){ return !x.near; });
+    var row = function(x){ var a = x.a;
+      return '<div class="aimrow'+(x.near?'':' far')+'"><div class="k">'+esc(a.cond)+'</div><div class="v num">'+esc(a.from)+'</div><div class="d"><span class="badge'+(x.near?' acc':'')+'">'+esc(x.any ? '交換率を問わない' : a.rate)+'</span>'+(a.note?' '+esc(a.note):'')+'</div><div class="s">'+(srcOf(a.src)?'出典 '+esc(srcOf(a.src)):'出典の記載なし')+'</div></div>'; };
+    var SHOW = 8, head = nearL.slice(0, SHOW), rest = nearL.slice(SHOW);
+    h += '<div class="card"><h2>狙い目ライン<span class="n">打ち始めの目安・'+esc(rate.short)+'</span></h2>'+head.map(row).join('')+
+      (rest.length ? '<details class="adv" style="margin-top:6px"><summary>続き（'+rest.length+'件）</summary>'+rest.map(row).join('')+'</details>' : '')+
+      (farL.length ? '<details class="adv" style="margin-top:6px"><summary>ほかの交換率の行（'+farL.length+'件）</summary>'+farL.map(row).join('')+'</details>' : '')+
+      '<div class="foot">'+(farL.length ? '選択中の交換率（'+esc(rate.label)+'）にいちばん近い行と、交換率を問わない行を出しています。' : '')+'出典サイトが示している目安で、上の計算結果とは別の数字です。</div></div>';
+  }
+  if(AI.zones && AI.zones.length) h += '<div class="card"><h2>ゾーン</h2>'+AI.zones.map(function(z){ return '<div class="aimrow"><div class="k">'+esc(z.label)+'</div><div class="v"></div><div class="d" style="grid-column:1 / -1">'+esc(z.note||'')+'</div></div>'; }).join('')+'</div>';
+  if(AI.yame && AI.yame.length){ var yh = AI.yame.slice(0, 8), yr = AI.yame.slice(8);
+    h += '<div class="card"><h2>やめ時</h2><ul class="plist">'+yh.map(function(y){ return '<li>'+esc(y)+'</li>'; }).join('')+'</ul>'+(yr.length ? '<details class="adv" style="margin-top:6px"><summary>続き（'+yr.length+'件）</summary><ul class="plist">'+yr.map(function(y){ return '<li>'+esc(y)+'</li>'; }).join('')+'</ul></details>' : '')+'</div>'; }
+  if(AI.notes && AI.notes.length) h += '<div class="card"><h2>注意</h2><ul class="plist">'+AI.notes.map(function(y){ return '<li>'+esc(y)+'</li>'; }).join('')+'</ul></div>';
+  if(AI.sources && AI.sources.length) h += '<div class="srcline" style="margin:0 2px 10px">出典: '+AI.sources.map(function(s){ var u = safeUrl(s.url); return u ? '<a href="'+esc(u)+'" target="_blank" rel="noopener">'+esc(s.name||u)+'</a>' : esc(s.name||''); }).join('、')+'</div>';
+  return h;
+}
+function aimSummary(m, rate){
+  // 一覧と判別タブの導線に出す要約
+  var M = tenjoOf(m.id), AI = aimOf(m.id), out = {has:!!(M||AI), table:!!(M && statesOf(M).length), normal:!!(AI && AI.type==='normal' && !(AI.ceiling && AI.ceiling.length)), ceil:'', ceilMore:'', from:'', fromNote:'', reset:null};
+  if(AI){
+    if(AI.ceiling && AI.ceiling.length){ var c = AI.ceiling[0]; out.ceil = c.name+' '+c.cond; if(AI.ceiling.length>1) out.ceilMore = 'ほか'+(AI.ceiling.length-1)+'件'; }
+    if(AI.aim && AI.aim.length){ var x = nearAims(AI, rate)[0]; out.from = String(x.a.from||''); out.fromNote = [x.any ? '交換率を問わない' : x.a.rate, x.a.cond].filter(Boolean).join('・'); }
+    if(AI.reset) out.reset = !!(AI.reset.benefit && AI.reset.benefit.length);
+  }
+  return out;
+}
+function aimLink(m){
+  if(!(TENJO||AIMD)) return '';
+  var s = aimSummary(m, rateNow()); if(!s.has) return '';
+  var txt = s.normal ? 'ノーマルタイプ（天井なし）' : [s.ceil ? '天井 '+s.ceil : '', s.from ? '狙い目 '+s.from+(s.fromNote ? '（'+s.fromNote+'）' : '') : '', (!s.ceil && !s.from && s.table) ? '期待値の表あり' : ''].filter(Boolean).join(' ・ ');
+  return '<button type="button" class="aimlink" data-aimgo="tenjo"><b>狙い目</b><span class="grow">'+esc(txt||'天井・リセットの情報')+'</span><span class="go">見る ›</span></button>';
+}
+
+/* ---------- 狙い目: 天井狙い ---------- */
+var CH = null;
+function niceStep(raw){ if(!(raw>0)) return 1; var p = Math.pow(10, Math.floor(Math.log(raw)/Math.LN10)), f = raw/p; return (f<=1 ? 1 : f<=2 ? 2 : f<=2.5 ? 2.5 : f<=5 ? 5 : 10)*p; }
+function drawChart(se, at){
+  var box = document.getElementById('aimChart'); if(!box) return;
+  var all = se.pts, nmin = A.th.nmin; CH = null;
+  if(all.length<2){ box.innerHTML = '<div class="sub">行が1つだけの表なので、グラフはありません。</div>'; return; }
+  var lastSolid = -1; all.forEach(function(p, i){ if(!lowN(p)) lastSolid = i; });
+  var end = lastSolid>=1 ? lastSolid : all.length-1, curG = (at && at.mode!=='first') ? at.p.g : null;
+  if(at && at.mode==='above') curG = all[all.length-1].g;
+  if(curG!=null){ while(end<all.length-1 && all[end].g<curG) end++; }
+  var pts = all.slice(0, end+1), dom = pts.filter(function(p){ return !lowN(p); }); if(dom.length<2) dom = pts;
+  var W = 360, H = 200, L = 50, R = 12, T = 18, B = 24, x0 = pts[0].g, x1 = pts[pts.length-1].g;
+  var lo = 0, hi = 0; dom.forEach(function(p){ if(p.ev<lo) lo = p.ev; if(p.ev>hi) hi = p.ev; });
+  if(hi-lo<200){ hi += 100; lo -= 100; }
+  var ys = niceStep((hi-lo)/4); lo = Math.floor(lo/ys)*ys; hi = Math.ceil(hi/ys)*ys;
+  var X = function(g){ return L + (g-x0)/(x1-x0)*(W-L-R); }, Y = function(v){ return T + (hi-v)/(hi-lo)*(H-T-B); };
+  var clampY = function(v){ return Math.max(T, Math.min(H-B, Y(v))); };
+  var uid = 'c'+Math.random().toString(36).slice(2,8), y0 = Y(0), g = '';
+  for(var v = lo; v<=hi+1e-6; v+=ys){ var yy = Y(v).toFixed(1); g += '<line class="'+(Math.abs(v)<1e-6?'zero':'grid')+'" x1="'+L+'" y1="'+yy+'" x2="'+(W-R)+'" y2="'+yy+'"/><text x="'+(L-5)+'" y="'+(Y(v)+3.5).toFixed(1)+'" text-anchor="end">'+esc(yen0(v))+'</text>'; }
+  var xs = niceStep((x1-x0)/5), xt = '';
+  for(var gx = Math.ceil(x0/xs)*xs; gx<=x1+1e-6; gx+=xs){ if(gx<=0 && x0>0) continue; xt += '<text x="'+X(gx).toFixed(1)+'" y="'+(H-B+13)+'" text-anchor="middle">'+fmt(gx)+'</text>'; }
+  xt += '<text class="lab" x="'+(W-R)+'" y="'+(H-1)+'" text-anchor="end">打ち始めのG数</text><text class="lab" x="2" y="9">期待値（円）</text>';
+  var solid = '', low = '', area = 'M'+X(pts[0].g).toFixed(1)+' '+y0.toFixed(1);
+  pts.forEach(function(p, i){
+    var px = X(p.g).toFixed(1), py = clampY(p.ev).toFixed(1); area += ' L'+px+' '+py;
+    if(i===0) return;
+    var q = pts[i-1], seg = 'M'+X(q.g).toFixed(1)+' '+clampY(q.ev).toFixed(1)+' L'+px+' '+py;
+    if(!lowN(p) && !lowN(q)) solid += seg; else low += seg;
+  });
+  area += ' L'+X(pts[pts.length-1].g).toFixed(1)+' '+y0.toFixed(1)+' Z';
+  var defs = '<defs><clipPath id="'+uid+'a"><rect x="'+L+'" y="'+T+'" width="'+(W-L-R)+'" height="'+Math.max(0, y0-T).toFixed(1)+'"/></clipPath><clipPath id="'+uid+'b"><rect x="'+L+'" y="'+y0.toFixed(1)+'" width="'+(W-L-R)+'" height="'+Math.max(0, H-B-y0).toFixed(1)+'"/></clipPath></defs>';
+  var both = function(cls, d){ return d ? '<path class="'+cls+' p" d="'+d+'" clip-path="url(#'+uid+'a)"/><path class="'+cls+' m" d="'+d+'" clip-path="url(#'+uid+'b)"/>' : ''; };
+  var go = Math.max(A.th.go, A.th.border), thr = (go>lo && go<hi && go!==0) ? '<line class="thr" x1="'+L+'" y1="'+Y(go).toFixed(1)+'" x2="'+(W-R)+'" y2="'+Y(go).toFixed(1)+'"/>' : '';
+  var cur = '';
+  if(curG!=null){
+    var cg = Math.max(x0, Math.min(x1, curG)), cx = X(cg), cy = clampY(at.p.ev), lab = '現在 '+fmt(at.mode==='above' || at.mode==='below' ? A.g[S.machineId] : curG)+'G', anchor = cx>W*0.62 ? 'end' : 'start';
+    cur = '<line class="cur" x1="'+cx.toFixed(1)+'" y1="'+T+'" x2="'+cx.toFixed(1)+'" y2="'+(H-B)+'"/><circle class="dot" cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)+'" r="5"/><text class="lab" x="'+(anchor==='end' ? cx-5 : cx+5).toFixed(1)+'" y="'+(T-5)+'" text-anchor="'+anchor+'">'+esc(lab)+'</text>';
+  }
+  box.innerHTML = '<svg viewBox="0 0 '+W+' '+H+'" role="img" tabindex="0" aria-label="打ち始めのG数ごとの期待値の折れ線グラフ。同じ数字は下の表にあります">'+defs+g+xt+both('ar', area)+thr+both('ln', solid)+both('ln low', low)+cur+
+    '<line class="xh" id="aimXh" x1="0" y1="'+T+'" x2="0" y2="'+(H-B)+'" visibility="hidden"/><circle class="xd" id="aimXd" r="4.5" cx="0" cy="0" visibility="hidden"/></svg><div class="evtip" id="aimTip" hidden></div>';
+  CH = {pts:pts, X:X, Y:clampY, W:W, H:H, L:L, R:R, x0:x0, x1:x1, i:-1};
+  var key = document.getElementById('aimChartKey');
+  if(key) key.innerHTML = (hi>0?'<span class="p"><i></i>プラス</span>':'')+(lo<0?'<span class="m"><i></i>マイナス</span>':'')+(low?'<span class="low"><i></i>点線はサンプル'+fmt(nmin)+'件未満（参考）</span>':'')+(thr?'<span class="thr"><i></i>「打てる」の基準 '+esc(yen0(go))+'円</span>':'')+(cur?'<span class="cur"><i></i>いまのG数</span>':'');
+  var svg = box.querySelector('svg');
+  svg.addEventListener('pointermove', chartMove); svg.addEventListener('pointerdown', chartMove);
+  svg.addEventListener('pointerleave', function(e){ if(e.pointerType==='mouse') chartHide(); });
+  svg.addEventListener('blur', chartHide);
+  svg.addEventListener('focus', function(){ if(CH && CH.i<0) chartShow(nearestIdx(curG!=null ? curG : CH.x0)); });
+  svg.addEventListener('keydown', function(e){ if(!CH) return; var k = e.key; if(k!=='ArrowLeft' && k!=='ArrowRight') return; e.preventDefault(); chartShow(Math.max(0, Math.min(CH.pts.length-1, (CH.i<0?0:CH.i) + (k==='ArrowRight'?1:-1)))); });
+}
+function nearestIdx(g){ var best = 0, bd = Infinity; CH.pts.forEach(function(p, i){ var d = Math.abs(p.g-g); if(d<bd){ bd = d; best = i; } }); return best; }
+function chartMove(e){
+  if(!CH) return; var svg = e.currentTarget, r = svg.getBoundingClientRect(); if(!r.width) return;
+  var vx = (e.clientX-r.left)/r.width*CH.W, g = CH.x0 + (vx-CH.L)/(CH.W-CH.L-CH.R)*(CH.x1-CH.x0);
+  chartShow(nearestIdx(g));
+}
+function chartShow(i){
+  var box = document.getElementById('aimChart'), tip = document.getElementById('aimTip'), xh = document.getElementById('aimXh'), xd = document.getElementById('aimXd');
+  if(!CH || !box || !tip || !xh || !xd) return; var p = CH.pts[i]; if(!p) return; CH.i = i;
+  var x = CH.X(p.g), y = CH.Y(p.ev);
+  xh.setAttribute('x1', x.toFixed(1)); xh.setAttribute('x2', x.toFixed(1)); xh.setAttribute('visibility', 'visible');
+  xd.setAttribute('cx', x.toFixed(1)); xd.setAttribute('cy', y.toFixed(1)); xd.setAttribute('visibility', 'visible');
+  tip.textContent = '';
+  var b = document.createElement('b'); b.className = 'num'; b.textContent = yen(p.ev)+'円'; tip.appendChild(b);
+  var l1 = document.createElement('div'); l1.textContent = fmt(p.g)+'Gから打った場合'; tip.appendChild(l1);
+  var l2 = document.createElement('div'); l2.className = 'num'; l2.textContent = (p.payout!=null ? '出玉率 '+f1(p.payout)+'%　' : '')+'サンプル '+nText(p)+(p.n==null ? '' : '件')+(lowN(p) ? '（参考）' : ''); tip.appendChild(l2);
+  tip.hidden = false;
+  var bw = box.clientWidth, sc = bw/CH.W, tw = tip.offsetWidth, thh = tip.offsetHeight;
+  var left = Math.max(0, Math.min(bw-tw, x*sc - tw/2)), top = y*sc - thh - 12; if(top<0) top = y*sc + 12;
+  tip.style.left = left.toFixed(0)+'px'; tip.style.top = top.toFixed(0)+'px';
+}
+function chartHide(){ var tip = document.getElementById('aimTip'), xh = document.getElementById('aimXh'), xd = document.getElementById('aimXd'); if(tip) tip.hidden = true; if(xh) xh.setAttribute('visibility', 'hidden'); if(xd) xd.setAttribute('visibility', 'hidden'); if(CH) CH.i = -1; }
+function evTable(se, at){
+  var pts = se.pts, nmin = A.th.nmin; if(!pts.length) return '';
+  var gs = [pts[0].g], last = pts[pts.length-1].g;
+  for(var g = Math.floor(pts[0].g/50)*50+50; g<=last; g+=50) gs.push(g);
+  var curG = (at && at.mode!=='first') ? at.p.g : null, curRow = -1, anyI = false, anyLow = false;
+  if(curG!=null) gs.forEach(function(g, i){ if(g<=curG) curRow = i; });
+  var rows = gs.map(function(g, i){
+    var a = seriesAt(se, g), p = a.p, itp = a.mode==='interp', lowr = lowN(p); if(itp) anyI = true; if(lowr) anyLow = true;
+    return '<tr class="'+(i===curRow?'cur':'')+(lowr?' low':'')+'"><td class="num">'+fmt(g)+'G〜'+(itp?'<span class="tagm">補</span>':'')+'</td><td class="num '+pm(p.ev)+'">'+yen(p.ev)+'</td><td class="num">'+(p.payout!=null?f1(p.payout)+'%':'—')+'</td><td class="num '+pm(p.hourly)+'">'+yen(p.hourly)+'</td><td class="num">'+nText(p)+(lowr?'<span class="tagm">参考</span>':'')+'</td></tr>';
+  }).join('');
+  return '<div class="tscroll"><table class="evrows"><thead><tr><th>打ち始め</th><th>期待値(円)</th><th>出玉率</th><th>時給(円)</th><th>サンプル</th></tr></thead><tbody>'+rows+'</tbody></table></div>'+
+    '<div class="foot">'+(curRow>=0?'色のついた行が、いまのG数を含む行です。':'')+(anyI?'「補」は表に無いG数で、前後の行から補間した値。':'')+(anyLow?'「参考」はサンプルが'+fmt(nmin)+'件未満の行。':'')+'</div>';
+}
+function aimSource(M, se){
+  var u = safeUrl(M.url), name = srcName(M);
+  return '出典: '+(u ? '<a href="'+esc(u)+'" target="_blank" rel="noopener">'+esc(name)+'</a>' : esc(name))+(M.fetched ? '取得 '+esc(M.fetched)+' 時点' : '')+'の集計（表「'+esc(se.title||se.state.label)+'」）。'+
+    (se.kind==='table' ? '期待値・出玉率・時給はこのツールが表の枚数とG数から計算した値です。' : '交換率ごとに計算済みの表をそのまま使っています。');
+}
+function aimMemoText(m, M, se, at, rate, V, R0, RG){
+  var d = new Date(), pad = function(n){ return (n<10?'0':'')+n; }, p = at.p, th = A.th;
+  var lines = ['【設定判別ツール】'+(d.getMonth()+1)+'/'+d.getDate()+' '+pad(d.getHours())+':'+pad(d.getMinutes()), m.short+'　天井狙い'+(S.unit ? '　台番 '+S.unit : '')];
+  lines.push('状態: '+(se.state.label || se.title));
+  lines.push('打ち始め: '+fmt(p.g)+'G（'+unitOf(M, se.state)+'）'+(at.mode==='interp' ? '※'+fmt(at.lo.g)+'Gと'+fmt(at.hi.g)+'Gの行から補間' : at.mode==='below' || at.mode==='above' ? '※入力 '+fmt(numOr(A.g[m.id],0))+'G は表の範囲外。端の行で計算' : at.mode==='first' ? '※G数未入力。表の先頭の行' : ''));
+  lines.push('交換率: '+rate.label);
+  lines.push('判定: '+V.w+'　期待値 '+yen(p.ev)+'円');
+  lines.push((p.payout!=null ? '出玉率 '+f1(p.payout)+'%　' : '')+'時給 '+yen(p.hourly)+'円　消化 '+minText(p)+'　初当り '+hitText(p));
+  lines.push('サンプル数: '+(p.n==null ? '不明（表に記載なし）' : fmt(p.n)+'件'+(lowN(p) ? '（'+fmt(th.nmin)+'件未満なので参考）' : '')));
+  if(p.raw) lines.push('根拠: 投資 '+f1(p.raw.inv)+'枚・獲得 '+f1(p.raw.get)+'枚'+(hasCoef(M)?'(補正後)':'')+'・通常時 '+f1(p.raw.ng)+'G・総消化 '+f1(p.raw.tg)+'G');
+  lines.push('打てるG数: '+yen0(th.border)+'円以上='+rangesText(R0)+(Math.max(th.go, th.border)!==th.border ? ' / '+yen0(Math.max(th.go, th.border))+'円以上='+rangesText(RG) : ''));
+  var extra = [];
+  if(TENJO.fixture) extra.push('見本データ'); if(se.kind==='table' && !se.F.known) extra.push('式が未確定の機種（基本式で計算）'); if(se.kind==='static' && se.pick.mode==='scale') extra.push('等価の表から換算'); if(se.kind==='static' && se.pick.mode==='derive') extra.push('2つの交換率の表から逆算'+(p.bad?'（3つ目の表と不整合。参考）':'')); if(se.kind==='static' && se.pick.mode==='near') extra.push('交換率が違う表');
+  if(extra.length) lines.push('注意: '+extra.join('・'));
+  lines.push('出典: '+srcName(M)+(M.fetched ? '取得 '+M.fetched+' 時点' : '')+'の集計（表「'+(se.title||se.state.label)+'」）');
+  var note = A.memo[m.id]; if(note && String(note).trim()) lines.push('メモ: '+String(note).trim());
+  return lines.join('\n');
+}
+function memoCard(id, note){
+  return '<div class="card memo" id="memocard"><h2>結果をLINEに送る<span class="n">メモ</span></h2>'+
+    '<textarea id="aimMemo" data-aim="memo" rows="2" placeholder="ひとこと（任意）例: 角から3台目 / 19時まで">'+esc(note||'')+'</textarea>'+
+    '<div class="acts"><a class="btn line" id="lineShare" href="#" target="_blank" rel="noopener">LINEで送る</a><button type="button" class="btn" data-copy="1">コピー</button>'+(navigator.share?'<button type="button" class="btn" data-share="1">共有…</button>':'')+'</div>'+
+    '<textarea class="out" id="memoOut" readonly></textarea>'+
+    '<div class="sub">機種・状態・G数・交換率・期待値・サンプル数・出典を文章にします。開かない場合はコピーして貼り付けてください。</div></div>';
+}
+function renderAimTenjo(m){
+  var M = tenjoOf(m.id), AI = aimOf(m.id), rate = rateNow(), h = aimHead(m, '天井狙い');
+  var has = M && statesOf(M).length, noCeil = !(AI && AI.ceiling && AI.ceiling.length);
+  if(AI && AI.type==='normal' && !has && noCeil){
+    h += '<div class="card"><h2>ノーマルタイプ</h2><div class="sub" style="font-size:12.5px">この機種には天井がありません。打つかどうかは設定で決めます。</div><div style="margin-top:10px"><button type="button" class="btn primary" data-go="judge">設定を判別する</button></div></div>'+aimInfo(AI, rate);
+    return h;
+  }
+  if(!has){
+    h += '<div class="card"><h2>期待値の表がありません</h2><div class="sub" style="font-size:12.5px">'+(AI ? 'この機種は期待値の表をまだ取り込んでいません。下の天井条件と狙い目ラインを目安にしてください。' : 'この機種は天井・狙い目のデータをまだ取り込んでいません。')+'</div>'+
+      '<div style="margin-top:10px"><button type="button" class="btn" data-aimtab="list">データのある機種を一覧で見る</button></div></div>'+aimInfo(AI, rate);
+    return h;
+  }
+  var st = currentState(M, m.id), se = seriesFor(M, st, rate), pts = se.pts, unit = unitOf(M, st), unotes = unitNotes(M, st);
+  var range = pts.length ? '表の範囲 '+fmt(pts[0].g)+'〜'+fmt(pts[pts.length-1].g)+'G（'+pts.length+'行）' : '';
+  var conds = selCtl(M, m.id);
+  h += '<div class="device"><h2>打ち始めの条件<span class="n">'+esc(unit)+'</span></h2><div class="dgrid">'+stepField('aimG', 'g', '現在のG数', 'ここから打つ', A.g[m.id], range)+'</div>'+
+      (conds ? '<div class="conds">'+conds+'</div>' : '')+'<div class="usetable">使う表: '+esc(se.title || st.label)+(unotes.length ? '<br>'+esc(unotes.join(' ')) : '')+'</div></div>'+
+    '<div class="result" id="aimResult"></div>'+
+    '<div class="card"><h2>交換率</h2>'+rateCtl()+thCtl()+'</div>'+
+    '<div class="card"><h2>G数ごとの期待値<span class="n">'+esc(rate.short)+'</span></h2><div class="evchart" id="aimChart"></div><div class="chartkey" id="aimChartKey"></div>'+
+      '<div class="sub" style="margin-top:4px">グラフをなぞると、そのG数の値が出ます。</div></div>'+
+    '<div class="card"><h2>50G刻みの表<span class="n">'+esc(rate.short)+'</span></h2><div id="aimTable"></div></div>'+
+    aimInfo(AI, rate)+memoCard(m.id, A.memo[m.id]);
+  return h;
+}
+function updateAimTenjo(){
+  var m = byId[S.machineId], el = document.getElementById('aimResult'); if(!m || !el) return;
+  var M = tenjoOf(m.id); if(!M) return;
+  var rate = rateNow(), st = currentState(M, m.id), se = seriesFor(M, st, rate), th = A.th, tbl = document.getElementById('aimTable'), chart = document.getElementById('aimChart');
+  if(!se.pts.length){
+    el.className = 'result'; el.innerHTML = '<div class="verdict none"><div class="grow"><div class="disp word">データなし</div><div class="why">この状態の表には使える行がありません（サンプル0件）。別の状態を選んでください。</div></div></div>';
+    if(tbl) tbl.innerHTML = ''; if(chart) chart.innerHTML = ''; CH = null;
+    var mo = document.getElementById('memoOut'); if(mo) mo.value = ''; return;
+  }
+  var gIn = A.g[m.id], G = (gIn==null || gIn==='') ? null : Math.max(0, Math.floor(numOr(gIn, 0)));
+  var at = seriesAt(se, G), p = at.p, V = aimVerdict(p.ev), go = Math.max(th.go, th.border), R0 = goRanges(se, th.border), RG = goRanges(se, go);
+  var low = lowN(p), soft = isSoft(se, at);
+  var gTxt = fmt(p.g)+'G', why = gTxt+'から当たるまで打つと、1回あたりの平均は '+yen(p.ev)+'円（'+rate.label+'）。';
+  var n0 = nextFrom(R0, p.g), nG = nextFrom(RG, p.g);
+  if(V.cls==='hot') why += '「打てる」の基準 '+yen0(go)+'円 以上です。';
+  else if(V.cls==='warm') why += (nG!=null && nG>p.g) ? fmt(nG)+'Gから「打てる」の基準 '+yen0(go)+'円 以上になります（あと'+fmt(nG-p.g)+'G）。' : '表の範囲では「打てる」の基準 '+yen0(go)+'円 に届きません。';
+  else why += (n0!=null && n0>p.g) ? fmt(n0)+'Gから '+yen0(th.border)+'円 以上になります（あと'+fmt(n0-p.g)+'G）。' : 'この先も表の範囲では '+yen0(th.border)+'円 以上になりません。';
+  if(soft) why += ' 参考値なので、判断は控えめに。';
+  var kp = function(l, v, s){ return '<div class="kpi"><div class="l">'+esc(l)+'</div><div class="v num">'+v+(s?' <small>'+esc(s)+'</small>':'')+'</div></div>'; };
+  var kpis = '<div class="kpis four">'+kp('出玉率', p.payout!=null ? f1(p.payout)+'<small>%</small>' : '—', '')+kp('時給', '<span class="'+pm(p.hourly)+'">'+yen(p.hourly)+'</span><small>円</small>', '')+
+    kp(probLabel(st), esc(hitText(p)), '')+kp('消化時間', esc(minText(p)), '')+
+    '<div class="kpi" style="grid-column:1 / -1"><div class="l">サンプル数</div><div class="v num">'+(p.n==null ? '—<small>サンプル数不明</small>' : fmt(p.n)+'<small>件</small>'+(at.mode==='interp' ? ' <small>前後の行（'+fmt(at.lo.n)+'件・'+fmt(at.hi.n)+'件）の少ないほう</small>' : '')+(low ? ' <small>少ないので参考</small>' : ''))+'</div></div></div>';
+  var lines = goLines('何Gから打てるか', R0, RG);
+  var evid;
+  if(p.raw){
+    evid = '<div class="evid"><h3>根拠（生の数字）</h3><div class="status" style="margin:0"><span class="stchip">投資 <b class="num">'+f1(p.raw.inv)+'</b>枚</span><span class="stchip">獲得 <b class="num">'+f1(p.raw.get)+'</b>枚'+(hasCoef(M)?'（補正後）':'')+'</span><span class="stchip">通常時 <b class="num">'+f1(p.raw.ng)+'</b>G</span><span class="stchip">総消化 <b class="num">'+f1(p.raw.tg)+'</b>G</span></div>'+
+      '<div class="calc num">'+esc(se.F.f.text(p.raw, rate, M))+'<span class="eq">= <b>'+esc(yen(p.ev))+'円</b></span></div>'+
+      '<div class="calc">出玉率 =（通常時G×(3−50÷'+esc(String(M.coin_g))+')＋(総消化G−通常時G)×3＋獲得枚）÷（総消化G×3）。消化時間 = 総消化G÷800×60分。時給 = 期待値÷消化時間×60。'+(M.coin_g ? '' : 'コイン持ちの値が無いので出玉率は出せません。')+(hasCoef(M) ? '獲得枚は出典サイトの出玉率補正（係数 '+esc(String(Math.round(M.coef*10000)/10000))+'）を掛けた後の値。' : '')+'</div></div>';
+  } else {
+    if(se.pick.mode==='derive' && p.derived){
+      evid = '<div class="evid"><h3>根拠（逆算した数字）</h3><div class="status" style="margin:0"><span class="stchip">投資 <b class="num">'+f1(p.derived.inv)+'</b>枚</span><span class="stchip">獲得 <b class="num">'+f1(p.derived.get)+'</b>枚</span></div>'+
+        '<div class="calc num">獲得 '+f1(p.derived.get)+'枚×1000÷'+rate.kokan+' − 投資 '+f1(p.derived.inv)+'枚×1000÷'+rate.kashi+'<span class="eq">= <b>'+esc(yen(p.ev))+'円</b></span></div>'+
+        '<div class="calc">この機種は交換率ごとに計算済みの表しか無いので、'+esc(staticPairText(se.pick))+'の表の期待値から行ごとに投資枚・獲得枚を逆算し、選択中の交換率で計算し直しています'+(se.pick.C ? '（3つ目の表 '+esc(rateText(se.pick.C.pr, se.pick.C.s.rate))+' の値を再現できることを行ごとに確かめ、合わない行は参考扱い）' : '')+'。出玉率・消化時間・初当りは表の値。</div></div>';
+    } else {
+      evid = '<div class="evid"><h3>根拠</h3><div class="calc">'+esc(rateText(se.pick.rate, se.pick.st.rate))+'で計算済みの表の値です'+(se.pick.mode==='scale' ? '（期待値と時給は ×'+esc(String(se.pick.rate.kokan))+'÷'+esc(String(rate.kokan))+' で換算）' : '')+'。この機種は投資枚数・獲得枚数の内訳が無いため、この交換率への計算し直しはできません。</div></div>';
+    }
+  }
+  el.className = 'result '+(soft ? 'none' : V.cls);
+  el.innerHTML = '<div class="verdict '+V.cls+'"><div class="grow"><div class="disp word">'+esc(V.w)+(soft?'<span style="font-size:14px">（参考）</span>':'')+'</div><div class="why">'+esc(why)+'</div></div></div>'+
+    '<div class="flags">'+flagsHtml(modeFlags(se, at))+'</div>'+
+    '<div class="evhero"><span class="l">期待値（1回あたりの平均）</span><span class="v num '+pm(p.ev)+'">'+esc(yen(p.ev))+'<small>円</small></span><span class="from">'+esc(gTxt)+'から・'+esc(rate.short)+'</span></div>'+
+    kpis+lines+evid+condHtml(M, st)+'<div class="foot">'+aimSource(M, se)+'</div>';
+  var note = document.getElementById('aimGNote'); if(note) note.textContent = '表の範囲 '+fmt(se.pts[0].g)+'〜'+fmt(se.pts[se.pts.length-1].g)+'G（'+se.pts.length+'行）';
+  drawChart(se, at);
+  if(tbl) tbl.innerHTML = evTable(se, at);
+  var out = document.getElementById('memoOut');
+  if(out){ var text = aimMemoText(m, M, se, at, rate, {w:V.w+(soft?'（参考）':'')}, R0, RG); out.value = text; var a = document.getElementById('lineShare'); if(a) a.href = 'https://line.me/R/share?text='+encodeURIComponent(text); }
+}
+
+/* ---------- 狙い目: リセット狙い ---------- */
+function shortLabels(states){
+  var toks = states.map(function(s){ return String(s.label || s.title).split(' / '); });
+  if(states.length<2) return toks.map(function(t){ return t.join(' / '); });
+  return toks.map(function(t){
+    var keep = t.filter(function(x){ return !toks.every(function(u){ return u.indexOf(x)>=0; }); });
+    return (keep.length ? keep : t).join(' / ');
+  });
+}
+function keepState(M, id){
+  var cur = currentState(M, id); if(cur && !cur.reset) return cur;
+  var ss = statesOf(M); for(var i=0;i<ss.length;i++){ if(!ss[i].reset) return ss[i]; }
+  return null;
+}
+var RESET_STRICT = /^(設定変更後|リセット)/, RESET_LOOSE = /or|または|除く|以外/i;
+function strictResetText(t){ t = String(t||''); return RESET_STRICT.test(t) && !RESET_LOOSE.test(t); }
+function isStrictReset(M, st){
+  // どれかのセレクタの選択肢が「設定変更後」「リセット」で始まり、or/または/除く/以外 を含まない
+  if(!st || !st.parts) return false; var sels = selsOf(M), ok = false;
+  st.parts.forEach(function(v, i){ if(v!=='' && strictResetText(optText(sels[i], v))) ok = true; });
+  return ok;
+}
+function resetCandidate(M){
+  // 朝イチのリセット台の表: 設定変更後(リセット)の選択肢を持ち、ほかのセレクタは既定(先頭)、分類も既定のものを優先。無ければ部分一致(「設定変更後」を含む)にフォールバック
+  var conv = convOf(M), sels = selsOf(M), best = null;
+  conv.forEach(function(c, order){
+    var hit = false, off = 0, cat = 0;
+    c.parts.forEach(function(v, i){
+      if(v==='') return; var t = optText(sels[i], v);
+      if(strictResetText(t)){ hit = true; return; }
+      var first = optV(((sels[i]||{}).options||[])[0]); if(v!==first){ if(i===0) cat = 1; else off++; }
+    });
+    if(!hit) return;
+    var score = cat*1000 + off*10 + order/100000;
+    if(!best || score<best.score) best = {c:c, score:score};
+  });
+  if(best) return {parts:best.c.parts, key:best.c.key, strict:true};
+  var ss = statesOf(M);
+  for(var i=0;i<ss.length;i++){ if(ss[i].reset && ss[i].parts) return {parts:ss[i].parts, key:ss[i].id.slice(2), strict:false, title:ss[i].title}; }
+  return null;
+}
+function resetPick(M, id){
+  // リセット狙いで使う状態。conv がある機種はセレクタ(保存した選択 A.rsel[id] か自動候補)、無い機種は表の題で選ぶ
+  if(convOf(M).length){
+    var saved = Array.isArray(A.rsel[id]) ? A.rsel[id] : null, cand = resetCandidate(M);
+    if(!saved && !cand) return {state:null};
+    var r = resolveSel(M, saved || cand.parts); A.rsel[id] = r.chosen;
+    var st = (r.entry && stateById(M, 'c:'+r.entry.key)) || null;
+    var note = '';
+    if(st && !isStrictReset(M, st)) note = st.reset ? '※設定変更後だけの表が無いため『'+stripName(st.title, M.name)+'』を使用' : '※選んだ状態は設定変更後ではありません';
+    return {state:st, r:r, note:note, sel:true};
+  }
+  var rs = statesOf(M).filter(function(s){ return s.reset; }); if(!rs.length) return {state:null};
+  var sid = (typeof A.rsel[id]==='string') ? A.rsel[id] : null, st2 = null; rs.forEach(function(s){ if(s.id===sid) st2 = s; });
+  return {state:(st2 || rs[0]), list:rs, note:''};
+}
+function renderAimReset(m){
+  var M = tenjoOf(m.id), AI = aimOf(m.id), rate = rateNow(), rs = AI && AI.reset, h = aimHead(m, 'リセット狙い'), any = false;
+  var resetInfo = rs && ((rs.table && rs.table.length) || (rs.benefit && rs.benefit.length) || (rs.detect && rs.detect.length));
+  if(AI && AI.type==='normal' && !resetInfo && !(M && statesOf(M).some(function(x){ return x.reset; }))){
+    var hasCeil = !!(AI.ceiling && AI.ceiling.length);
+    return h+'<div class="card"><h2>ノーマルタイプ</h2><div class="sub" style="font-size:12.5px">'+(hasCeil ? 'この機種にはリセットの恩恵の記載がありません。天井の条件は「天井狙い」にあります。' : 'この機種には天井もリセットの恩恵もありません。打つかどうかは設定で決めます。')+'</div><div style="margin-top:10px">'+(hasCeil ? '<button type="button" class="btn" data-aimtab="tenjo">天井狙いを見る</button> ' : '')+'<button type="button" class="btn primary" data-go="judge">設定を判別する</button></div></div>'+aimInfo(AI, rate);
+  }
+  var resets = M ? statesOf(M).filter(function(s){ return s.reset; }) : [], pk = M ? resetPick(M, m.id) : {state:null};
+  if(resets.length && pk.state){
+    any = true;
+    var selHtml = '';
+    if(pk.sel) selHtml = '<div class="card"><h2>リセット後の状態<span class="n">最初は設定変更後の表</span></h2><div class="conds" style="margin-top:0">'+selCtl(M, m.id, pk.r, 'data-aimrs')+'</div><div class="usetable" style="color:var(--ink-3)">使う表: '+esc(pk.state.title || pk.state.label)+(pk.note ? '<br>'+esc(pk.note) : '')+'</div></div>';
+    else if(pk.list && pk.list.length>1) selHtml = '<div class="card"><h2>リセット後の状態<span class="n">'+pk.list.length+'種類</span></h2><div class="condrow" style="margin:0"><label for="aimRsel">どの表で計算するか</label><select class="sel" id="aimRsel" data-aimrsel="1">'+
+        pk.list.map(function(st, i){ return '<option value="'+esc(st.id)+'"'+(st===pk.state?' selected':'')+'>'+esc(shortLabels(pk.list)[i])+'</option>'; }).join('')+'</select></div></div>';
+    h += selHtml+'<div class="result" id="aimResetEv"></div>'+
+      '<div class="device"><h2>前日の最終ゲーム数<span class="n">'+esc(unitOf(M, keepState(M, m.id)))+'</span></h2><div class="dgrid">'+stepField('aimPrev', 'prev', '前日に何Gでやめてあったか', '据え置きなら続きから', A.prev[m.id], '前日の閉店前に自分で控えた数字か、当日朝のデータカウンタの前日表示を入れます')+'</div></div>'+
+      '<div class="card"><h2>据え置きとリセットを比べる<span class="n">'+esc(rate.short)+'</span></h2><div id="aimCmp"></div></div>';
+  }
+  if(rs && rs.table && rs.table.length){ any = true;
+    h += '<div class="card"><h2>設定変更と据え置きのちがい</h2><div class="tscroll"><table class="aimtable"><thead><tr><th>項目</th><th>設定変更（リセット）</th><th>据え置き</th></tr></thead><tbody>'+
+      rs.table.map(function(r){ return '<tr><td>'+esc(r.item)+'</td><td>'+esc(r.reset)+'</td><td>'+esc(r.keep)+'</td></tr>'; }).join('')+'</tbody></table></div></div>'; }
+  if(rs && rs.benefit && rs.benefit.length){ any = true; h += '<div class="card"><h2>リセットの恩恵</h2><ul class="plist">'+rs.benefit.map(function(x){ return '<li>'+esc(x)+'</li>'; }).join('')+'</ul></div>'; }
+  if(rs && rs.detect && rs.detect.length){ any = true; h += '<div class="card"><h2>見分ける手掛かり<span class="n">リセットか据え置きか</span></h2><ul class="plist">'+rs.detect.map(function(x){ return '<li>'+esc(x)+'</li>'; }).join('')+'</ul></div>'; }
+  if(rs && srcOf(rs.src)) h += '<div class="srcline" style="margin:0 2px 10px">出典: '+esc(srcOf(rs.src))+'</div>';
+  if(!any) h += '<div class="card"><h2>リセット狙いのデータがありません</h2><div class="sub" style="font-size:12.5px">この機種は、設定変更後の期待値の表もリセットの情報もまだ取り込んでいません。</div><div style="margin-top:10px"><button type="button" class="btn" data-aimtab="list">データのある機種を一覧で見る</button></div></div>';
+  else if(!resets.length) h += '<div class="card"><div class="sub" style="font-size:12.5px">この機種の期待値の表には「設定変更後」の状態が無いため、リセット時の期待値は計算できません。</div></div>';
+  if(resets.length && pk.state) h += '<div class="card"><h2>交換率</h2>'+rateCtl()+thCtl()+'</div>';
+  return h;
+}
+function cmpCell(title, st, se, at, from){
+  if(!se || !at) return '<div class="cmpc"><div class="h">'+esc(title)+'</div><div class="st">使える表がありません</div><div class="v num">—</div></div>';
+  var p = at.p, V = aimVerdict(p.ev), low = lowN(p), soft = isSoft(se, at);
+  var notes = [];
+  if(at.mode==='interp') notes.push('補間'); if(at.mode==='below' || at.mode==='above') notes.push('表の範囲外・端の行'); if(low) notes.push('サンプル少'); if(se.kind==='table' && !se.F.known) notes.push('式未確定');
+  return '<div class="cmpc '+(soft?'':V.cls)+'"><div class="h">'+esc(title)+'</div><div class="st">'+esc(st.label || st.title)+'</div>'+
+    '<div class="v num '+pm(p.ev)+'">'+esc(yen(p.ev))+'<small>円</small></div><div class="w '+V.cls+'">'+esc(V.w)+(soft?'（参考）':'')+'</div>'+
+    '<div class="m num">'+esc(from)+'<br>'+(p.payout!=null?'出玉率 '+f1(p.payout)+'%<br>':'')+'時給 '+esc(yen(p.hourly))+'円<br>サンプル '+nText(p)+(p.n==null?'':'件')+(notes.length?'<br>'+esc(notes.join('・')):'')+'</div></div>';
+}
+function updateAimReset(){
+  var m = byId[S.machineId]; if(!m) return; var M = tenjoOf(m.id); if(!M) return;
+  var el = document.getElementById('aimResetEv'), cmp = document.getElementById('aimCmp'); if(!el && !cmp) return;
+  var rate = rateNow(), th = A.th, go = Math.max(th.go, th.border), keep = keepState(M, m.id), pk = resetPick(M, m.id), rst = pk.state; if(!rst) return;
+  var seR = seriesFor(M, rst, rate), atR = seriesAt(seR, null);
+  if(el){
+    if(!atR){ el.className = 'result'; el.innerHTML = '<div class="sub">この状態の表には使える行がありません（サンプル0件）。</div>'; }
+    else {
+      var p = atR.p, V = aimVerdict(p.ev), R0 = goRanges(seR, th.border), RG = goRanges(seR, go), soft = isSoft(seR, atR);
+      var flags = modeFlags(seR, atR).filter(function(f){ return f[1].indexOf('G数が未入力')<0; });
+      if(pk.note) flags.push(['warm', pk.note.replace(/^※/, '')]);
+      el.className = 'result '+(soft?'none':V.cls);
+      el.innerHTML = '<div class="verdict '+V.cls+'"><div class="grow"><div class="disp word">朝イチ '+esc(V.w)+(soft?'<span style="font-size:14px">（参考）</span>':'')+'</div><div class="why">リセットされた台を最初（'+fmt(p.g)+'G）から当たるまで打つと、1回あたりの平均は '+esc(yen(p.ev))+'円（'+esc(rate.label)+'）。</div></div></div>'+
+        '<div class="flags">'+flagsHtml(flags)+'</div>'+
+        '<div class="evhero"><span class="l">リセット台の期待値（表の先頭の行）</span><span class="v num '+pm(p.ev)+'">'+esc(yen(p.ev))+'<small>円</small></span><span class="from">'+fmt(p.g)+'Gから・'+esc(rate.short)+'</span></div>'+
+        '<div class="kpis four"><div class="kpi"><div class="l">出玉率</div><div class="v num">'+(p.payout!=null?f1(p.payout)+'<small>%</small>':'—')+'</div></div><div class="kpi"><div class="l">時給</div><div class="v num"><span class="'+pm(p.hourly)+'">'+esc(yen(p.hourly))+'</span><small>円</small></div></div>'+
+        '<div class="kpi"><div class="l">'+esc(probLabel(rst))+'</div><div class="v num">'+esc(hitText(p))+'</div></div><div class="kpi"><div class="l">サンプル数</div><div class="v num">'+(p.n==null ? '—<small>サンプル数不明</small>' : fmt(p.n)+'<small>件</small>')+'</div></div></div>'+
+        goLines('リセット台は何Gから打ってよいか', R0, RG)+
+        (p.raw ? '<div class="evid"><h3>根拠（生の数字）</h3><div class="calc num">'+esc(seR.F.f.text(p.raw, rate, M))+'<span class="eq">= <b>'+esc(yen(p.ev))+'円</b></span><span class="eq">通常時 '+f1(p.raw.ng)+'G・総消化 '+f1(p.raw.tg)+'G</span></div></div>' : '')+
+        condHtml(M, rst)+'<div class="foot">'+aimSource(M, seR)+'</div>';
+    }
+  }
+  if(cmp){
+    var gIn = A.prev[m.id], G = (gIn==null || gIn==='') ? null : Math.max(0, Math.floor(numOr(gIn, 0)));
+    var seK = keep ? seriesFor(M, keep, rate) : null, atK = (seK && seK.pts.length) ? seriesAt(seK, G) : null;
+    var concl = '';
+    if(G==null) concl = '前日の最終G数を入れると、据え置きだった場合の期待値が出ます（いまは表の先頭の行）。';
+    else if(atK && atR){
+      var a = atK.p.ev>=th.border, b = atR.p.ev>=th.border;
+      concl = (a && b) ? 'どちらの場合もプラスです。リセットか据え置きか分からなくても打てます。' : (!a && !b) ? 'どちらの場合もマイナスです。見送りが無難です。' :
+        b ? 'リセットならプラス、据え置きならマイナスです。リセットだと確かめられる台だけ打ちます。' : '据え置きならプラス、リセットならマイナスです。据え置きだと確かめられる台だけ打ちます。';
+    }
+    cmp.innerHTML = '<div class="sub">'+esc(concl)+'</div><div class="cmp">'+
+      cmpCell('据え置きだった場合', keep || {label:'—'}, seK, atK, atK ? fmt(atK.p.g)+'Gから打つ' : '')+
+      cmpCell('リセットだった場合', rst, seR, atR, atR ? fmt(atR.p.g)+'Gから打つ（最初から）' : '')+'</div>'+
+      '<div class="foot">据え置き側は「天井狙い」で選んでいる状態の表を使います（選択が設定変更後のときは最初の状態）。<button type="button" class="btn sm ghost" data-aimtab="tenjo" style="margin-left:4px">状態を変える</button></div>';
+  }
+}
+
+/* ---------- 狙い目: 一覧・手順 ---------- */
+function aimRows(){
+  var rate = rateNow(), q = (A.q||'').trim();
+  var ms = MACHINES.filter(function(m){ return (unitCounts[m.id]||0)>0; }).sort(function(a, b){ return (unitCounts[b.id]||0)-(unitCounts[a.id]||0); });
+  return ms.map(function(m){
+    var s = aimSummary(m, rate), parts = [];
+    if(s.normal) parts.push('ノーマルタイプ（天井なし）');
+    else { if(s.ceil) parts.push('天井 <b>'+esc(s.ceil)+'</b>'+(s.ceilMore ? ' '+esc(s.ceilMore) : '')); if(s.from) parts.push('狙い目 <b class="num">'+esc(s.from)+'</b>'+(s.fromNote ? ' '+esc(s.fromNote) : '')); }
+    if(!parts.length) parts.push(s.table ? '天井条件の記載なし' : 'データなし');
+    return '<button type="button" class="lrow'+(m.id===S.machineId?' on':'')+'" data-aimpick="'+esc(m.id)+'"'+((q && (m.name+m.short).indexOf(q)<0)?' style="display:none"':'')+'>'+
+      '<span class="ln1"><span class="name">'+esc(m.short)+'</span>'+(s.reset===true?'<span class="badge hot">リセット恩恵あり</span>':s.reset===false?'<span class="badge">リセット恩恵なし</span>':'')+(s.table?'<span class="badge acc">期待値表</span>':'')+'<span class="u num">'+(unitCounts[m.id]||0)+'台</span></span>'+
+      '<span class="ln2">'+parts.join('<span class="sep">・</span>')+'</span></button>';
+  }).join('');
+}
+function renderAimList(){
+  var n = MACHINES.filter(function(m){ return (unitCounts[m.id]||0)>0; }).length;
+  return '<div class="card"><h2>交換率<span class="n">狙い目ラインの選び方に使う</span></h2>'+rateCtl()+'</div>'+
+    '<input class="search" id="aimQ" data-aim="q" placeholder="機種名で絞り込み" value="'+esc(A.q||'')+'" aria-label="機種名で絞り込み">'+
+    '<div class="card"><h2>設置機種の狙い目<span class="n">'+n+'機種・台数の多い順</span></h2><div class="lrows" id="aimRows">'+aimRows()+'</div>'+
+    '<div class="foot">機種を押すと、その機種の天井狙いが開きます。狙い目ラインは出典サイトの目安のうち、選択中の交換率にいちばん近いもの。「期待値表」の札がある機種はG数を入れて計算できます。設置は '+esc(HIST.latest)+' 時点。</div></div>';
+}
+function renderAimManual(){
+  var secs = MANUAL.sections;
+  return '<div class="chips" style="margin:8px 0 2px">'+secs.map(function(s, i){ return '<button type="button" class="chip" data-aimjump="'+i+'">'+esc(s.title||s.id)+'</button>'; }).join('')+'</div>'+
+    secs.map(function(s, i){
+      var h = '<div class="card manual" id="man-'+i+'"><h2>'+esc(s.title||s.id)+'</h2>';
+      if(s.lead) h += '<p class="lead">'+esc(s.lead)+'</p>';
+      if(s.steps && s.steps.length) h += '<ol class="steps">'+s.steps.map(function(x){ return '<li><b>'+esc(x.t)+'</b><span>'+esc(x.d)+'</span></li>'; }).join('')+'</ol>';
+      if(s.checks && s.checks.length) h += '<h3>確かめること</h3><ul class="checks">'+s.checks.map(function(x, j){ return '<li><label for="chk-'+i+'-'+j+'"><input type="checkbox" id="chk-'+i+'-'+j+'"><span>'+esc(x)+'</span></label></li>'; }).join('')+'</ul>';
+      if(s.cautions && s.cautions.length) h += '<h3>注意</h3><ul class="cautions">'+s.cautions.map(function(x){ return '<li>'+esc(x)+'</li>'; }).join('')+'</ul>';
+      if(s.terms && s.terms.length) h += '<dl class="terms">'+s.terms.map(function(x){ return '<dt>'+esc(x.w)+'</dt><dd>'+esc(x.d)+'</dd>'; }).join('')+'</dl>';
+      return h+'</div>';
+    }).join('');
+}
+function renderAim(){
+  var v = document.getElementById('view'), tab = aimTab(), m = byId[S.machineId], h = aimSubtabs()+aimNotice();
+  if(tab==='manual') h += renderAimManual();
+  else if(tab==='list') h += renderAimList();
+  else if(!m) h += '<div class="card"><h2>まず機種を選んでください</h2><div class="sub">一覧から機種を選ぶと、天井とリセットの狙い目が開きます。</div><div style="margin-top:10px"><button type="button" class="btn primary" data-aimtab="list">一覧を開く</button></div></div>';
+  else h += (tab==='reset') ? renderAimReset(m) : renderAimTenjo(m);
+  v.innerHTML = h;
+  if(m && tab==='tenjo') updateAimTenjo();
+  if(m && tab==='reset') updateAimReset();
 }
 
 /* ---------- nav / events ---------- */
 function setView(vw){ S.view = vw; store('sn:app', S); render(); window.scrollTo(0,0); }
 function hexA(hex, a){ return hex + a; }
 function applyTheme(){
-  var m = byId[S.machineId], th = (S.view==='judge' && m && m.theme) ? m.theme : null;
+  var themedView = S.view==='judge' || (S.view==='aim' && (aimTab()==='tenjo' || aimTab()==='reset'));   // 機種ごとの画面だけ機種テーマにする
+  var m = byId[S.machineId], th = (themedView && m && m.theme) ? m.theme : null;
   var root = document.documentElement.style, app = document.getElementById('app');
   if(th){
     var lightMode = document.documentElement.getAttribute('data-theme')==='light' || (!document.documentElement.getAttribute('data-theme') && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches);
@@ -823,11 +1833,20 @@ function applyTheme(){
   }
 }
 function render(){
+  var navAim = document.getElementById('navaim'); if(navAim) navAim.hidden = !HAS_AIM;
+  if(S.view==='aim' && !HAS_AIM) S.view = 'home';
   applyTheme();
   document.querySelectorAll('#nav button').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-nav')===S.view); });
   var un = Object.keys(unitCounts).reduce(function(a,k){return a+unitCounts[k];},0);
   document.getElementById('topmeta').innerHTML = '<span class="stat">機種 <b class="num">'+MACHINES.length+'</b></span><span class="stat">台 <b class="num">'+un+'</b></span><span class="stat">台データ <b class="num">'+esc(HIST.latest.slice(5))+'</b></span>';
-  if(S.view==='home') renderHome(); else if(S.view==='judge') renderJudge(); else if(S.view==='history') renderHistory(); else renderHelp();
+  if(S.view==='home') renderHome(); else if(S.view==='judge') renderJudge(); else if(S.view==='aim') renderAim(); else if(S.view==='history') renderHistory(); else renderHelp();
+}
+function aimRefresh(){
+  // 交換率や基準の数字を打っている途中は、入力欄を作り直さずに結果だけ更新する
+  var tab = aimTab();
+  if(tab==='tenjo') updateAimTenjo(); else if(tab==='reset') updateAimReset();
+  else if(tab==='list'){ var rows = document.getElementById('aimRows'); if(rows) rows.innerHTML = aimRows(); }
+  var rn = document.getElementById('aimRateNow'); if(rn) rn.textContent = rateHelp();
 }
 function pickUnit(u){
   u = String(u||'').replace(/[^0-9]/g,'');
@@ -841,6 +1860,16 @@ function pickUnit(u){
 document.getElementById('nav').addEventListener('click', function(e){ var b = e.target.closest('button'); if(b) setView(b.getAttribute('data-nav')); });
 document.getElementById('view').addEventListener('click', function(e){
   var t = e.target;
+  var atab = t.closest('[data-aimtab]'); if(atab){ A.tab = atab.getAttribute('data-aimtab'); setView('aim'); return; }
+  var ago = t.closest('[data-aimgo]'); if(ago){ A.tab = ago.getAttribute('data-aimgo'); setView('aim'); return; }
+  var apick = t.closest('[data-aimpick]'); if(apick){ var pid = apick.getAttribute('data-aimpick'); if(pid!==S.machineId){ S.machineId = pid; S.unit = ''; loadInput(); } A.tab = 'tenjo'; saveInput(); setView('aim'); return; }
+  var arate = t.closest('[data-aimrate]'); if(arate){ A.rate.preset = arate.getAttribute('data-aimrate'); store('sn:app', S); renderAim(); return; }
+  var athr = t.closest('[data-aimthreset]'); if(athr){ A.th.go = TH_DEFAULT.go; A.th.border = TH_DEFAULT.border; A.th.nmin = TH_DEFAULT.nmin; store('sn:app', S); renderAim(); toast('判定の基準を初期値に戻しました'); return; }
+  var astep = t.closest('[data-aimstep]'); if(astep && S.machineId){
+    var akey = astep.getAttribute('data-aimkey')==='prev' ? 'prev' : 'g', anv = Math.max(0, Math.floor(numOr(A[akey][S.machineId], 0)) + (+astep.getAttribute('data-aimstep')));
+    A[akey][S.machineId] = String(anv); var ain = document.getElementById(akey==='g' ? 'aimG' : 'aimPrev'); if(ain) ain.value = anv;
+    store('sn:app', S); if(akey==='g') updateAimTenjo(); else updateAimReset(); return; }
+  var ajump = t.closest('[data-aimjump]'); if(ajump){ var sec = document.getElementById('man-'+ajump.getAttribute('data-aimjump')); if(sec) sec.scrollIntoView({behavior:'smooth', block:'start'}); return; }
   var go = t.closest('[data-go]'); if(go){ setView(go.getAttribute('data-go')); return; }
   var pick = t.closest('[data-pick]'); if(pick){ S.machineId = pick.getAttribute('data-pick'); S.unit=''; loadInput(); saveInput(); setView('judge'); return; }
   var cp = t.closest('[data-copy]'); if(cp){ var ta = document.getElementById('memoOut'); var txt = ta ? ta.value : '';
@@ -863,6 +1892,16 @@ document.getElementById('view').addEventListener('click', function(e){
 document.getElementById('view').addEventListener('input', function(e){
   var t = e.target; var m = byId[S.machineId];
   if(t.id==='msearch'){ S.q = t.value; var cards = document.querySelectorAll('.mcard'); var q = t.value.trim(); cards.forEach(function(c){ var m2 = byId[c.getAttribute('data-pick')]; c.style.display = (!q || (m2.name+m2.short).indexOf(q)>=0) ? '' : 'none'; }); return; }
+  if(t.hasAttribute('data-aim')){
+    var ak = t.getAttribute('data-aim');
+    if(ak==='q'){ A.q = t.value; var aq = t.value.trim(); document.querySelectorAll('.lrow').forEach(function(c){ var m3 = byId[c.getAttribute('data-aimpick')]; c.style.display = (!aq || (m3 && (m3.name+m3.short).indexOf(aq)>=0)) ? '' : 'none'; }); store('sn:app', S); return; }
+    if(!m) return;
+    if(ak==='g' || ak==='prev'){ A[ak][m.id] = t.value.replace(/[^0-9]/g, ''); store('sn:app', S); if(ak==='g') updateAimTenjo(); else updateAimReset(); return; }
+    if(ak==='memo'){ A.memo[m.id] = t.value; store('sn:app', S); updateAimTenjo(); return; }
+    return;
+  }
+  if(t.hasAttribute('data-aimnum')){ A.rate[t.getAttribute('data-aimnum')] = t.value; store('sn:app', S); aimRefresh(); return; }
+  if(t.hasAttribute('data-aimth')){ var tk = t.getAttribute('data-aimth'), tv = numOr(t.value, NaN); if(isFinite(tv)){ A.th[tk] = (tk==='nmin') ? Math.max(0, Math.floor(tv)) : Math.round(tv); store('sn:app', S); aimRefresh(); } return; }
   if(!m) return;
   if(t.hasAttribute('data-in')){ IN[t.getAttribute('data-in')] = t.value; }
   else if(t.hasAttribute('data-count')){ IN.counts[t.getAttribute('data-count')] = t.value; }
@@ -872,7 +1911,16 @@ document.getElementById('view').addEventListener('input', function(e){
   saveInput(); renderRates(m); renderResult(m);
 });
 document.getElementById('view').addEventListener('change', function(e){
-  var t = e.target; var m = byId[S.machineId]; if(!m || !t.hasAttribute('data-hintsel')) return;
+  var t = e.target; var m = byId[S.machineId];
+  if(m && (t.hasAttribute('data-aimsel') || t.hasAttribute('data-aimrs') || t.hasAttribute('data-aimstate') || t.hasAttribute('data-aimrsel'))){
+    var TM = tenjoOf(m.id); if(!TM) return;
+    if(t.hasAttribute('data-aimsel')) changeSel(TM, m.id, +t.getAttribute('data-aimsel'), t.value);
+    else if(t.hasAttribute('data-aimrs')) changeSel(TM, m.id, +t.getAttribute('data-aimrs'), t.value, 'rsel');
+    else if(t.hasAttribute('data-aimstate')) A.st[m.id] = +t.value;
+    else A.rsel[m.id] = t.value;
+    store('sn:app', S); renderAim(); return;
+  }
+  if(!m || !t.hasAttribute('data-hintsel')) return;
   var gi = +t.getAttribute('data-hintsel'); m.hints[gi].items.forEach(function(it, ii){ delete IN.hints[gi+'_'+ii]; });
   if(t.value!=='') IN.hints[gi+'_'+t.value] = 1;
   IN.sample=false; saveInput(); renderResult(m);
@@ -891,8 +1939,55 @@ if(!S.machineId){
 render();
 }
 
-/* ---------- 起動: inline(Artifact) はJSONを直接読む / pwa は暗号化データを解錠して読む ---------- */
-function bootInline(){ boot(JSON.parse(document.getElementById('data-machines').textContent), JSON.parse(document.getElementById('data-history').textContent)); addLog('open'); }
+/* ---------- 起動: inline(Artifact) は data/*.js などが window.__SNV に置いたデータを読む / pwa は暗号化データを解錠して読む ---------- */
+function snvManifest(){ try{ return JSON.parse((document.getElementById('snv-manifest')||{}).textContent || 'null') || {}; }catch(e){ return {}; } }
+function bootNote(msg){ var el = document.getElementById('bootnote'); if(!el) return; el.textContent = msg; el.hidden = false; }
+function bootFatal(msg){
+  var v = document.getElementById('view'); if(!v) return; v.textContent = '';
+  var c = document.createElement('div'), h = document.createElement('h2'), p = document.createElement('div');
+  c.className = 'card'; h.textContent = '読み込めませんでした'; p.className = 'sub'; p.style.fontSize = '12.5px'; p.textContent = msg;
+  c.appendChild(h); c.appendChild(p); v.appendChild(c);
+}
+function assemble(man){
+  // 画像(imgs_1, imgs_2 …)を機種データの it.img / theme.wall に戻し、分割された tenjo_1 … をまとめる
+  var SN = window.__SNV || {}, DATA = SN.machines, HIST = SN.history;
+  if(!DATA || !DATA.machines || !HIST || !HIST.unit_machine) return null;
+  var imgs = {}, stale = [], build = man.build || null;
+  Object.keys(SN).forEach(function(k){
+    var o = SN[k]; if(!o || typeof o!=='object') return;
+    if(build && o._build && o._build!==build) stale.push(k);
+    if(/^imgs(_\d+)?$/.test(k)) Object.keys(o).forEach(function(f){ if(f.charAt(0)!=='_') imgs[f] = o[f]; });
+  });
+  DATA.machines.forEach(function(m){
+    (m.hints||[]).forEach(function(g){ (g.items||[]).forEach(function(it){ if(!it.img || /^data:/.test(it.img)) return; if(imgs[it.img]) it.img = imgs[it.img]; else delete it.img; }); });
+    var th = m.theme; if(th && th.wall && !/^data:/.test(th.wall)){ if(imgs[th.wall]) th.wall = imgs[th.wall]; else delete th.wall; }
+  });
+  var tenjo = SN.tenjo || null;
+  Object.keys(SN).sort().forEach(function(k){
+    if(!/^tenjo_\d+$/.test(k)) return; var o = SN[k]; if(!o || !o.machines) return;
+    if(!tenjo) tenjo = {machines:{}}; if(!tenjo.machines) tenjo.machines = {};
+    Object.keys(o.machines).forEach(function(id){ tenjo.machines[id] = o.machines[id]; });
+    ['generated','formula','fixture'].forEach(function(f){ if(o[f]!=null && tenjo[f]==null) tenjo[f] = o[f]; });
+  });
+  return {data:DATA, hist:HIST, extra:{tenjo:tenjo, aim:SN.aim||null, manual:SN.manual||null}, stale:stale};
+}
+function bootInline(){
+  var man = snvManifest(), need = man.files || ['machines','history'], t0 = Date.now();
+  function have(n){ return (window.__SNV||{})[n]!=null; }
+  function failed(n){ return (window.__SNV_ERR||[]).indexOf(n)>=0; }
+  function settled(){ return need.every(function(n){ return have(n) || failed(n); }); }
+  function go(){
+    var lost = need.filter(function(n){ return !have(n); }), a = assemble(man);
+    if(!a){ bootFatal('機種のデータ'+(lost.length ? '（'+lost.join('、')+'）' : '')+'を読み込めませんでした。通信の状態を確かめて、ページを読み込み直してください。'); return; }
+    boot(a.data, a.hist, a.extra); addLog('open');
+    var msg = [];
+    if(lost.length) msg.push('一部のデータを読み込めませんでした（'+lost.join('、')+'）。画像や期待値の表が出ないことがあります。ページを読み込み直してください。');
+    if(a.stale.length) msg.push('古いデータが混ざっています（'+a.stale.join('、')+'）。ページを読み込み直してください。');
+    if(msg.length) bootNote(msg.join(' '));
+  }
+  // data/*.js の読み込み順に頼らない: 全部そろう(か失敗が分かる)まで待ってから起動する
+  (function wait(){ var dt = Date.now()-t0; if(settled() || (document.readyState==='complete' && dt>10000) || dt>30000) go(); else setTimeout(wait, 50); })();
+}
 function decryptPayload(buf, pass){
   var u8 = new Uint8Array(buf);
   if(String.fromCharCode(u8[0],u8[1],u8[2],u8[3])!=='SNV1') return Promise.reject(new Error('形式が違います'));
@@ -912,7 +2007,7 @@ function bootPwa(){
     return getBuf().then(function(buf){ return decryptPayload(buf, pass); }).then(function(pl){
       try{ if(remember) localStorage.setItem('snv:pass', pass); else localStorage.removeItem('snv:pass'); }catch(e){}
       LOGCFG = pl.log || null;
-      gate.hidden = true; boot(pl.data, pl.history);
+      gate.hidden = true; boot(pl.data, pl.history, {tenjo: pl.tenjo||null, aim: pl.aim||null, manual: pl.manual||null});
       addLog(auto ? 'auto' : 'unlock');
     }).catch(function(err){ gate.hidden = false; var wrong = (err && (err.name==='OperationError' || /decrypt/i.test(String(err.message)))); msg.textContent = wrong ? '合言葉が違います' : 'データを読めませんでした: '+(err && err.message ? err.message : err); if(wrong) addLog('fail'); });
   }
@@ -928,7 +2023,9 @@ function bootPwa(){
     }).catch(function(){});
   }
 }
-if(MODE==='pwa') bootPwa(); else bootInline();
+if(MODE==='pwa') bootPwa();
+else if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', bootInline);
+else bootInline();
 })();
 </script>
 
