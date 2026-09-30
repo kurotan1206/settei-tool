@@ -7,15 +7,15 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="設定判別">
+<meta name="apple-mobile-web-app-title" content="総合判定">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png">
-<meta name="snv-version" content="d1722cdb42">
+<meta name="snv-version" content="9861de37d0">
 </head>
 <body>
 <meta name="snv-mode" content="pwa">
-<title>設定判別ツール</title>
+<title>総合判定ツール</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=BIZ+UDPGothic:wght@400;700&family=DotGothic16&family=IBM+Plex+Mono:wght@400;600&display=swap">
@@ -462,7 +462,7 @@ details.adv summary::-webkit-details-marker{display:none}
 
 <div class="app" id="app">
   <div class="top">
-    <div class="brand"><span class="disp t">設定判別ツール</span><span class="s">SETTING ANALYZER · v1.0</span></div>
+    <div class="brand"><span class="disp t">総合判定ツール</span><span class="s">TOTAL ANALYZER · v2.1</span></div>
     <div class="meta" id="topmeta"></div>
   </div>
   <div class="notice warn" id="bootnote" hidden></div>
@@ -476,7 +476,7 @@ details.adv summary::-webkit-details-marker{display:none}
   <button data-nav="help"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 1-1 1.7M12 17h.01"/></svg><b>使い方</b></button>
 </div></div>
 <div class="toast" id="toast"></div>
-<div class="gate" id="gate" hidden><div class="gatebox"><div class="disp" style="font-size:20px">設定判別ツール</div><div class="sub" style="margin-top:4px">データは暗号化して保存されています。合言葉を入れて解錠してください。</div>
+<div class="gate" id="gate" hidden><div class="gatebox"><div class="disp" style="font-size:20px">総合判定ツール</div><div class="sub" style="margin-top:4px">データは暗号化して保存されています。合言葉を入れて解錠してください。</div>
 <form id="gateform"><input type="text" id="gatename" autocomplete="nickname" placeholder="名前（ニックネーム）" aria-label="名前" maxlength="20"><input type="password" id="gatepass" autocomplete="current-password" placeholder="合言葉" aria-label="合言葉"><label class="row"><input type="checkbox" id="gatesave" checked> この端末に記憶する</label><button class="btn primary block" type="submit">解錠</button></form><div class="msg" id="gatemsg"></div></div></div>
 
 <script>
@@ -702,7 +702,7 @@ function evidenceRow(m, e){
 }
 function memoText(m, R, T, V){
   var d = new Date(), pad = function(n){ return (n<10?'0':'')+n; };
-  var head = '【設定判別ツール】' + (d.getMonth()+1) + '/' + d.getDate() + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  var head = '【総合判定ツール】' + (d.getMonth()+1) + '/' + d.getDate() + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
   var lines = [head, m.short + (S.unit ? '　台番 ' + S.unit : '')];
   var hasAny = R.evid.length || R.hints.length;
   lines.push('判定: ' + V.w + (hasAny && !R.contradiction ? '（設定4以上 ' + pct(R.pHigh) + '）' : ''));
@@ -1538,7 +1538,7 @@ function aimSource(M, se){
 }
 function aimMemoText(m, M, se, at, rate, V, R0, RG){
   var d = new Date(), pad = function(n){ return (n<10?'0':'')+n; }, p = at.p, th = A.th;
-  var lines = ['【設定判別ツール】'+(d.getMonth()+1)+'/'+d.getDate()+' '+pad(d.getHours())+':'+pad(d.getMinutes()), m.short+'　天井狙い'+(S.unit ? '　台番 '+S.unit : '')];
+  var lines = ['【総合判定ツール】'+(d.getMonth()+1)+'/'+d.getDate()+' '+pad(d.getHours())+':'+pad(d.getMinutes()), m.short+'　天井狙い'+(S.unit ? '　台番 '+S.unit : '')];
   lines.push('状態: '+(se.state.label || se.title));
   lines.push('打ち始め: '+fmt(p.g)+'G（'+unitOf(M, se.state)+'）'+(at.mode==='interp' ? '※'+fmt(at.lo.g)+'Gと'+fmt(at.hi.g)+'Gの行から補間' : at.mode==='below' || at.mode==='above' ? '※入力 '+fmt(numOr(A.g[m.id],0))+'G は表の範囲外。端の行で計算' : at.mode==='first' ? '※G数未入力。表の先頭の行' : ''));
   lines.push('交換率: '+rate.label);

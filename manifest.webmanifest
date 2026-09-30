@@ -1,7 +1,7 @@
 {
- "name": "設定判別ツール",
- "short_name": "設定判別",
- "description": "データカウンタの数字と演出から設定を確率で判別する",
+ "name": "総合判定ツール",
+ "short_name": "総合判定",
+ "description": "設定判別・天井狙い・リセット狙いをまとめて判定する",
  "start_url": "./index.html",
  "scope": "./",
  "display": "standalone",
