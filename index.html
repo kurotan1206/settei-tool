@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png">
-<meta name="snv-version" content="ef1732f6d5">
+<meta name="snv-version" content="cb36e6311b">
 </head>
 <body>
 <meta name="snv-mode" content="pwa">
@@ -879,7 +879,7 @@ function renderJudge(){
     '</div>'+
     '<div class="card"><h2>見た演出をタップ<span class="n">出た回数ぶん押す</span></h2><div id="hints"></div></div>'+
     '<div class="card"><h2>この機種のコツ</h2><ul class="help" style="margin:0;padding-left:18px">'+m.notes.map(function(n){ return '<li>'+esc(n)+'</li>'; }).join('')+'</ul>'+
-      '<div class="sub" style="margin-top:8px">機械割: '+m.settings.map(function(s){ return '設定'+s+' '+m.payout[s]+'%'; }).join(' / ')+'<br>出典: '+esc(m.source.name)+'</div></div>'+
+      '<div class="sub" style="margin-top:8px">機械割: '+m.settings.map(function(s){ return '設定'+s+' '+m.payout[s]+'%'; }).join(' / ')+'</div></div>'+
     '<div class="row" style="justify-content:space-between;margin:6px 2px 20px"><span class="sub">入力はこの端末に自動保存されます</span><button class="btn sm" data-clear="1">この台の入力を消す</button></div>';
   renderHints(m); renderRates(m); renderResult(m);
 }
@@ -976,7 +976,7 @@ function renderHelp(){
     '<h3>LINEに送る</h3><p>判別画面の「結果をLINEに送る」で、今の入力と判定を短い文章にします。「LINEで送る」を押すとLINEが開いて送る相手を選べます（Keepメモに送れば自分用の記録）。ひとこと欄に台の様子を書いておくと後で見返しやすくなります。</p>'+
     (HAS_AIM ? '<h3>狙い目（天井・リセット）</h3><p>下の「狙い目」では、いまのゲーム数から当たるまで打ったときの期待値（同じ条件で何度も打ったときの、1回あたりの平均の収支）を計算します。機種・状態・交換率を選んでゲーム数を入れると、「打てる／ボーダー付近／まだ早い」と、何Gから打てるかが出ます。</p><ul><li><b>天井狙い</b>: いまのG数からの期待値。グラフと50G刻みの表でも見られます。</li><li><b>リセット狙い</b>: 朝イチ、設定変更（リセット）された台の期待値。前日の最終G数を入れると、据え置きだった場合と並べて比べられます。</li><li><b>一覧</b>: 設置機種の天井条件と狙い目ラインをまとめて見る。</li><li><b>手順</b>: 天井狙い・リセット狙いの進め方と用語。</li>'+(ASK_ON ? '<li><b>聞く</b>: 「喰種リセ0から打つけどいくら？手順は？」のように文章で質問すると、このアプリのデータ（期待値の表・天井・リセット・やめ時・手順）から答えます。通信はしません。どの表・どの交換率・何Gで計算したかと、指定が無くて既定にした条件を必ず一緒に出し、「条件を変える」で同じ選択のまま天井狙い／リセット狙いの画面を開けます。「北斗」「ジャグラー」のように機種が1つに決まらない呼び名は、候補から選んでもらいます（推測では答えません）。データに無いことは「データなし」と出ます。交換率は「46-52」「46枚貸し52枚交換」のように書けます（片方だけ書いたときは、もう片方を仮定して前提に書きます）。「2スルー」「250G以内」のような状態の語は表の選択肢に合わせ、合う選択肢が無いときはその旨を前提に出します。「宵越し」は据え置きが前提なので天井狙いの表で計算します。機種名の無い「天井狙いの手順は？」「期待値の読み方」「用語」にも手順書から答えます。回答は「LINEで送る」でそのまま送れます。'+((ASKAI_OK && askAiOn()) ? 'Claude の画面で開いているときは「AIに聞く」で文章の回答も出せます（あなたの Claude の利用枠を使います。数字はアプリの数値と見比べてください）。' : '')+'</li>' : '')+'<li>数字には必ずサンプル数と出典を付けています。サンプルが少ない行、表に無いG数を前後の行から補間した値、表の範囲外は、その旨を表示します。期待値は平均なので、1回ごとの結果は大きくぶれます。</li></ul>' : '')+
     '<h3>ホーム画面に置く（アプリ版）</h3><p>アプリ版はブラウザの共有メニューから「ホーム画面に追加」すると、アイコンから直接開けて、圏外でも動きます。データは暗号化されていて、初回に合言葉が必要です（「この端末に記憶する」を付けると次回から不要）。データを更新したときは自動で新しい版に切り替わります。</p>'+
-    '<h3>数字の出どころ</h3><p>理論値はパチマガスロマガ（'+esc(DATA.generated)+'時点）、一部はすろらぼ。台の履歴と設定配分の推定はana-sloの'+esc(HIST.store)+'データ（'+esc(HIST.latest)+'時点）。判別の入力内容はこの端末の中だけに保存されます（送信するのはログイン履歴だけ）。演出の画像は会員向けサイトのものなので、このツールは仲間内に留め、公開共有はしないでください。</p></div>';
+    '<h3>数字の出どころ</h3><p>理論値はパチマガスロマガ（'+esc(DATA.as_of || DATA.generated)+'時点）、一部はすろらぼ。台の履歴と設定配分の推定はana-sloの'+esc(HIST.store)+'データ（'+esc(HIST.latest)+'時点）。判別の入力内容はこの端末の中だけに保存されます（送信するのはログイン履歴だけ）。演出の画像は会員向けサイトのものなので、このツールは仲間内に留め、公開共有はしないでください。</p></div>';
   renderCentralLog();
 }
 
@@ -2446,16 +2446,15 @@ function askJudge(X){
   if(nomain && rows.length) X.lines.push('・★（主役）: 主役にできる項目なし（設定差が小さい）。下は補助の項目');
   if(!rows.length) X.lines.push('・データなし');
   rows.forEach(function(r){ X.lines.push('・'+r.k+': '+r.v); });
-  var pay = (m.payout && m.payout[s1]!=null && m.payout[sT]!=null) ? '設定'+s1+' '+m.payout[s1]+'% 〜 設定'+sT+' '+m.payout[sT]+'%' : '', src = (m.source && m.source.name) ? String(m.source.name) : '';
+  // 設定判別データの出典名(スロマガ + すろらぼ 等)は画面にも回答文にも出さない(2026-10-02 ユーザー指示)
+  var pay = (m.payout && m.payout[s1]!=null && m.payout[sT]!=null) ? '設定'+s1+' '+m.payout[s1]+'% 〜 設定'+sT+' '+m.payout[sT]+'%' : '';
   if(pay) X.lines.push('・機械割: '+pay);
   if(m.notes && m.notes[0]) X.lines.push('・コツ: '+m.notes[0]);
   if(m.flags && m.flags.reference_only) X.lines.push('・この機種の理論値は手入力の参考値です（要確認）');
   var few = '回転数が少ないうちは大きくぶれます（目安: '+(m.type==='at' ? 'AT機は通常時3,000G以上' : 'ノーマルタイプは1,500G以上')+'）。';
   X.lines.push('回数と回転数を「判別」タブに入れると、設定ごとの確率が出ます（★が主役の項目）。'+few);
-  if(src && DATA.generated) src += '（'+DATA.generated+' 時点のデータ）';
-  X.lines.push(src ? '出典（設定判別）: '+src : '出典（設定判別）: 記載なし');
-  X.facts.judge = {settings:m.settings.slice(), counters:rows.map(function(r){ return {label:r.k, range:r.v}; }), payout:pay, tip:(m.notes && m.notes[0]) || '', source:src, noMain:nomain};
-  X.blocks.push({k:'judge', rows:rows, pay:pay, tip:(m.notes && m.notes[0]) || '', mid:m.id, src:src, few:few, ref:!!(m.flags && m.flags.reference_only), nomain:nomain});
+  X.facts.judge = {settings:m.settings.slice(), counters:rows.map(function(r){ return {label:r.k, range:r.v}; }), payout:pay, tip:(m.notes && m.notes[0]) || '', noMain:nomain};
+  X.blocks.push({k:'judge', rows:rows, pay:pay, tip:(m.notes && m.notes[0]) || '', mid:m.id, few:few, ref:!!(m.flags && m.flags.reference_only), nomain:nomain});
 }
 function askManualSec(X, id, termQ){
   // 手順書(manual.json)の節: tenjo/reset=手順、ev=期待値の読み方、yame=やめ時の決め方、money=資金と時間、glossary=用語(質問の語に当たるものを先に)
@@ -2631,7 +2630,7 @@ function askBlockHtml(b, i){
   if(b.k==='judge') return '<div class="sec"><h3>設定判別の主な項目</h3>'+askRowsHtml(b.rows.map(function(r){ return {k:r.k, v:r.v, d:''}; }))+
     (b.nomain && b.rows.length ? '<div class="sub" style="margin-top:6px">★（主役）にできる項目はありません（設定差が小さい）。上は補助の項目です。</div>' : '')+
     (b.pay ? '<div class="sub" style="margin-top:6px">機械割: '+esc(b.pay)+'</div>' : '')+(b.tip ? '<div class="sub">'+esc(b.tip)+'</div>' : '')+(b.ref ? '<div class="sub">この機種の理論値は手入力の参考値です（要確認）。</div>' : '')+
-    '<div class="sub">'+esc(b.few)+'</div><div class="sub">出典: '+esc(b.src || '記載なし')+'</div>'+
+    '<div class="sub">'+esc(b.few)+'</div>'+
     '<div class="acts"><button type="button" class="btn sm" data-askjudge="'+esc(b.mid)+'">判別タブへ（回数を入れて判定）</button></div></div>';
   if(b.k==='pick') return '<div class="chips" style="margin-top:8px">'+b.ids.map(function(id){ return byId[id] ? '<button type="button" class="chip" data-askpick="'+esc(id)+'" data-aski="'+i+'">'+esc(byId[id].short)+'</button>' : ''; }).join('')+'</div>';
   if(b.k==='gpick') return '<div class="chips" style="margin-top:8px">'+b.gs.map(function(g){ return '<button type="button" class="chip" data-askg="'+esc(String(g))+'" data-aski="'+i+'">'+esc(fmt(g)+'Gから')+'</button>'; }).join('')+'</div>';
