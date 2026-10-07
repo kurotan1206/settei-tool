@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png">
-<meta name="snv-version" content="cb36e6311b">
+<meta name="snv-version" content="e2f7515e74">
 </head>
 <body>
 <meta name="snv-mode" content="pwa">
@@ -1906,13 +1906,13 @@ if(typeof ASK.draft!=='string') ASK.draft = '';
 // 通称 → 機種id(空白区切り)。正式名・略称・ana-slo の名前は askAliasIndex が自動で足すので、ここには書かなくてよい。
 // ここに書いた通称でも、その語を名前に含む機種がほかにあれば、1つに決めずに候補を出す(askAliasIndex)
 var ASK_ALIASES = {
-  myjug5:'マイジャグ マイジャグラー マイジャグ5 マイジャグラー5', neoim:'アイム アイムジャグラー ネオアイムジャグラー アイムEX', gogo3:'ゴーゴー ゴージャグ ゴーゴージャグラー GOGO',
+  myjug5:'マイジャグ5 マイジャグラー5 マイジャグV マイジャグラーV', neoim:'アイム アイムジャグラー ネオアイムジャグラー アイムEX', gogo3:'ゴーゴー ゴージャグ ゴーゴージャグラー GOGO',
   funky2:'ファンキー ファンキージャグラー', ultramira:'ミラクル ウルトラミラクル ミラクルジャグラー', happy8:'ハッピー ハッピージャグラー ハピジャグ ハッピー8',
   jgirls:'ガールズ ジャグラーガールズ ガルジャグ', mrjug:'ミスタージャグラー ミスジャグ', nkhana:'ハナハナ キングハナハナ ニューキングハナハナ キンハナ',
   ghoul:'喰種 グール 東京喰種 東京グール トーキョーグール', kabaneri2:'カバネリ 海門 甲鉄城 甲鉄城のカバネリ カバネリ海門決戦', sao2:'SAO ソードアート ソードアートオンライン',
   otome5:'乙女 戦国乙女 乙女5 おとめ', lycoris:'リコリス リコリスリコイル', yoshimune:'吉宗 真打 よしむね', godeater:'ゴッドイーター ゴッドイーターリザレクション',
   hokuto:'スマスロ北斗の拳 北斗スマスロ', enen2:'炎炎 炎炎ノ消防隊 消防隊', tenzen:'天膳 絆2 絆2天膳 バジリスク バジ絆 バジ絆2 てんぜん', magireco:'マギレコ マギアレコード',
-  mhrise:'モンハン モンハンライズ モンスターハンター MHライズ', hokuto2:'転生 北斗転生 転生2 転生の章 北斗転生の章 北斗の拳転生 北斗の拳転生の章 てんせい', kanokari:'かのかり 彼女お借りします',
+  mhrise:'モンハンライズ ライズ MHライズ', hokuto2:'北斗転生 転生2 転生の章 北斗転生の章 北斗の拳転生 北斗の拳転生の章', kanokari:'かのかり 彼女お借りします',
   okiblack:'沖ドキブラック 沖ブラ 沖ドキ黒', mgod:'ミリゴ ゴッド ミリオンゴッド 神々の軌跡', vvv2:'ヴヴヴ VVV VVV2 ヴヴヴ2 ヴァルヴレイヴ ヴァルヴ 革命機',
   karakuri2:'からくり からくりサーカス からサー', kaguya:'かぐや かぐや様', sf6:'ストリートファイター ストリートファイター6 SF6 ストシックス', worlddai:'ダイスター ワルスタ ワールドダイ',
   banchozero:'番長ゼロ 番ゼロ 押忍番長ZERO 押忍番長ゼロ', izabancho:'いざ番長 いざばんちょう', mogumogu:'モグモグ 風林火山', tondemo:'とんでもスキル 放浪メシ 異世界放浪メシ とんスキ',
@@ -1922,12 +1922,16 @@ var ASK_ALIASES = {
   nangokusp:'南国 南国育ち 南国SP なんごく', thunderv:'サンダー サンダーV サンダーブイ', hanabi:'スマスロハナビ スマハナ', takoslo:'タコスロ LBタコスロ', discup:'ディスクアップUR ディスクUR ウルトラリミックス',
   toaru2:'とある2 禁書目録 とある魔術 インデックス', alex:'アレックス アレックスブライト', crea:'クレア クレアの秘宝伝 秘宝伝', discup2:'ディスクアップ2 ディスク2', lovejo3:'ラブ嬢 らぶじょう',
   isekaru:'かるてっと いせかる 異世界かるてっと カルテット', umineko2:'うみねこ うみねこのなく頃に', bangdream:'バンドリ', dumbbell:'ダンベル ダンベル何キロ', dunbine:'ダンバイン 聖戦士ダンバイン',
-  famista:'ファミスタ', kaiji:'カイジ 狂宴 回胴黙示録カイジ', kamuy:'カムイ 金カム 金カムイ ゴールデンカムイ', lovekyure2:'ラブキューレ 防空少女', symphogear:'シンフォギア 正義の歌 戦姫絶唱'
+  famista:'ファミスタ', kaiji:'カイジ 狂宴 回胴黙示録カイジ', kamuy:'カムイ 金カム 金カムイ ゴールデンカムイ', lovekyure2:'ラブキューレ 防空少女', symphogear:'シンフォギア 正義の歌 戦姫絶唱',
+  // 2026-10-05 設置分
+  mhsunbreak:'サンブレイク モンハンサンブレイク ライズサンブレイク サンブレ', juoh:'獣王 じゅうおう 獣王王者', myjug6:'マイジャグ6 マイジャグラー6 マイジャグⅥ マイジャグラーⅥ マイジャグ六',
+  tenseioujo:'転生王女 天才令嬢 魔法革命 転生王女と天才令嬢', paripi:'パリピ パリピ孔明 孔明 こうめい'
 };
 // 複数の機種にまたがる呼び名(1つに決めず、候補を出して選んでもらう)
 var ASK_GROUPS = {
-  'ジャグラー ジャグ':['myjug5','neoim','gogo3','funky2','ultramira','happy8','jgirls','mrjug'], '北斗 北斗の拳 ほくと':['hokuto','hokuto2'], '沖ドキ':['okiblack','okigorgeous','okigold'],
-  '番長':['banchozero','izabancho'], 'ハナビ':['shinhanabi','hanabi'], 'ディスクアップ ディスク':['discup','discup2']
+  'ジャグラー ジャグ':['myjug5','myjug6','neoim','gogo3','funky2','ultramira','happy8','jgirls','mrjug'], '北斗 北斗の拳 ほくと':['hokuto','hokuto2'], '沖ドキ':['okiblack','okigorgeous','okigold'],
+  '番長':['banchozero','izabancho'], 'ハナビ':['shinhanabi','hanabi'], 'ディスクアップ ディスク':['discup','discup2'],
+  'マイジャグ マイジャグラー':['myjug5','myjug6'], 'モンハン モンスターハンター':['mhrise','mhsunbreak'], '転生 てんせい':['hokuto2','tenseioujo']
 };
 var ASK_EXAMPLES = [['喰種リセ0から打つけどいくら？手順は？','ghoul'],['カバネリ 600ハマり いくら','kabaneri2'],['ダンベル リセット 等価','dumbbell'],['モンキー 狙い目','monkey'],['マイジャグ 設定差','myjug5']];
 var ASK_RE = {
