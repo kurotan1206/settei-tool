@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png">
-<meta name="snv-version" content="0f7ae374e6">
+<meta name="snv-version" content="cb652f29a4">
 </head>
 <body>
 <meta name="snv-mode" content="pwa">
@@ -653,7 +653,8 @@ function copyText(txt, ta){
 /* ---------- state ---------- */
 var S = store('sn:app') || {view:'home', machineId:null, unit:''};
 // 見た目のスキン(''=標準 / 'holo'=ホログラム風)。上部の「ホロ」ボタンで切替。S.skin に保存されるので「すぐ戻せる」
-function applySkin(){ document.documentElement.setAttribute('data-skin', S.skin==='holo' ? 'holo' : ''); }
+// 2026-10-18 ユーザー指示「ホログラム風に変えて」: 既定を holo に(S.skin が未設定の端末は holo。「✦ ホロ」ボタンで標準に戻せ、その選択は保存される)
+function applySkin(){ if(S.skin===undefined || S.skin===null){ S.skin = 'holo'; store('sn:app', S); } document.documentElement.setAttribute('data-skin', S.skin==='holo' ? 'holo' : ''); }
 applySkin();
 if(S.prior!=='flat') S.prior = 'hall';
 function stateKey(){ return 'sn:' + (S.machineId||'-') + ':' + (S.unit||'-'); }
