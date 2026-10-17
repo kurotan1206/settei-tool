@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png">
-<meta name="snv-version" content="cb652f29a4">
+<meta name="snv-version" content="2e2f0117e5">
 </head>
 <body>
 <meta name="snv-mode" content="pwa">
@@ -930,7 +930,7 @@ function renderJudge(){
     '<div class="device"><h2>データカウンタを写す<span class="n">数字をそのまま</span></h2><div class="dgrid">'+
       '<div class="dfield'+(m.type==='at'?'':' wide')+'"><label>'+esc(m.inputs.games.label)+'<span class="imp">必須</span></label><input inputmode="numeric" pattern="[0-9]*" class="led" data-in="games" value="'+esc(IN.games||'')+'" placeholder="0"><div class="tools one"><span class="sub" style="font-size:10.5px">'+esc(gamesHelp)+'</span></div></div>'+atField+
       main.map(function(c){ return dfield(c, c.denom==='own'); }).join('')+'</div>'+
-      (adv.length?'<details class="adv" style="margin-top:8px"><summary style="color:#AEB7C0">くわしく数える（上級者向け '+adv.length+'項目）</summary><div class="dgrid" style="margin-top:6px">'+adv.map(function(c){ return dfield(c, true); }).join('')+'</div></details>':'')+
+      (adv.length?'<div class="sub" style="margin-top:10px;color:#AEB7C0">くわしく数える（'+adv.length+'項目。常に表示）</div><div class="dgrid" style="margin-top:6px">'+adv.map(function(c){ return dfield(c, true); }).join('')+'</div>':'')+
     '</div>'+
     '<div class="card"><h2>見た演出をタップ<span class="n">出た回数ぶん押す</span></h2><div id="hints"></div></div>'+
     '<div class="card"><h2>この機種のコツ</h2><ul class="help" style="margin:0;padding-left:18px">'+m.notes.map(function(n){ return '<li>'+esc(n)+'</li>'; }).join('')+'</ul>'+
