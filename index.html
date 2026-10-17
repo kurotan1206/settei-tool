@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png">
-<meta name="snv-version" content="9ce63993d8">
+<meta name="snv-version" content="0f7ae374e6">
 </head>
 <body>
 <meta name="snv-mode" content="pwa">
@@ -482,6 +482,57 @@ details.adv summary::-webkit-details-marker{display:none}
 .nav button b{font-size:12px;font-weight:700;color:inherit}
 .nav button.on{color:var(--accent);background:var(--accent-soft)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* ---- ホログラム風スキン(2026-10-18 ユーザー要望「ホログラム風にして、すぐ戻せる様に」)。上部の「ホロ」ボタンで切替、既定は標準 ---- */
+:root[data-skin="holo"]{
+  color-scheme:dark;
+  --bg:#050912; --panel:rgba(10,20,40,.62); --panel-2:rgba(14,30,56,.62); --panel-3:rgba(20,40,72,.7); --ink:#E6FBFF; --ink-2:#9FD7E8; --ink-3:#5FA3BD;
+  --line:rgba(94,231,255,.38); --line-2:rgba(94,231,255,.22);
+  --accent:#5EE7FF; --accent-ink:#04121C; --accent-soft:rgba(94,231,255,.16);
+  --hot:#FF5FD2; --warm:#FFD166; --cool:#4DE1FF; --none:#2C4A66;
+  --hot-text:#FF8CE0; --warm-text:#FFE08A; --cool-text:#8FF0FF;
+  --hot-soft:rgba(255,95,210,.16); --warm-soft:rgba(255,209,102,.14); --cool-soft:rgba(77,225,255,.16);
+  --device:rgba(3,8,18,.78); --device-2:rgba(6,14,28,.8); --device-line:rgba(94,231,255,.3); --led:#7DF9FF; --led-dim:#1E5F6E; --led-label:#7FBDD0;
+  --shadow:0 0 0 1px rgba(94,231,255,.12), 0 0 18px rgba(94,231,255,.18), 0 10px 30px rgba(0,0,0,.55);
+  --plus:#FF5FD2; --minus:#4DE1FF; --good:#5CF0B0;
+}
+:root[data-skin="holo"] body{background:var(--bg);
+  background-image:radial-gradient(1200px 600px at 50% -10%, rgba(94,231,255,.14), transparent 60%), radial-gradient(900px 500px at 100% 100%, rgba(255,95,210,.10), transparent 60%),
+    linear-gradient(rgba(94,231,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(94,231,255,.05) 1px, transparent 1px);
+  background-size:auto, auto, 100% 28px, 28px 100%; background-attachment:fixed}
+:root[data-skin="holo"] body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9;
+  background:repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 1px, transparent 1px 3px);mix-blend-mode:overlay}
+:root[data-skin="holo"] body.wall::before{opacity:.22;filter:blur(8px) saturate(1.4) hue-rotate(-10deg)}
+:root[data-skin="holo"] .card,:root[data-skin="holo"] .result,:root[data-skin="holo"] .gatebox,:root[data-skin="holo"] .nav,:root[data-skin="holo"] .prior{
+  backdrop-filter:blur(10px) saturate(1.3);-webkit-backdrop-filter:blur(10px) saturate(1.3);
+  border:1px solid transparent;background-clip:padding-box;position:relative}
+:root[data-skin="holo"] .card::after,:root[data-skin="holo"] .result::after,:root[data-skin="holo"] .gatebox::after{content:"";position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;
+  padding:1px;background:linear-gradient(135deg, rgba(94,231,255,.75), rgba(255,95,210,.45) 45%, rgba(94,231,255,.15) 70%, rgba(255,209,102,.5));
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+:root[data-skin="holo"] .result{box-shadow:var(--shadow)}
+:root[data-skin="holo"] .disp,:root[data-skin="holo"] .verdict .word,:root[data-skin="holo"] .kpi .v{text-shadow:0 0 8px rgba(94,231,255,.55), 0 0 20px rgba(94,231,255,.25)}
+:root[data-skin="holo"] .card h2{color:var(--accent);letter-spacing:.16em;text-shadow:0 0 6px rgba(94,231,255,.5)}
+:root[data-skin="holo"] .card h2::after{background:linear-gradient(90deg, rgba(94,231,255,.6), transparent)}
+:root[data-skin="holo"] .btn.primary{background:linear-gradient(135deg,#5EE7FF,#9D7BFF 60%,#FF5FD2);color:#06121C;box-shadow:0 0 14px rgba(94,231,255,.45)}
+:root[data-skin="holo"] .btn{border-color:var(--line);background:rgba(14,30,56,.55);box-shadow:inset 0 0 0 1px rgba(94,231,255,.08)}
+:root[data-skin="holo"] .chip.on,:root[data-skin="holo"] .segctl button.on,:root[data-skin="holo"] .nav button.on{box-shadow:0 0 12px rgba(94,231,255,.45)}
+:root[data-skin="holo"] .nav{background:rgba(5,9,18,.72);border-top:1px solid var(--line)}
+:root[data-skin="holo"] .nav button.on{color:var(--accent);background:var(--accent-soft)}
+:root[data-skin="holo"] .gauge .seg.on{box-shadow:0 0 8px currentColor}
+:root[data-skin="holo"] .bar .fill{box-shadow:0 0 8px rgba(255,255,255,.25)}
+:root[data-skin="holo"] .dfield input,:root[data-skin="holo"] .unitform input{text-shadow:0 0 8px rgba(125,249,255,.6)}
+:root[data-skin="holo"] .led{text-shadow:0 0 8px rgba(125,249,255,.6)}
+:root[data-skin="holo"] .stat{background:rgba(10,20,40,.6);border-color:var(--line-2);color:var(--ink-2)}
+:root[data-skin="holo"] .hero::before{background:linear-gradient(180deg, rgba(5,9,18,.05) 0%, rgba(5,9,18,.3) 45%, rgba(5,9,18,.78) 78%, var(--bg) 100%)}
+:root[data-skin="holo"] .hero{box-shadow:inset 0 -1px 0 rgba(94,231,255,.35)}
+:root[data-skin="holo"] .app.themed .card h2{color:var(--accent)}
+:root[data-skin="holo"] .toast{background:#0B1E33;color:var(--ink);border:1px solid var(--line);box-shadow:0 0 16px rgba(94,231,255,.35)}
+:root[data-skin="holo"] .app::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:8;opacity:.5;
+  background:linear-gradient(115deg, transparent 0 40%, rgba(94,231,255,.07) 48%, rgba(255,95,210,.06) 52%, transparent 60% 100%);background-size:260% 100%;animation:holoSheen 9s linear infinite}
+@keyframes holoSheen{from{background-position:120% 0}to{background-position:-120% 0}}
+@media (prefers-reduced-motion:reduce){:root[data-skin="holo"] .app::before{animation:none}}
+.skinbtn{cursor:pointer;border:1px solid var(--line);background:var(--panel-2);color:var(--ink-2);border-radius:4px;padding:2px 7px;font-size:10.5px;line-height:1.4;white-space:nowrap}
+.skinbtn.on{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
+
 .hidden{display:none!important}
 </style>
 
@@ -601,6 +652,9 @@ function copyText(txt, ta){
 
 /* ---------- state ---------- */
 var S = store('sn:app') || {view:'home', machineId:null, unit:''};
+// 見た目のスキン(''=標準 / 'holo'=ホログラム風)。上部の「ホロ」ボタンで切替。S.skin に保存されるので「すぐ戻せる」
+function applySkin(){ document.documentElement.setAttribute('data-skin', S.skin==='holo' ? 'holo' : ''); }
+applySkin();
 if(S.prior!=='flat') S.prior = 'hall';
 function stateKey(){ return 'sn:' + (S.machineId||'-') + ':' + (S.unit||'-'); }
 function blankInput(){ return {games:'', at_games:'', counts:{}, denoms:{}, hints:{}, memo:'', sample:false}; }
@@ -3042,7 +3096,9 @@ function render(){
   applyTheme();
   document.querySelectorAll('#nav button').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-nav')===S.view); });
   var un = Object.keys(unitCounts).reduce(function(a,k){return a+unitCounts[k];},0);
-  document.getElementById('topmeta').innerHTML = '<span class="stat">機種 <b class="num">'+MACHINES.length+'</b></span><span class="stat">台 <b class="num">'+un+'</b></span><span class="stat">台データ <b class="num">'+esc(HIST.latest.slice(5))+'</b></span>';
+  applySkin();
+  document.getElementById('topmeta').innerHTML = '<span class="stat">機種 <b class="num">'+MACHINES.length+'</b></span><span class="stat">台 <b class="num">'+un+'</b></span><span class="stat">台データ <b class="num">'+esc(HIST.latest.slice(5))+'</b></span>'+'<button type="button" class="skinbtn'+(S.skin==='holo'?' on':'')+'" data-skintoggle="1" title="見た目を切り替え（すぐ戻せます）">'+(S.skin==='holo'?'✦ ホロ ON':'✦ ホロ')+'</button>';
+  var sb = document.querySelector('#topmeta [data-skintoggle]'); if(sb) sb.onclick = function(){ S.skin = (S.skin==='holo') ? '' : 'holo'; store('sn:app', S); applySkin(); render(); toast(S.skin==='holo' ? 'ホログラム風にしました（もう一度押すと戻ります）' : '標準の見た目に戻しました'); };
   if(S.view==='home') renderHome(); else if(S.view==='judge') renderJudge(); else if(S.view==='aim') renderAim(); else if(S.view==='history') renderHistory(); else renderHelp();
 }
 function aimRefresh(){
