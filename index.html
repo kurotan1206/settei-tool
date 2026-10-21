@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png">
-<meta name="snv-version" content="53ad0040d4">
+<meta name="snv-version" content="ac07bf8711">
 </head>
 <body>
 <meta name="snv-mode" content="pwa">
@@ -262,19 +262,24 @@ body.wall::before{content:"";position:fixed;inset:-24px;background:var(--wall) v
 .hgroup h3 .cnt{font-size:10px;color:var(--accent);font-weight:400}
 .hgroup .gnote{font-size:10.5px;color:var(--ink-3);margin:0 0 6px;line-height:1.45}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
+.card{overflow-wrap:break-word}
+.help li{overflow-wrap:anywhere}
 .chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--panel-2);border-radius:6px;padding:6px 9px;font-size:12.5px;max-width:100%;text-align:left;line-height:1.3;transition:transform .06s}
 .chip:active{transform:scale(.97)}
 .chip .eff{font-size:10px;color:var(--ink-3);white-space:nowrap}
+.chip > span{min-width:0}
+@media (max-width:480px){.chip .eff{white-space:normal}}
 .chip.on{border-color:var(--accent);background:var(--accent-soft)}
 .chip.on .eff{color:var(--accent)}
 .chip .cnt{background:var(--accent);color:var(--accent-ink);border-radius:99px;min-width:20px;height:20px;font-size:11.5px;display:inline-flex;align-items:center;justify-content:center;padding:0 6px;font-weight:700}
 .chip .minus{border:0;background:transparent;color:var(--accent);font-weight:700;padding:0 2px;font-size:14px}
 .chip.lock.on .cnt{display:none}
-.chips.pics{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.chips.pics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
 .chip.pic{flex-direction:column;align-items:stretch;padding:0;gap:0;position:relative;overflow:hidden}
 .chip.pic img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:var(--panel-3)}
 .chip.pic .cap{display:block;padding:5px 6px 6px;font-size:10.5px;line-height:1.3;text-align:left}
-.chip.pic .eff{display:block;margin-top:2px}
+.chip.pic .eff{display:block;margin-top:2px;white-space:normal}
+.chip.pic .cap{overflow-wrap:anywhere}
 .chip.pic .cnt{position:absolute;top:4px;left:4px;box-shadow:0 0 0 2px var(--panel)}
 .chip.pic .minus{position:absolute;top:2px;right:2px;background:var(--panel);border-radius:99px;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:14px}
 .sel{width:100%;padding:9px;border:1px solid var(--line);border-radius:6px;background:var(--panel-2);font-size:13.5px;color:var(--ink)}
@@ -1963,30 +1968,44 @@ if(typeof ASK.draft!=='string') ASK.draft = '';
 var ASK_ALIASES = {
   myjug5:'マイジャグ5 マイジャグラー5 マイジャグV マイジャグラーV', neoim:'アイム アイムジャグラー ネオアイムジャグラー アイムEX', gogo3:'ゴーゴー ゴージャグ ゴーゴージャグラー GOGO',
   funky2:'ファンキー ファンキージャグラー', ultramira:'ミラクル ウルトラミラクル ミラクルジャグラー', happy8:'ハッピー ハッピージャグラー ハピジャグ ハッピー8',
-  jgirls:'ガールズ ジャグラーガールズ ガルジャグ', mrjug:'ミスタージャグラー ミスジャグ', nkhana:'ハナハナ キングハナハナ ニューキングハナハナ キンハナ',
-  ghoul:'喰種 グール 東京喰種 東京グール トーキョーグール', kabaneri2:'カバネリ 海門 甲鉄城 甲鉄城のカバネリ カバネリ海門決戦', sao2:'SAO ソードアート ソードアートオンライン',
-  otome5:'乙女 戦国乙女 乙女5 おとめ', lycoris:'リコリス リコリスリコイル', yoshimune:'吉宗 真打 よしむね', godeater:'ゴッドイーター ゴッドイーターリザレクション',
+  jgirls:'ガールズ ジャグラーガールズ ガルジャグ', mrjug:'ミスタージャグラー ミスジャグ', nkhana:'ニューキングハナハナ ニューキン Nキング ニューキンハナ',
+  ghoul:'喰種 グール 東京喰種 東京グール トーキョーグール', kabaneri2:'海門 カバネリ海門 カバネリ海門決戦 海門決戦', sao2:'SAO2 ソードアート2 ソードアートオンライン2',
+  otome5:'乙女5 戦国乙女5', lycoris:'リコリス リコリスリコイル', yoshimune:'真打 真打吉宗 しんうち', godeater:'ゴッドイーター ゴッドイーターリザレクション',
   hokuto:'スマスロ北斗の拳 北斗スマスロ', enen2:'炎炎 炎炎ノ消防隊 消防隊', tenzen:'天膳 絆2 絆2天膳 バジリスク バジ絆 バジ絆2 てんぜん', magireco:'マギレコ マギアレコード',
   mhrise:'モンハンライズ ライズ MHライズ', hokuto2:'北斗転生 転生2 転生の章 北斗転生の章 北斗の拳転生 北斗の拳転生の章', kanokari:'かのかり 彼女お借りします',
   okiblack:'沖ドキブラック 沖ブラ 沖ドキ黒', mgod:'ミリゴ ゴッド ミリオンゴッド 神々の軌跡', vvv2:'ヴヴヴ VVV VVV2 ヴヴヴ2 ヴァルヴレイヴ ヴァルヴ 革命機',
-  karakuri2:'からくり からくりサーカス からサー', kaguya:'かぐや かぐや様', sf6:'ストリートファイター ストリートファイター6 SF6 ストシックス', worlddai:'ダイスター ワルスタ ワールドダイ',
+  karakuri2:'からくり2 からくりサーカス2 からサー2', kaguya:'かぐや かぐや様', sf6:'ストリートファイター ストリートファイター6 SF6 ストシックス', worlddai:'ダイスター ワルスタ ワールドダイ',
   banchozero:'番長ゼロ 番ゼロ 押忍番長ZERO 押忍番長ゼロ', izabancho:'いざ番長 いざばんちょう', mogumogu:'モグモグ 風林火山', tondemo:'とんでもスキル 放浪メシ 異世界放浪メシ とんスキ',
   versus:'バーサス リヴァイズ', garei:'喰霊 喰霊零 がれい', okigorgeous:'沖ドキゴージャス ゴージャス 沖ゴー', jashin:'邪神 邪神ちゃん じゃしん', aobuta:'青ブタ 青春ブタ野郎 ブタ野郎',
   okigold:'沖ドキゴールド 沖ゴールド', kyokou:'虚構 虚構推理 きょこう', monkey:'モンキー モンキーターン モンキーV モンキーターン5 モンタン', kokaku:'攻殻 攻殻機動隊 こうかく',
   yajikita:'やじきた やじきた道中記 弥次喜多', eureka:'エウレカ エウレカセブン ハイエボ エウレカゼロ', senkore6:'戦コレ 戦コレ6 戦国コレクション', shinhanabi:'新ハナビ しんはなび',
   nangokusp:'南国 南国育ち 南国SP なんごく', thunderv:'サンダー サンダーV サンダーブイ', hanabi:'スマスロハナビ スマハナ', takoslo:'タコスロ LBタコスロ', discup:'ディスクアップUR ディスクUR ウルトラリミックス',
-  toaru2:'とある2 禁書目録 とある魔術 インデックス', alex:'アレックス アレックスブライト', crea:'クレア クレアの秘宝伝 秘宝伝', discup2:'ディスクアップ2 ディスク2', lovejo3:'ラブ嬢 らぶじょう',
+  toaru2:'禁書目録 とある魔術 インデックス 禁書目録2', alex:'アレックス アレックスブライト', crea:'クレア クレアの秘宝伝 クレアBT', discup2:'ディスクアップ2 ディスク2', lovejo3:'ラブ嬢 らぶじょう',
   isekaru:'かるてっと いせかる 異世界かるてっと カルテット', umineko2:'うみねこ うみねこのなく頃に', bangdream:'バンドリ', dumbbell:'ダンベル ダンベル何キロ', dunbine:'ダンバイン 聖戦士ダンバイン',
   famista:'ファミスタ', kaiji:'カイジ 狂宴 回胴黙示録カイジ', kamuy:'カムイ 金カム 金カムイ ゴールデンカムイ', lovekyure2:'ラブキューレ 防空少女', symphogear:'シンフォギア 正義の歌 戦姫絶唱',
   // 2026-10-05 設置分
   mhsunbreak:'サンブレイク モンハンサンブレイク ライズサンブレイク サンブレ', juoh:'獣王 じゅうおう 獣王王者', myjug6:'マイジャグ6 マイジャグラー6 マイジャグⅥ マイジャグラーⅥ マイジャグ六',
-  tenseioujo:'転生王女 天才令嬢 魔法革命 転生王女と天才令嬢', paripi:'パリピ パリピ孔明 孔明 こうめい'
+  tenseioujo:'転生王女 天才令嬢 魔法革命 転生王女と天才令嬢', paripi:'パリピ パリピ孔明 孔明 こうめい',
+  // 2026-10-21 スカイコンコルド富士宮の機種
+  dragonhana:'ドラゴンハナハナ ドラハナ 閃光', kinghana30:'キングハナハナ30 キンハナ30', karakuri:'からくりサーカス1 初代からくり からくり初代 からくりサーカス初代', bakemono:'化物語 ばけもの バケモノガタリ',
+  kabaneri1:'初代カバネリ カバネリ初代 カバネリ1', okiduo:'沖ドキDUO DUO アンコール 沖ドキデュオ デュオ', bofuri:'防振り 極振り 痛いのは嫌', otome4:'乙女4 戦国乙女4',
+  gundamuc:'ガンダム ガンダムユニコーン ユニコーン 覚醒DRIVE', docchi:'ドッチ アニマルスロット', mahjong:'麻雀 麻雀物語 マージャン', ninja3:'忍魂 忍魂参 しのびだましい',
+  shinonimusha3:'新鬼武者 鬼武者 新鬼武者3', tokyorev:'東リベ 東京リベンジャーズ リベンジャーズ', tekken6:'鉄拳 鉄拳6', mushoku:'無職転生 無職',
+  jormungand:'ヨルムンガンド ヨルム', gobsla2:'ゴブスレ ゴブスレ2 ゴブリンスレイヤー', railgun2:'超電磁砲 レールガン 超電磁砲2', zenigata5:'銭形 銭形5 主役は銭形',
+  hihoden_s:'スマスロ秘宝伝 秘宝伝スマスロ', kagami:'鏡 エリートサラリーマン エリート鏡', chibariyo2:'チバリヨ チバリヨ2', azurlane:'アズレン アズールレーン',
+  yoshimune_l:'L吉宗 吉宗L', bio5:'バイオ5 バイオハザード5', biore3:'バイオRE3 バイオRE:3 バイオハザードRE3 バイオハザードRE:3 RE3', sbj:'SBJ ブラックジャック スーパーブラックジャック', magihalo8:'マジハロ マジハロ8 マジカルハロウィン',
+  seiya_umi:'星矢 聖闘士星矢 海皇 海皇覚醒', shamanking:'シャーマンキング シャーマン', baki:'刃牙 バキ 範馬', tolove:'ToLOVEる とらぶる トラブル',
+  sao1:'SAO1 初代SAO ソードアート1', revue:'レヴュー スタァライト レヴュースタァライト 少女歌劇', birdie:'BIRDIE バーディー バーディ ゴルフ', saki:'咲 Saki 咲Saki',
+  nanatsu:'七つの魔剣 魔剣', lupin_dai:'ルパン ルパン三世 大航海', rezero2:'リゼロ リゼロ2 Reゼロ', eva_yakusoku:'エヴァ エヴァンゲリオン 約束の扉 ヱヴァ'
 };
 // 複数の機種にまたがる呼び名(1つに決めず、候補を出して選んでもらう)
 var ASK_GROUPS = {
-  'ジャグラー ジャグ':['myjug5','myjug6','neoim','gogo3','funky2','ultramira','happy8','jgirls','mrjug'], '北斗 北斗の拳 ほくと':['hokuto','hokuto2'], '沖ドキ':['okiblack','okigorgeous','okigold'],
+  'ジャグラー ジャグ':['myjug5','myjug6','neoim','gogo3','funky2','ultramira','happy8','jgirls','mrjug'], '北斗 北斗の拳 ほくと':['hokuto','hokuto2'], '沖ドキ':['okiblack','okigorgeous','okigold','okiduo'],
   '番長':['banchozero','izabancho'], 'ハナビ':['shinhanabi','hanabi'], 'ディスクアップ ディスク':['discup','discup2'],
-  'マイジャグ マイジャグラー':['myjug5','myjug6'], 'モンハン モンスターハンター':['mhrise','mhsunbreak'], '転生 てんせい':['hokuto2','tenseioujo']
+  'マイジャグ マイジャグラー':['myjug5','myjug6'], 'モンハン モンスターハンター':['mhrise','mhsunbreak'], '転生 てんせい':['hokuto2','tenseioujo','mushoku'],
+  'ハナハナ':['nkhana','dragonhana','kinghana30'], 'キングハナハナ キンハナ':['nkhana','kinghana30'], 'カバネリ 甲鉄城 甲鉄城のカバネリ':['kabaneri2','kabaneri1'],
+  '乙女 戦国乙女 おとめ':['otome5','otome4'], '吉宗 よしむね':['yoshimune','yoshimune_l'], 'SAO ソードアート ソードアートオンライン':['sao2','sao1'],
+  'からくり からくりサーカス からサー':['karakuri2','karakuri'], '秘宝伝':['crea','hihoden_s'], 'バイオ バイオハザード':['bio5','biore3'], 'とある':['toaru2','railgun2']
 };
 var ASK_EXAMPLES = [['喰種リセ0から打つけどいくら？手順は？','ghoul'],['カバネリ 600ハマり いくら','kabaneri2'],['ダンベル リセット 等価','dumbbell'],['モンキー 狙い目','monkey'],['マイジャグ 設定差','myjug5']];
 var ASK_RE = {
@@ -2049,6 +2068,10 @@ function askFindAliases(w){
     while((at = s.indexOf(k, from))>=0){
       var next = w.charAt(pos[at+k.length-1]+1), prev = pos[at]>0 ? w.charAt(pos[at]-1) : '';
       // 「スト6」が「コスト600円」に、「sao」が別の英単語の途中に当たらないようにする(前後は、空白を詰める前の並びで見る)
+      // 数字で終わる呼び名(「カバネリ1」「キンハナ30」)は、質問の数字がG数などの別の数でないときだけ当てる:
+      // 呼び名の数字の直前に空白がある(「カバネリ 1G」。「バイオRE:3」の記号は空白に数えない)・数字の後ろに単位(G/ゲーム/回/枚/スルー/連/%)が続く(「キングハナハナ30G」) ときは当てない(2026-10-21)
+      var tailD = /\d+$/.exec(k), dStart = tailD ? at + k.length - tailD[0].length : -1;
+      if(tailD && dStart>at && (/\s/.test(w.slice(pos[dStart-1]+1, pos[dStart])) || /^\s*(g|ｇ|ゲ|回|枚|ス|連|%|％|ハ|は)/i.test(w.slice(pos[at+k.length-1]+1)))){ from = at+1; continue; }
       if((/\d$/.test(k) && /\d/.test(next)) || (/^\d/.test(k) && /\d/.test(prev)) || (/^[a-z]/.test(k) && /[a-z]/.test(prev)) || (/[a-z]$/.test(k) && /[a-z]/.test(next))){ from = at+1; continue; }
       hits.push({key:k, ids:idx.map[k], at:pos[at]});
       for(var j=at;j<at+k.length;j++) chars[pos[j]] = ' ';
