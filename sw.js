@@ -1,5 +1,5 @@
 /* 総合判定ツール service worker: 同一オリジンはキャッシュ優先、index.html はネット優先。VERSION が変わると入れ替わる */
-var VERSION = 'ac07bf8711';
+var VERSION = '55a293506c';
 var CACHE = 'snv-' + VERSION;
 var ASSETS = ['./', './index.html', './data.enc', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 self.addEventListener('install', function(e){ e.waitUntil(caches.open(CACHE).then(function(c){ return c.addAll(ASSETS); }).then(function(){ return self.skipWaiting(); })); });
